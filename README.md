@@ -4,7 +4,7 @@
   <img width="800" alt="Screenshot 2025-05-01 at 23 14 33" src="https://github.com/user-attachments/assets/e832a342-9ac4-45ab-ae29-061259f46624" />
 </p>
 
-This repo hosts the a website ( which allows to generate input files for common quantum chemistry programs.
+This repo hosts the website (https://kszenes.github.io/QCMemento/) which allows to generate input files for common quantum chemistry programs.
 It has currently limited capabilities (only supports ORCA so far) but will be extended further in the future, see below.
 
 ## Roadmap
