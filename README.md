@@ -16,9 +16,9 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
 - [ ] Add other chemistry programs:
-  - OpenMolcas
-  - Psi4
-  - PySCF
+  - [ ] OpenMolcas
+  - [ ] Psi4
+  - [ ] PySCF
 
 ### DONE
 - [x] Add MRPT2
