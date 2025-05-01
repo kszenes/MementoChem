@@ -154,6 +154,60 @@ async function loadBasisSets() {
   }
 }
 
+// Function to load basis sets from the text file
+async function loadDFTXC() {
+  try {
+    // Fetch the basis_sets.txt file
+    const response = await fetch('./dft_functionals.txt');
+    const text = await response.text();
+    
+    // Parse the file
+    const lines = text.split('\n');
+    
+    // Skip the first two comment lines
+    const functionalSets = [];
+    for (let i = 2; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line) {
+        // Extract basis set name (up to column 39) and description (after column 39)
+        const name = line.substring(0, 39).trim();
+        const description = line.substring(39).trim();
+        
+        if (name) {
+          functionalSets.push({ name, description });
+        }
+      }
+    }
+    
+    // Get the basis_param select element
+    const functionalSelect = document.getElementById('dft_functional');
+    
+    // Clear existing options
+    functionalSelect.innerHTML = '';
+    
+    // Add the parsed basis sets as options
+    functionalSets.forEach(functionalSet => {
+      const option = document.createElement('option');
+      option.value = functionalSet.name.toLowerCase().replace(/\s+/g, ''); // Create a valid value
+      option.textContent = functionalSet.name;
+      option.title = functionalSet.description; // Add description as tooltip
+      functionalSelect.appendChild(option);
+    });
+
+    // Select default value
+    functionalSelect.value = "b3lyp";
+
+    
+    // Trigger the onchange event to ensure any dependent logic is executed
+    if (typeof updateCalculationMethod === 'function') {
+      updateCalculationMethod();
+    }
+
+  } catch (error) {
+    console.error('Error loading basis sets:', error);
+  }
+}
+
 // Function to update SCF type options based on calculation method
 function updateScfTypeOptions() {
   const calcMethod = document.getElementById('calc_param').value;
@@ -337,6 +391,9 @@ function updateCalculationMethod() {
 document.addEventListener('DOMContentLoaded', function() {
   // Load basis sets (from the previous solution)
   loadBasisSets();
+
+  // Load dft functionals
+  loadDFTXC();
   
   // Add event listeners to all form elements that should trigger an update
   const formElements = [
