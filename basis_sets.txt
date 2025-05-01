@@ -1,0 +1,750 @@
+# Generated using basis_set_exchange cli: `bse list-basis-sets > basis_sets.txt`
+
+2ZaP                                   2ZaP basis set of Zhong, Barnes, and Petersson
+2ZaPa-NR                               Double Zeta augmented + polarization (nonrelativistic)
+2ZaPa-NR-CV                            Double zeta augmented +polarization (nonrelativistic + core-valence)
+3-21G                                  3-21G Split-valence basis set
+3ZaP                                   3ZaP basis set of Zhong, Barnes, and Petersson
+3ZaPa-NR                               Triple Zeta augmented + polarization (nonrelativistic)
+3ZaPa-NR-CV                            Triple zeta augmented + polarization (nonrelativistic + core-valence)
+4-31G                                  4-31G valence double-zeta basis set
+4ZaP                                   4ZaP basis set of Zhong, Barnes, and Petersson
+4ZaPa-NR                               Quadruple Zeta augmented + polarization (nonrelativistic)
+4ZaPa-NR-CV                            Quadruple zeta augmented + polarization (nonrelativistic + core-valence)
+5-21G                                  5-21G Split-valence basis set
+5ZaP                                   5ZaP basis set of Zhong, Barnes, and Petersson
+5ZaPa-NR                               Quintuple Zeta augmented + polarization (nonrelativistic)
+5ZaPa-NR-CV                            Quintuple zeta augmented + polarization (nonrelativistic + core-valence)
+6-21G                                  6-21G Split-alence basis set
+6-31++G                                6-31G + diffuse on all atoms
+6-31++G*                               6-31G + diffuse functions on all atoms, polarization on heavy atoms
+6-31++G**                              6-31G + diffuse and polarization functions on all atoms
+6-31++G**-J                            6-31++G**-J
+6-31+G                                 6-31G + diffuse on heavy atoms
+6-31+G*                                6-31G + diffuse and polarization functions on heavy atoms
+6-31+G*-J                              6-31+G*-J
+6-31+G**                               6-31G + diffuse functions on heavy atoms, polarization on all
+6-311++G                               VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO with diffuse on all atoms
+6-311++G(2d,2p)                        6-311++G(2d,2p)
+6-311++G(3df,3pd)                      6-311++G(3df,3pd)
+6-311++G*                              VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO with diffuse on all atoms, polarization on heavy atoms
+6-311++G**                             VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO with diffuse+polarization on all atoms
+6-311++G**-J                           6-311++G**-J
+6-311+G                                VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO with diffuse on heavy atoms
+6-311+G(2d,p)                          6-311+G(2d,p)
+6-311+G*                               VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO with diffuse+polarization on heavy atoms
+6-311+G*-J                             6-311+G*-J
+6-311+G**                              VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO with diffuse on heavy atoms, polarization on all atoms
+6-311G                                 VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO
+6-311G(2df,2pd)                        6-311G(2df,2pd)
+6-311G(d,p)                            VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO
+6-311G-J                               6-311G-J
+6-311G*                                VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO
+6-311G**                               VTZ Valence Triple Zeta: 3 Funct.'s/Valence AO
+6-311G**-RIFIT                         RI-MP2 auxiliary basis for 6-311G** basis
+6-311xxG(d,p)                          6-311xxG(d,p) basis set
+6-31G                                  6-31G valence double-zeta
+6-31G(2df,p)                           6-31G(2df,p)
+6-31G(3df,3pd)                         6-31G(3df,3pd)
+6-31G(d,p)                             6-31G + polarization on all atoms
+6-31G-Blaudeau                         VDZ     Valence Double Zeta: 2 Funct.'s/Valence AO
+6-31G-J                                6-31G-J
+6-31G*                                 6-31G + polarization on heavy atoms
+6-31G*-Blaudeau                        VDZP    Valence Double Zeta + Polarization on All Atoms
+6-31G**                                6-31G + polarization on all atoms
+6-31G**-RIFIT                          RI-MP2 auxiliary basis for 6-31G** basis
+6ZaP                                   6ZaP basis set of Zhong, Barnes, and Petersson
+6ZaPa-NR                               Sextuple Zeta augmented + polarization (nonrelativistic)
+7ZaPa-NR                               7Zeta augmented + polarization (nonrelativistic)
+acv2z-J                                acv2z-J basis for indirect nuclear spin-spin coupling
+acv3z-J                                acv3z-J basis for indirect nuclear spin-spin coupling
+acv4z-J                                acv4z-J basis for indirect nuclear spin-spin coupling
+admm-1                                 Auxiliary basis with diffuse functions for use with pcseg-1 and the Auxiliary-Density Matrix Method (ADMM)
+admm-2                                 Auxiliary basis with diffuse functions for use with pcseg-2 and the Auxiliary-Density Matrix Method (ADMM)
+admm-3                                 Auxiliary basis with diffuse functions for use with pcseg-3 and the Auxiliary-Density Matrix Method (ADMM)
+AHGBS-5                                Hydrogenic Gaussian basis set formed at tolerance 10^{-5} without polarization, with more diffuse functions
+AHGBS-7                                Hydrogenic Gaussian basis set formed at tolerance 10^{-7} without polarization, with more diffuse functions
+AHGBS-9                                Hydrogenic Gaussian basis set formed at tolerance 10^{-9} without polarization, with more diffuse functions
+AHGBSP1-5                              Hydrogenic Gaussian basis set formed at tolerance 10^{-5} with 1 polarization shell, with more diffuse functions
+AHGBSP1-7                              Hydrogenic Gaussian basis set formed at tolerance 10^{-7} with 1 polarization shell, with more diffuse functions
+AHGBSP1-9                              Hydrogenic Gaussian basis set formed at tolerance 10^{-9} with 1 polarization shell, with more diffuse functions
+AHGBSP2-5                              Hydrogenic Gaussian basis set formed at tolerance 10^{-5} with 2 polarization shells, with more diffuse functions
+AHGBSP2-7                              Hydrogenic Gaussian basis set formed at tolerance 10^{-7} with 2 polarization shells, with more diffuse functions
+AHGBSP2-9                              Hydrogenic Gaussian basis set formed at tolerance 10^{-9} with 2 polarization shells, with more diffuse functions
+AHGBSP3-5                              Hydrogenic Gaussian basis set formed at tolerance 10^{-5} with 3 polarization shells, with more diffuse functions
+AHGBSP3-7                              Hydrogenic Gaussian basis set formed at tolerance 10^{-7} with 3 polarization shells, with more diffuse functions
+AHGBSP3-9                              Hydrogenic Gaussian basis set formed at tolerance 10^{-9} with 3 polarization shells, with more diffuse functions
+Ahlrichs pVDZ                          VDZP    Valence Double Zeta + Polarization on All Atoms
+Ahlrichs TZV                           VTZ     Valence Triple Zeta: 3 Funct.'s/Valence AO
+Ahlrichs VDZ                           VDZ     Valence Double Zeta: 2 Funct.'s/Valence AO
+Ahlrichs VTZ                           VTZ     Valence Triple Zeta: 3 Funct.'s/Valence AO
+ANO-DK3                                ANO-DK3
+ano-pV5Z                               ano-pV5Z
+ano-pVDZ                               ano-pVDZ
+ano-pVQZ                               ano-pVQZ
+ano-pVTZ                               ano-pVTZ
+ANO-R                                  ANO-R
+ANO-R0                                 ANO-R0
+ANO-R1                                 ANO-R1
+ANO-R2                                 ANO-R2
+ANO-R3                                 ANO-R3
+ANO-RCC                                Full ANO-RCC basis
+ANO-RCC-MB                             ANO-RCC-MB
+ANO-RCC-VDZ                            ANO-RCC-VDZ
+ANO-RCC-VDZP                           ANO-RCC-VDZP
+ANO-RCC-VQZP                           ANO-RCC-VQZP
+ANO-RCC-VTZ                            ANO-RCC-VTZ
+ANO-RCC-VTZP                           ANO-RCC-VTZP
+ANO-VT-DZ                              ANO-VT-DZ (Atomic Natural Orbital - Virial Theorem - Double Zeta)
+ANO-VT-QZ                              ANO-VT-QZ (Atomic Natural Orbital - Virial Theorem - Quadruple Zeta)
+ANO-VT-TZ                              ANO-VT-TZ (Atomic Natural Orbital - Virial Theorem - Triple Zeta)
+apr-cc-pV(Q+d)Z                        apr-cc-pV(Q+d)Z basis of Papajak/Truhlar
+asigmaDZ                               asigmaDZ basis
+asigmaQZ                               asigmaQZ basis
+asigmaTZ                               asigmaTZ basis
+ATZP-ZORA                              ATZP-ZORA, augmented all-electron triple-zeta basis for calculations with the ZORA approach
+aug-admm-1                             Auxiliary basis with diffuse functions for use with aug-pcseg-1 and the Auxiliary-Density Matrix Method (ADMM)
+aug-admm-2                             Auxiliary basis with diffuse functions for use with aug-pcseg-2 and the Auxiliary-Density Matrix Method (ADMM)
+aug-admm-3                             Auxiliary basis with diffuse functions for use with aug-pcseg-3 and the Auxiliary-Density Matrix Method (ADMM)
+aug-ano-pV5Z                           aug-ano-pV5Z
+aug-ano-pVDZ                           aug-ano-pVDZ
+aug-ano-pVQZ                           aug-ano-pVQZ
+aug-ano-pVTZ                           aug-ano-pVTZ
+aug-cc-pCV5Z                           5ZP Quintuple Zeta + Polarization + Tight Core + Diffuse
+aug-cc-pCVDZ                           DZP Double Zeta + Polarization + Tight Core + Diffuse
+aug-cc-pCVDZ-DK                        VDZP Douglas-Kroll Valence Double Zeta + Polarization + Tight core + Diffuse
+aug-cc-pCVQZ                           QZP Quadruple Zeta + Polarization + Tight Core + Diffuse
+aug-cc-pCVQZ-DK                        QZ3PD Douglas-Kroll Valence Double Zeta + Polarization + Tight core + Diffuse
+aug-cc-pCVTZ                           TZP Triple Zeta + Polarization + Tight Core + Diffuse
+aug-cc-pCVTZ-DK                        Triple-Zeta Douglas-Kroll Valence Double Zeta + Polarization + Tight core + Diffuse
+aug-cc-pV(5+d)Z                        aug-cc-pV(5+d)Z
+aug-cc-pV(D+d)Z                        aug-cc-pV(D+d)Z
+aug-cc-pV(Q+d)Z                        aug-cc-pV(Q+d)Z
+aug-cc-pV(T+d)Z                        aug-cc-pV(T+d)Z
+aug-cc-pV5Z                            aug-cc-pV5Z
+aug-cc-pV5Z-DK                         V5ZPD   All-electron Douglas-Kroll Valence Quintuple Zeta + Polarization
+aug-cc-pV5Z-OPTRI                      aug-cc-pV5Z-OPTRI
+aug-cc-pV5Z-PP                         aug-cc-pV5Z-PP
+aug-cc-pV5Z-PP-OPTRI                   aug-cc-pV5Z-PP-OPTRI
+aug-cc-pV5Z-PP-RIFIT                   aug-cc-pV5Z-PP-RIFIT
+aug-cc-pV5Z-RIFIT                      RI Fitting basis for use with aug-cc-pV5Z
+aug-cc-pV6Z                            aug-cc-pV6Z
+aug-cc-pV6Z-RIFIT                      RI Fitting basis for use with aug-cc-pV6Z
+aug-cc-pV7Z                            aug-cc-pV7Z
+aug-cc-pVDZ                            aug-cc-pVDZ
+aug-cc-pVDZ-DK                         VDZ2PD All-electron Douglas-Kroll Valence Double Zeta + Polarization
+aug-cc-pVDZ-DK3                        aug-cc-pVDZ-DK3
+aug-cc-pVDZ-OPTRI                      aug-cc-pVDZ-OPTRI
+aug-cc-pVDZ-PP                         aug-cc-pVDZ-PP
+aug-cc-pVDZ-PP-OPTRI                   aug-cc-pVDZ-PP-OPTRI
+aug-cc-pVDZ-PP-RIFIT                   aug-cc-pVDZ-PP-RIFIT
+aug-cc-pVDZ-RIFIT                      RI Fitting basis for use with aug-cc-pVDZ
+aug-cc-pVDZ-X2C                        aug-cc-pVDZ-X2C
+aug-cc-pVQZ                            aug-cc-pVQZ
+aug-cc-pVQZ-DK                         VQZPD   All-electron Douglas-Kroll Valence Quadruple Zeta + Polarization
+aug-cc-pVQZ-DK3                        aug-cc-pVQZ-DK3
+aug-cc-pVQZ-OPTRI                      aug-cc-pVQZ-OPTRI
+aug-cc-pVQZ-PP                         aug-cc-pVQZ-PP
+aug-cc-pVQZ-PP-OPTRI                   aug-cc-pVQZ-PP-OPTRI
+aug-cc-pVQZ-PP-RIFIT                   aug-cc-pVQZ-PP-RIFIT
+aug-cc-pVQZ-RIFIT                      RI Fitting basis for use with aug-cc-pVQZ
+aug-cc-pVQZ-X2C                        aug-cc-pVQZ-X2C
+aug-cc-pVTZ                            aug-cc-pVTZ
+aug-cc-pVTZ-DK                         VTZ2P   All-electron Douglas-Kroll Valence Triple Zeta + Polarization
+aug-cc-pVTZ-DK3                        aug-cc-pVTZ-DK3
+aug-cc-pVTZ-J                          aug-cc-pVTZ-J
+aug-cc-pVTZ-OPTRI                      aug-cc-pVTZ-OPTRI
+aug-cc-pVTZ-PP                         aug-cc-pVTZ-PP
+aug-cc-pVTZ-PP-OPTRI                   aug-cc-pVTZ-PP-OPTRI
+aug-cc-pVTZ-PP-RIFIT                   aug-cc-pVTZ-PP-RIFIT
+aug-cc-pVTZ-RIFIT                      RI Fitting basis for use with aug-cc-pVTZ
+aug-cc-pVTZ-X2C                        aug-cc-pVTZ-X2C
+aug-cc-pwCV5Z                          5Z4P    Quintuple Zeta + Polarization + Tight Core + Diffuse
+aug-cc-pwCV5Z-DK                       V5ZPD   All-electron Douglas-Kroll Core-Valence Quintuple Zeta + Polarization
+aug-cc-pwCV5Z-PP                       aug-cc-pwCV5Z-PP
+aug-cc-pwCV5Z-PP-OPTRI                 aug-cc-pwCV5Z-PP-OPTRI
+aug-cc-pwCV5Z-PP-RIFIT                 aug-cc-pwCV5Z-PP-RIFIT
+aug-cc-pwCV5Z-RIFIT                    RI Fitting basis for use with aug-cc-pwCV5Z
+aug-cc-pwCVDZ                          DZP     Double Zeta + Polarization + Tight Core + Diffuse
+aug-cc-pwCVDZ-DK3                      aug-cc-pwCVDZ-DK3
+aug-cc-pwCVDZ-PP                       aug-cc-pwCVDZ-PP
+aug-cc-pwCVDZ-PP-OPTRI                 aug-cc-pwCVDZ-PP-OPTRI
+aug-cc-pwCVDZ-PP-RIFIT                 aug-cc-pwCVDZ-PP-RIFIT
+aug-cc-pwCVDZ-RIFIT                    RI Fitting basis for use with aug-cc-pwCVDZ
+aug-cc-pwCVDZ-X2C                      aug-cc-pwCVDZ-X2C
+aug-cc-pwCVQZ                          QZ3P    Quadruple Zeta + Polarization + Tight Core + diffuse
+aug-cc-pwCVQZ-DK                       VQZPD   All-electron Douglas-Kroll Core-Valence Quadruple Zeta + Polarization
+aug-cc-pwCVQZ-DK3                      aug-cc-pwCVQZ-DK3
+aug-cc-pwCVQZ-PP                       aug-cc-pwCVQZ-PP
+aug-cc-pwCVQZ-PP-OPTRI                 aug-cc-pwCVQZ-PP-OPTRI
+aug-cc-pwCVQZ-PP-RIFIT                 aug-cc-pwCVQZ-PP-RIFIT
+aug-cc-pwCVQZ-RIFIT                    RI Fitting basis for use with aug-cc-pwCVQZ
+aug-cc-pwCVQZ-X2C                      aug-cc-pwCVQZ-X2C
+aug-cc-pwCVTZ                          TZ2P    Triple Zeta + Polarization + Tight Core + Diffuse
+aug-cc-pwCVTZ-DK                       VTZ2P   All-electron Douglas-Kroll Core-Valence Triple Zeta + Polarization
+aug-cc-pwCVTZ-DK3                      aug-cc-pwCVTZ-DK3
+aug-cc-pwCVTZ-PP                       aug-cc-pwCVTZ-PP
+aug-cc-pwCVTZ-PP-OPTRI                 aug-cc-pwCVTZ-PP-OPTRI
+aug-cc-pwCVTZ-PP-RIFIT                 aug-cc-pwCVTZ-PP-RIFIT
+aug-cc-pwCVTZ-RIFIT                    RI Fitting basis for use with aug-cc-pwCVTZ
+aug-cc-pwCVTZ-X2C                      aug-cc-pwCVTZ-X2C
+aug-ccX-5Z                             Augmented basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+aug-ccX-DZ                             Augmented basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+aug-ccX-QZ                             Augmented basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+aug-ccX-TZ                             Augmented basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+aug-mcc-pV5Z                           aug-mcc-pV5Z
+aug-mcc-pV6Z                           aug-mcc-pV6Z
+aug-mcc-pV7Z                           aug-mcc-pV7Z
+aug-mcc-pV8Z                           aug-mcc-pV8Z
+aug-mcc-pVQZ                           aug-mcc-pVQZ
+aug-mcc-pVTZ                           aug-mcc-pVTZ
+aug-pc-0                               aug-pc-0
+aug-pc-1                               aug-pc-1
+aug-pc-2                               aug-pc-2
+aug-pc-3                               aug-pc-3
+aug-pc-4                               aug-pc-4
+aug-pcH-1                              aug-pcH-1
+aug-pcH-2                              aug-pcH-2
+aug-pcH-3                              aug-pcH-3
+aug-pcH-4                              aug-pcH-4
+aug-pcJ-0                              Contracted version of the aug-pcJ-0 basis
+aug-pcJ-0_2006                         aug-pcJ-0_2006
+aug-pcJ-1                              Contracted version of the aug-pcJ-1 basis
+aug-pcJ-1_2006                         aug-pcJ-1_2006
+aug-pcJ-2                              Contracted version of the aug-pcJ-2 basis
+aug-pcJ-2_2006                         aug-pcJ-2_2006
+aug-pcJ-3                              Contracted version of the aug-pcJ-3 basis
+aug-pcJ-3_2006                         aug-pcJ-3_2006
+aug-pcJ-4                              Contracted version of the aug-pcJ-4 basis
+aug-pcJ-4_2006                         aug-pcJ-4_2006
+aug-pcS-0                              aug-pcS-0
+aug-pcS-1                              aug-pcS-1
+aug-pcS-2                              aug-pcS-2
+aug-pcS-3                              aug-pcS-3
+aug-pcS-4                              aug-pcS-4
+aug-pcseg-0                            Segmented contracted version of the aug-pc-0 basis
+aug-pcseg-1                            Segmented contracted version of the aug-pc-1 basis
+aug-pcseg-2                            Segmented contracted version of the aug-pc-2 basis
+aug-pcseg-3                            Segmented contracted version of the aug-pc-3 basis
+aug-pcseg-4                            Segmented contracted version of the aug-pc-4 basis
+aug-pcSseg-0                           Segmented contracted version of the aug-pcS-0 basis
+aug-pcSseg-1                           Segmented contracted version of the aug-pcS-1 basis
+aug-pcSseg-2                           Segmented contracted version of the aug-pcS-2 basis
+aug-pcSseg-3                           Segmented contracted version of the aug-pcS-3 basis
+aug-pcSseg-4                           Segmented contracted version of the aug-pcS-4 basis
+aug-pcX-1                              Jensen aug-pcX basis set (containing diffuse functions) optimized for core-spectroscopy
+aug-pcX-2                              Jensen aug-pcX basis set (containing diffuse functions) optimized for core-spectroscopy
+aug-pcX-3                              Jensen aug-pcX basis set (containing diffuse functions) optimized for core-spectroscopy
+aug-pcX-4                              Jensen aug-pcX basis set (containing diffuse functions) optimized for core-spectroscopy
+aug-pV7Z                               V7Z6P   Valence Septuple Zeta + Polarization on All Atoms
+aug-seg-cc-pV5Z-PP                     aug-seg-cc-pV5Z-PP
+aug-seg-cc-pVDZ-PP                     aug-seg-cc-pVDZ-PP
+aug-seg-cc-pVQZ-PP                     aug-seg-cc-pVQZ-PP
+aug-seg-cc-pVTZ-PP                     aug-seg-cc-pVTZ-PP
+aug-seg-cc-pwCV5Z-PP                   aug-seg-cc-pwCV5Z-PP
+aug-seg-cc-pwCVDZ-PP                   aug-seg-cc-pwCVDZ-PP
+aug-seg-cc-pwCVQZ-PP                   aug-seg-cc-pwCVQZ-PP
+aug-seg-cc-pwCVTZ-PP                   aug-seg-cc-pwCVTZ-PP
+binning 641                            Binning/Curtiss 641
+binning 641(d)                         Binning/Curtiss 641 + d polarization
+binning 641(df)                        Binning/Curtiss 641 + df polarization
+binning 641+                           Binning/Curtiss 641 + diffuse
+binning 641+(d)                        Binning/Curtiss 641 + d polarization + diffuse
+binning 641+(df)                       Binning/Curtiss 641 + df polarization + diffuse
+binning 962                            Binning/Curtiss 962
+binning 962(d)                         Binning/Curtiss 962 + d polarization
+binning 962(df)                        Binning/Curtiss 962 + df polarization
+binning 962+                           Binning/Curtiss 962 + diffuse
+binning 962+(d)                        Binning/Curtiss 962 + d polarization + diffuse
+binning 962+(df)                       Binning/Curtiss 962 + df polarization + diffuse
+CADPAC-TZ2P                            TZ2P orbital basis from CADPAC
+cc-pCV5Z                               cc-pCV5Z
+cc-pCVDZ                               DZP Double Zeta + Polarization + Tight Core
+cc-pCVDZ-DK                            VDZP Douglas-Kroll Valence Double Zeta + Polarization + Tight core
+cc-pCVDZ-F12                           cc-pCVDZ-F12
+cc-pCVDZ-F12-OPTRI                     cc-pCVDZ-F12-OPTRI
+cc-pCVDZ-F12-RIFIT                     cc-pCVDZ-F12 RI Fitting
+cc-pCVQZ                               QZ3P    Quadruple Zeta + Polarization + Tight Core
+cc-pCVQZ-DK                            QZ3PD Douglas-Kroll Valence Double Zeta + Polarization + Tight core
+cc-pCVQZ-F12                           cc-pCVQZ-F12
+cc-pCVQZ-F12-OPTRI                     cc-pCVQZ-F12-OPTRI
+cc-pCVQZ-F12-RIFIT                     cc-pCVQZ-F12 RI Fitting
+cc-pCVTZ                               TZ2P    Triple Zeta + Polarization + Tight Core
+cc-pCVTZ-DK                            Triple-Zeta Douglas-Kroll Valence Double Zeta + Polarization + Tight core
+cc-pCVTZ-F12                           cc-pCVTZ-F12
+cc-pCVTZ-F12-OPTRI                     cc-pCVTZ-F12-OPTRI
+cc-pCVTZ-F12-RIFIT                     cc-pCVTZ-F12 RI Fitting
+cc-pV(5+d)Z                            cc-pV(5+d)Z
+cc-pV(D+d)Z                            cc-pV(D+d)Z
+cc-pV(Q+d)Z                            cc-pV(Q+d)Z
+cc-pV(T+d)Z                            cc-pV(T+d)Z
+cc-pV5Z                                cc-pV5Z
+cc-pV5Z(fi/sf/fw)                      V5Z4P   Relativistic Valence Quintuple Zeta + Polarization
+cc-pV5Z(fi/sf/lc)                      V5Z4P   Relativistic Valence Quintuple Zeta + Polarization
+cc-pV5Z(fi/sf/sc)                      V5Z4P   Relativistic Valence Quintuple Zeta + Polarization
+cc-pV5Z(pt/sf/fw)                      V5Z4P   Relativistic Valence Quintuple Zeta + Polarization
+cc-pV5Z(pt/sf/lc)                      V5Z4P   Relativistic Valence Quintuple Zeta + Polarization
+cc-pV5Z(pt/sf/sc)                      V5Z4P   Relativistic Valence Quintuple Zeta + Polarization
+cc-pV5Z-DK                             V5Z4P Douglas-Kroll Valence Quintuple Zeta + Polarization
+cc-pV5Z-F12                            cc-pV5Z-F12
+cc-pV5Z-F12(rev2)                      cc-pV5Z-F12(rev2)
+cc-pV5Z-JKFIT                          JK Fitting basis for use with cc-pV5Z
+cc-pV5Z-PP                             cc-pV5Z-PP
+cc-pV5Z-PP-RIFIT                       cc-pV5Z-PP-RIFIT
+cc-pV5Z-RIFIT                          RI Fitting basis for use with cc-pV5Z
+cc-pV6Z                                cc-pV6Z
+cc-pV6Z-RIFIT                          RI Fitting basis for use with cc-pV6Z
+cc-pV8Z                                cc-pV8Z
+cc-pV9Z                                V7Z6P   Valence Octuple Zeta + Polarization on All Atoms
+cc-pVDZ                                cc-pVDZ
+cc-pVDZ(fi/sf/fw)                      VDZP    Relativistic Valence Double Zeta + Polarization
+cc-pVDZ(fi/sf/lc)                      VDZP    Relativistic Valence Double Zeta + Polarization
+cc-pVDZ(fi/sf/sc)                      VDZP    Relativistic Valence Double Zeta + Polarization
+cc-pVDZ(pt/sf/fw)                      VDZP    Relativistic Valence Double Zeta + Polarization
+cc-pVDZ(pt/sf/lc)                      VDZP    Relativistic Valence Double Zeta + Polarization
+cc-pVDZ(pt/sf/sc)                      VDZP    Relativistic Valence Double Zeta + Polarization
+cc-pVDZ(seg-opt)                       VDZP    Valence Double Zeta + Polarization on All Atoms
+cc-pVDZ-DK                             VDZP Douglas-Kroll Valence Double Zeta + Polarization
+cc-pVDZ-DK3                            cc-pVDZ-DK3
+cc-pVDZ-F12                            VDZ for explicitly correlated F12 variants of wavefunction methods
+cc-pVDZ-F12(rev2)                      cc-pVDZ-F12(rev2)
+cc-pVDZ-F12-OPTRI                      cc-pVDZ-F12-OPTRI
+cc-pVDZ-F12-OPTRI+                     cc-pVDZ-F12-OPTRI+
+cc-pVDZ-PP                             cc-pVDZ-PP
+cc-pVDZ-PP-RIFIT                       cc-pVDZ-PP-RIFIT
+cc-pVDZ-RIFIT                          RI Fitting basis for use with cc-pVDZ
+cc-pVDZ-X2C                            cc-pVDZ-X2C
+cc-pVQZ                                cc-pVQZ
+cc-pVQZ(fi/sf/fw)                      VQZ3P   Relativistic Valence Quadruple Zeta + Polarization
+cc-pVQZ(fi/sf/lc)                      VQZ3P   Relativistic Valence Quadruple Zeta + Polarization
+cc-pVQZ(fi/sf/sc)                      VQZ3P   Relativistic Valence Quadruple Zeta + Polarization
+cc-pVQZ(pt/sf/fw)                      VQZ3P   Relativistic Valence Quadruple Zeta + Polarization
+cc-pVQZ(pt/sf/lc)                      VQZ3P   Relativistic Valence Quadruple Zeta + Polarization
+cc-pVQZ(pt/sf/sc)                      VQZ3P   Relativistic Valence Quadruple Zeta + Polarization
+cc-pVQZ(seg-opt)                       VQZ3P   Valence Quadruple Zeta + Polarization on All Atoms
+cc-pVQZ-DK                             VQZ3P Douglas-Kroll Valence Quadruple Zeta + Polarization
+cc-pVQZ-DK3                            cc-pVQZ-DK3
+cc-pVQZ-F12                            VQZ for explicitly correlated F12 variants of wavefunction methods
+cc-pVQZ-F12(rev2)                      cc-pVQZ-F12(rev2)
+cc-pVQZ-F12-OPTRI                      cc-pVQZ-F12-OPTRI
+cc-pVQZ-F12-OPTRI+                     cc-pVQZ-F12-OPTRI+
+cc-pVQZ-JKFIT                          JK Fitting basis for use with cc-pVQZ
+cc-pVQZ-PP                             cc-pVQZ-PP
+cc-pVQZ-PP-RIFIT                       cc-pVQZ-PP-RIFIT
+cc-pVQZ-RIFIT                          RI Fitting basis for use with cc-pVQZ
+cc-pVQZ-X2C                            cc-pVQZ-X2C
+cc-pVTZ                                cc-pVTZ
+cc-pVTZ(fi/sf/fw)                      VTZ2P   Relativistic Valence Triple Zeta + Polarization
+cc-pVTZ(fi/sf/lc)                      VTZ2P   Relativistic Valence Triple Zeta + Polarization
+cc-pVTZ(fi/sf/sc)                      VTZ2P   Relativistic Valence Triple Zeta + Polarization
+cc-pVTZ(pt/sf/fw)                      VTZ2P   Relativistic Valence Triple Zeta + Polarization
+cc-pVTZ(pt/sf/lc)                      VTZ2P   Relativistic Valence Triple Zeta + Polarization
+cc-pVTZ(pt/sf/sc)                      VTZ2P   Relativistic Valence Triple Zeta + Polarization
+cc-pVTZ(seg-opt)                       VTZ2P   Valence Triple Zeta + Polarization on All Atoms
+cc-pVTZ-DK                             VTZ2P Douglas-Kroll Valence Triple Zeta + Polarization
+cc-pVTZ-DK3                            cc-pVTZ-DK3
+cc-pVTZ-F12                            VTZ for explicitly correlated F12 variants of wavefunction methods
+cc-pVTZ-F12(rev2)                      cc-pVTZ-F12(rev2)
+cc-pVTZ-F12-OPTRI                      cc-pVTZ-F12-OPTRI
+cc-pVTZ-F12-OPTRI+                     cc-pVTZ-F12-OPTRI+
+cc-pVTZ-JKFIT                          JK Fitting basis for use with cc-pVTZ
+cc-pVTZ-PP                             cc-pVTZ-PP
+cc-pVTZ-PP-RIFIT                       cc-pVTZ-PP-RIFIT
+cc-pVTZ-RIFIT                          RI Fitting basis for use with cc-pVTZ
+cc-pVTZ-X2C                            cc-pVTZ-X2C
+cc-pwCV5Z                              5Z4P    Quintuple Zeta + Polarization + Tight Core
+cc-pwCV5Z-DK                           cc-pwCV5Z-DK
+cc-pwCV5Z-PP                           cc-pwCV5Z-PP
+cc-pwCV5Z-PP-RIFIT                     cc-pwCV5Z-PP-RIFIT
+cc-pwCV5Z-RIFIT                        RI Fitting basis for use with cc-pwCV5Z
+cc-pwCVDZ                              DZP     Double Zeta + Polarization + Tight Core
+cc-pwCVDZ-DK3                          cc-pwCVDZ-DK3
+cc-pwCVDZ-PP                           cc-pwCVDZ-PP
+cc-pwCVDZ-PP-RIFIT                     cc-pwCVDZ-PP-RIFIT
+cc-pwCVDZ-RIFIT                        RI Fitting basis for use with cc-pwCVDZ
+cc-pwCVDZ-X2C                          cc-pwCVDZ-X2C
+cc-pwCVQZ                              QZ3P    Quadruple Zeta + Polarization + Tight Core
+cc-pwCVQZ-DK                           QZ3P    All-electron Douglas-Kroll Core-Valence Quadruple Zeta + Polarization
+cc-pwCVQZ-DK3                          cc-pwCVQZ-DK3
+cc-pwCVQZ-PP                           cc-pwCVQZ-PP
+cc-pwCVQZ-PP-RIFIT                     cc-pwCVQZ-PP-RIFIT
+cc-pwCVQZ-RIFIT                        RI Fitting basis for use with cc-pwCVQZ
+cc-pwCVQZ-X2C                          cc-pwCVQZ-X2C
+cc-pwCVTZ                              TZ2P    Triple Zeta + Polarization + Tight Core
+cc-pwCVTZ-DK                           cc-pwCVTZ-DK
+cc-pwCVTZ-DK3                          cc-pwCVTZ-DK3
+cc-pwCVTZ-PP                           cc-pwCVTZ-PP
+cc-pwCVTZ-PP-RIFIT                     cc-pwCVTZ-PP-RIFIT
+cc-pwCVTZ-RIFIT                        RI Fitting basis for use with cc-pwCVTZ
+cc-pwCVTZ-X2C                          cc-pwCVTZ-X2C
+ccemd-2                                ccemd-2: Correlation-consistent electron momentum density
+ccemd-3                                ccemd-3: Correlation-consistent electron momentum density
+ccJ-pV5Z                               ccJ-pV5Z
+ccJ-pVDZ                               ccJ-pVDZ
+ccJ-pVQZ                               ccJ-pVQZ
+ccJ-pVTZ                               ccJ-pVTZ
+ccX-5Z                                 Basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+ccX-DZ                                 Basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+ccX-QZ                                 Basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+ccX-TZ                                 Basis set for calculation of core excitations by the correlated wave function linear response and equation-of-motion methods
+coemd-2                                coemd-2: completness-optimized for electron momentum density
+coemd-3                                coemd-3: completness-optimized for electron momentum density
+coemd-4                                coemd-4: completness-optimized for electron momentum density
+coemd-ref                              coemd-ref: completness-optimized for electron momentum density
+Cologne DKH2                           Cologne DKH2
+CRENBL                                 CRENBL designed for use with small core potentials
+CRENBL ECP                             CRENBL ECP (Large ECP orbital basis for use with small core potentials)
+CRENBS                                 CRENBS designed for use with large core potentials
+CRENBS ECP                             CRENBS ECP (Small ECP orbital basis for use with relativistic, large core ECPs)
+d-aug-cc-pV5Z                          V5Z4PD  Valence Quintuple Zeta + Polarization + Diffuse
+d-aug-cc-pV6Z                          V6Z5P   Valence Sextuple Zeta + Polarization + Diffuse
+d-aug-cc-pVDZ                          VDZ2PD  Valence Double Zeta + Polarization + Diffuse
+d-aug-cc-pVQZ                          VQZ3PD  Valence Quadruple Zeta + Polarization + Diffuse
+d-aug-cc-pVTZ                          VTZ2PD  Valence Triple Zeta + Polarization + Diffuse
+def2-ECP                               ECP for use with Ahlrichs def2 basis sets
+def2-mTZVP                             def2-mTZVP basis for B97-3c method
+def2-mTZVPP                            def2-mTZVPP basis for r2SCAN-3c method
+def2-mTZVPP-RIJ                        def2-mTZVPP RI-J basis for r2SCAN-3c method
+def2-QZVP                              def2-QZVP
+def2-QZVP-RIFIT                        RIMP2 auxiliary basis for def2-QZVPP
+def2-QZVPD                             def2-QZVPD
+def2-QZVPP                             def2-QZVPP
+def2-QZVPP-RIFIT                       RIMP2 auxiliary basis for def2-QZVPP
+def2-QZVPPD                            def2-QZVPPD
+def2-QZVPPD-RIFIT                      def2-QZVPPD-RIFIT
+def2-SV(P)                             def2-SV(P)
+def2-SV(P)-JKFIT                       Coulomb/Exchange fitting auxiliary basis for def2 basis sets
+def2-SV(P)-RIFIT                       RIMP2 auxiliary basis for def2-SV(P)
+def2-SVP                               def2-SVP
+def2-SVP-RIFIT                         def2-SVP-RIFIT
+def2-SVPD                              def2-SVPD
+def2-SVPD-RIFIT                        def2-SVPD-RIFIT
+def2-TZVP                              def2-TZVP
+def2-TZVP-RIFIT                        RIMP2 auxiliary basis for def2-TZVP
+def2-TZVPD                             def2-TZVPD
+def2-TZVPD-RIFIT                       def2-TZVPD-RIFIT
+def2-TZVPP                             def2-TZVPP
+def2-TZVPP-RIFIT                       def2-TZVPP-RIFIT
+def2-TZVPPD                            def2-TZVPPD
+def2-TZVPPD-RIFIT                      def2-TZVPPD-RIFIT
+def2-universal-JFIT                    Coulomb fitting auxiliary basis for def2 basis sets
+def2-universal-JKFIT                   Coulomb/Exchange fitting auxiliary basis for def2 basis sets
+deMon2k-DZVP-GGA                       DZVP-GGA basis of the deMon2k code
+DFO+-NRLMOL                            DFO+ basis from NRLMOL
+DFO-1                                  Optimized gaussian basis set for Density-functional calculations
+DFO-1-BHS                              Optimized gaussian basis set for Density-functional calculations (requiring pseudopotential)
+DFO-2                                  Optimized gaussian basis set for Density-functional calculations
+DFO-NRLMOL                             DFO basis from NRLMOL
+dgauss-a1-dftjfit                      DGauss A1 DFT Columb Fitting
+dgauss-a1-dftxfit                      DGauss A1 DFT Exchange Fitting
+dgauss-a2-dftjfit                      DGauss A2 DFT Columb Fitting
+dgauss-a2-dftxfit                      DGauss A2 DFT Exchange Fitting
+dgauss-dzvp                            VDZP Valence Double Zeta + Polarization designed for DFT
+dgauss-dzvp2                           VDZP Valence Double Zeta + Polarization designed for DFT
+dgauss-tzvp                            VTZP Valence Triple Zeta + Polarization designed for DFT
+dhf-ECP                                dhf-ECP
+dhf-QZVP                               dhf-QZVP
+dhf-QZVPP                              dhf-QZVPP
+dhf-SV(P)                              dhf-SV(P)
+dhf-SVP                                dhf-SVP
+dhf-TZVP                               dhf-TZVP
+dhf-TZVPP                              dhf-TZVPP
+dyall-aae2z                            Dyall's augmented all-electron 2-zeta primitive basis set
+dyall-aae3z                            Dyall's augmented all-electron 3-zeta primitive basis set
+dyall-aae4z                            Dyall's augmented all-electron 4-zeta primitive basis set
+dyall-acv2z                            Dyall's augmented core-valence 2-zeta primitive basis set
+dyall-acv3z                            Dyall's augmented core-valence 3-zeta primitive basis set
+dyall-acv4z                            Dyall's augmented core-valence 4-zeta primitive basis set
+dyall-ae2z                             Dyall's all-electron 2-zeta primitive basis set
+dyall-ae3z                             Dyall's all-electron 3-zeta primitive basis set
+dyall-ae4z                             Dyall's all-electron 4-zeta primitive basis set
+dyall-av2z                             Dyall's augmented valence 2-zeta primitive basis set
+dyall-av3z                             Dyall's augmented valence 3-zeta primitive basis set
+dyall-av4z                             Dyall's augmented valence 4-zeta primitive basis set
+dyall-cv2z                             Dyall's core-valence 2-zeta primitive basis set
+dyall-cv3z                             Dyall's core-valence 3-zeta primitive basis set
+dyall-cv4z                             Dyall's core-valence 4-zeta primitive basis set
+dyall-v2z                              Dyall's valence 2-zeta primitive basis set
+dyall-v3z                              Dyall's valence 3-zeta primitive basis set
+dyall-v4z                              Dyall's valence 4-zeta primitive basis set
+DZ (Dunning-Hay)                       DZ      Double Zeta: 2 Functions/AO
+DZ + Double Rydberg (Dunning-Hay)      DZ2R    Double Zeta + Double Rydberg Functions
+DZ + Rydberg (Dunning-Hay)             DZ1R    Double Zeta: 2 Functions/AO
+DZP (Dunning-Hay)                      DZP     Double Zeta + Polarization on All Atoms
+DZP + Diffuse (Dunning-Hay)            DZPD    Double Zeta + Polarization + Diffuse
+DZP + Rydberg (Dunning-Hay)            DZP1R   Double Zeta + Polarization on All Atoms
+epc-10s10p10d10f                       Even-tempered 8s8p8d protonic basis
+epc-8s8p8d                             Even-tempered 8s8p8d protonic basis
+FANO-5Z                                Frozen Atomic Natural Orbital - 5-Zeta
+FANO-6Z                                Frozen Atomic Natural Orbital - 6-Zeta
+FANO-DZ                                Frozen Atomic Natural Orbital - Double Zeta
+FANO-QZ                                Frozen Atomic Natural Orbital - Quadruple Zeta
+FANO-TZ                                Frozen Atomic Natural Orbital - Triple Zeta
+Grimme vDZP                            Small basis set used in wB97X-3c method
+HGBS-5                                 Hydrogenic Gaussian basis set formed at tolerance 10^{-5} without polarization
+HGBS-7                                 Hydrogenic Gaussian basis set formed at tolerance 10^{-7} without polarization
+HGBS-9                                 Hydrogenic Gaussian basis set formed at tolerance 10^{-9} without polarization
+HGBSP1-5                               Hydrogenic Gaussian basis set formed at tolerance 10^{-5} with 1 polarization shell
+HGBSP1-7                               Hydrogenic Gaussian basis set formed at tolerance 10^{-7} with 1 polarization shell
+HGBSP1-9                               Hydrogenic Gaussian basis set formed at tolerance 10^{-9} with 1 polarization shell
+HGBSP2-5                               Hydrogenic Gaussian basis set formed at tolerance 10^{-5} with 2 polarization shells
+HGBSP2-7                               Hydrogenic Gaussian basis set formed at tolerance 10^{-7} with 2 polarization shells
+HGBSP2-9                               Hydrogenic Gaussian basis set formed at tolerance 10^{-9} with 2 polarization shells
+HGBSP3-5                               Hydrogenic Gaussian basis set formed at tolerance 10^{-5} with 3 polarization shells
+HGBSP3-7                               Hydrogenic Gaussian basis set formed at tolerance 10^{-7} with 3 polarization shells
+HGBSP3-9                               Hydrogenic Gaussian basis set formed at tolerance 10^{-9} with 3 polarization shells
+IGLO-II                                VDZP Valence Double Zeta + Polarization on All Atoms
+IGLO-III                               VTZP Valence Triple Zeta + Polarization on All Atoms
+jgauss-dzp                             dzp basis of Schafer/Horn/Ahlrichs/Gauss
+jgauss-qz2p                            qz2p basis of Schafer/Horn/Ahlrichs/Gauss
+jgauss-qzp                             qzp basis of Schafer/Horn/Ahlrichs/Gauss
+jgauss-tzp1                            tzp1 basis of Schafer/Horn/Ahlrichs/Gauss
+jgauss-tzp2                            tzp2 basis of Schafer/Horn/Ahlrichs/Gauss
+jorge-5ZP                              5ZP: 5 zeta valence quality plus polarization
+jorge-5ZP-DKH                          5ZP-DKH: 5 zeta valence quality plus polarization (DKH)
+jorge-6ZP                              6ZP: 6 zeta valence quality plus polarization
+jorge-6ZP-DKH                          6ZP-DKH: 6 zeta valence quality plus polarization (DKH)
+jorge-A5ZP                             A5ZP: Augmented 5 zeta valence quality plus polarization
+jorge-ADZP                             ADZP: Augmented double zeta valence quality plus polarization
+jorge-AQZP                             AQZP: Augmented quadruple zeta valence quality plus polarization
+jorge-ATZP                             ATZP: Augmented triple zeta valence quality plus polarization
+jorge-ATZP-ZORA                        ATZP-ZORA, augmented all-electron triple-zeta basis for calculations with the ZORA approach
+jorge-DZP                              DZP: Double zeta valence quality plus polarization
+jorge-DZP-DKH                          DZP-DKH: Double zeta valence quality plus polarization (DKH)
+jorge-DZP-ZORA                         DZP-ZORA: All-electron double zeta valence quality plus polarization functions (ZORA)
+jorge-QZP                              QZP: Quadruple zeta valence quality plus polarization
+jorge-QZP-DKH                          QZP-DKH: Quadruple zeta valence quality plus polarization (DKH)
+jorge-TZP                              TZP: Triple zeta valence quality plus polarization
+jorge-TZP-DKH                          TZP-DKH: Triple zeta valence quality plus polarization (DKH)
+jorge-TZP-ZORA                         TZP-ZORA, all-electron triple-zeta basis for calculations with the ZORA approach
+jul-cc-pV(D+d)Z                        jul-cc-pV(D+d)Z basis of Papajak/Truhlar
+jul-cc-pV(Q+d)Z                        jul-cc-pV(Q+d)Z basis of Papajak/Truhlar
+jul-cc-pV(T+d)Z                        jul-cc-pV(T+d)Z basis of Papajak/Truhlar
+jun-cc-pV(D+d)Z                        jun-cc-pV(D+d)Z basis of Papajak/Truhlar
+jun-cc-pV(Q+d)Z                        jun-cc-pV(Q+d)Z basis of Papajak/Truhlar
+jun-cc-pV(T+d)Z                        jun-cc-pV(T+d)Z basis of Papajak/Truhlar
+Koga unpolarized                       Non-relativistic unpolarized basis sets for atomic calculations, designed for use in uncontracted form
+LANL08                                 LANL08(uncontracted)
+LANL08(d)                              LANL08 + polarization and diffuse
+LANL08(f)                              LANL08(f)
+LANL08+                                LANL08+ diffuse
+LANL2DZ                                LANL2DZ
+LANL2DZ ECP                            LANL2DZ ECP
+LANL2DZdp                              DZP  Double Zeta + Polarization + Diffuse ECP
+LANL2TZ                                LANL2TZ
+LANL2TZ(f)                             LANL2TZ(f)
+LANL2TZ+                               LANL2TZ+ with diffuse d functions
+m6-31G                                 m6-31G
+m6-31G*                                m6-31G*
+maug-cc-pV(D+d)Z                       jun-cc-pV(D+d)Z basis of Papajak/Truhlar
+maug-cc-pV(Q+d)Z                       apr-cc-pV(Q+d)Z basis of Papajak/Truhlar
+maug-cc-pV(T+d)Z                       may-cc-pV(T+d)Z basis of Papajak/Truhlar
+may-cc-pV(Q+d)Z                        may-cc-pV(Q+d)Z basis of Papajak/Truhlar
+may-cc-pV(T+d)Z                        may-cc-pV(T+d)Z basis of Papajak/Truhlar
+MIDI                                   Huzinaga MIDI
+MIDI!                                  VDZP Valence Double Zeta + Polarization on some atoms
+MIDIX                                  VDZP Valence Double Zeta + Polarization on some atoms
+MINI                                   Huzinaga MINI
+modified-LANL2DZ                       Couty-Hall Modified LANL2DZ Basis Sets for Transition Metals
+NASA Ames ANO                          VQZ3P   Valence Quadruple Zeta + Polarization on All Atoms
+NASA Ames ANO2                         VQZ3P   Valence Quadruple Zeta + Polarization on All Atoms
+NASA Ames cc-pCV5Z                     NASA Ames cc-pCV5Z
+NASA Ames cc-pCVQZ                     NASA Ames cc-pCVQZ
+NASA Ames cc-pCVTZ                     NASA Ames cc-pCVTZ
+NASA Ames cc-pV5Z                      NASA Ames cc-pV5Z
+NASA Ames cc-pVQZ                      NASA Ames cc-pVQZ
+NASA Ames cc-pVTZ                      NASA Ames cc-pVTZ
+NLO-V                                  NLO-V (V=1-3) used to calculate linear and mainly nonlinear optical properties for molecules
+NMR-DKH (TZ2P)                         NMR-DKH (TZ2P) triple-zeta doubly-polarized
+ORP                                    ORP (Optical Rotation Prediction) Basis Set
+Partridge Uncontracted 1               Partridge Uncontracted 1
+Partridge Uncontracted 2               Partridge Uncontracted 2
+Partridge Uncontracted 3               Partridge Uncontracted 3
+Partridge Uncontracted 4               Partridge Uncontracted 4
+PAW-L05                                PAW-L05 basis set for use with PAW method
+PAW-L1                                 PAW-L1 basis set for use with PAW method
+PAW-L1-contracted                      PAW-L1-contracted basis set for use with PAW method
+PAW-L2                                 PAW-L2 basis set for use with PAW method
+PAW-L2-contracted                      PAW-L2-contracted basis set for use with PAW method
+PB4-D                                  PB4-D protonic basis
+PB4-F1                                 PB4-F1 protonic basis
+PB4-F2                                 PB4-F2 protonic basis
+PB5-D                                  PB5-D protonic basis
+PB5-F                                  PB5-F protonic basis
+PB5-G                                  PB5-G protonic basis
+PB6-D                                  PB6-D protonic basis
+PB6-F                                  PB6-F protonic basis
+PB6-G                                  PB6-G protonic basis
+PB6-H                                  PB6-H protonic basis
+pc-0                                   pc-0(unpolarized)
+pc-1                                   pc-1
+pc-2                                   pc-2
+pc-3                                   pc-3
+pc-4                                   pc-4
+pcemd-2                                pcemd-2: polarization-consistent electron momentum density
+pcemd-3                                pcemd-3: polarization-consistent electron momentum density
+pcemd-4                                pcemd-4: polarization-consistent electron momentum density
+pcH-1                                  pcH-1
+pcH-2                                  pcH-2
+pcH-3                                  pcH-3
+pcH-4                                  pcH-4
+pcJ-0                                  Contracted version of the pcJ-0 basis
+pcJ-0_2006                             pcJ-0_2006
+pcJ-1                                  Contracted version of the pcJ-1 basis
+pcJ-1_2006                             pcJ-1_2006
+pcJ-2                                  Contracted version of the pcJ-2 basis
+pcJ-2_2006                             pcJ-2_2006
+pcJ-3                                  Contracted version of the pcJ-3 basis
+pcJ-3_2006                             pcJ-3_2006
+pcJ-4                                  Contracted version of the pcJ-4 basis
+pcJ-4_2006                             pcJ-4_2006
+pcS-0                                  pcS-0
+pcS-1                                  pcS-1
+pcS-2                                  pcS-2
+pcS-3                                  pcS-3
+pcS-4                                  pcS-4
+pcseg-0                                Segmented contracted version of the pc-0 basis
+pcseg-1                                Segmented contracted version of the pc-1 basis
+pcseg-2                                Segmented contracted version of the pc-2 basis
+pcseg-3                                Segmented contracted version of the pc-3 basis
+pcseg-4                                Segmented contracted version of the pc-4 basis
+pcSseg-0                               Segmented contracted version of the pcS-0 basis
+pcSseg-1                               Segmented contracted version of the pcS-1 basis
+pcSseg-2                               Segmented contracted version of the pcS-2 basis
+pcSseg-3                               Segmented contracted version of the pcS-3 basis
+pcSseg-4                               Segmented contracted version of the pcS-4 basis
+pcX-1                                  Jensen pcX basis set optimized for core-spectroscopy
+pcX-2                                  Jensen pcX basis set optimized for core-spectroscopy
+pcX-3                                  Jensen pcX basis set optimized for core-spectroscopy
+pcX-4                                  Jensen pcX basis set optimized for core-spectroscopy
+pecJ-1                                 pecJ-1
+pecJ-2                                 pecJ-2
+pob-DZVP-rev2                          pob-DZVP-rev2
+pob-TZVP                               pob-TZVP
+pob-TZVP-rev2                          pob-TZVP-rev2
+pSBKJC                                 Electrically polarized valence basis sets for the SBKJC effective core potential developed for calculations of dynamic polarizabilities and Raman intensities
+PsX-DZ                                 Even-tempered PsX-DZ positronic basis
+PsX-QZ                                 Even-tempered PsX-QZ positronic basis
+PsX-TZ                                 Even-tempered PsX-TZ positronic basis
+Pt - mDZP                              Pt - mDZP
+pV6Z                                   V6Z5P   Valence Sextuple Zeta + Polarization on All Atoms
+pV7Z                                   pV7Z
+Roos Augmented Double Zeta ANO         Roos Augmented Double Zeta ANO
+Roos Augmented Triple Zeta ANO         Roos Augmented Triple Zeta ANO
+s3-21G                                 s3-21G
+s3-21G*                                s3-21G*
+s6-31G                                 s6-31G
+s6-31G*                                s6-31G*
+Sadlej pVTZ                            Sadlej polarized-valence-triple-zeta
+Sadlej+                                Sadlej+
+sap_grasp_large                        sap_grasp_large
+sap_grasp_small                        sap_grasp_small
+sap_helfem_large                       sap_helfem_large
+sap_helfem_small                       sap_helfem_small
+Sapporo-DKH3-DZP                       Sapporo-DKH3-DZP [deprecated]
+Sapporo-DKH3-DZP-2012                  
+Sapporo-DKH3-DZP-2012-diffuse          
+Sapporo-DKH3-DZP-diffuse               Sapporo-DKH3-DZP-diffuse [deprecated]
+Sapporo-DKH3-QZP                       Sapporo-DKH3-QZP [deprecated]
+Sapporo-DKH3-QZP-2012                  
+Sapporo-DKH3-QZP-2012-diffuse          
+Sapporo-DKH3-QZP-diffuse               Sapporo-DKH3-QZP-diffuse [deprecated]
+Sapporo-DKH3-TZP                       Sapporo-DKH3-TZP [deprecated]
+Sapporo-DKH3-TZP-2012                  
+Sapporo-DKH3-TZP-2012-diffuse          
+Sapporo-DKH3-TZP-diffuse               Sapporo-DKH3-TZP-diffuse [deprecated]
+Sapporo-DZP                            Sapporo-DZP [deprecated]
+Sapporo-DZP-2012                       
+Sapporo-DZP-2012-diffuse               
+Sapporo-DZP-diffuse                    Sapporo-DZP-diffuse [deprecated]
+Sapporo-QZP                            Sapporo-QZP [deprecated]
+Sapporo-QZP-2012                       
+Sapporo-QZP-2012-diffuse               
+Sapporo-QZP-diffuse                    Sapporo-QZP-diffuse [deprecated]
+Sapporo-TZP                            Sapporo-TZP [deprecated]
+Sapporo-TZP-2012                       
+Sapporo-TZP-2012-diffuse               
+Sapporo-TZP-diffuse                    Sapporo-TZP-diffuse [deprecated]
+SARC-DKH2                              SARC-DKH2
+SARC-ZORA                              SARC-ZORA
+SARC2-QZV-DKH2                         SARC2-QZV-DKH2
+SARC2-QZV-DKH2-JKFIT                   JK fitting basis for use with SARC2-QZV-DKH2
+SARC2-QZV-ZORA                         SARC2-QZV-ZORA
+SARC2-QZV-ZORA-JKFIT                   JK fitting basis for use with SARC2-QZV-ZORA
+SARC2-QZVP-DKH2                        SARC2-QZVP-DKH2
+SARC2-QZVP-DKH2-JKFIT                  JK fitting basis for use with SARC2-QZVP-DKH2
+SARC2-QZVP-ZORA                        SARC2-QZVP-ZORA: Polarized Quadruple Z Valence
+SARC2-QZVP-ZORA-JKFIT                  JK fitting basis for use with SARC2-QZVP-ZORA
+saug-ano-pV5Z                          saug-ano-pV5Z
+saug-ano-pVDZ                          saug-ano-pVDZ
+saug-ano-pVQZ                          saug-ano-pVQZ
+saug-ano-pVTZ                          saug-ano-pVTZ
+SBKJC Polarized (p,2d) - LFK           SBKJC Polarized (p,2d) - LFK
+SBKJC-ECP                              SBKJC ECP
+SBKJC-VDZ                              VDZ Valence Double Zeta with ECP
+SBO4-DZ(d)-3G                          SBO4-DZ(d,p)-3G Double-zeta expansion of simplified box orbitals
+SBO4-DZ(d,p)-3G                        SBO4-DZ(d,p)-3G Double-zeta expansion of simplified box orbitals
+SBO4-SZ-3G                             SBO4-SZ-3G Single-zeta expansion of simplified box orbitals
+Scaled MINI                            Huzinaga Scaled MINI
+seg-cc-pV5Z-PP                         seg-cc-pV5Z-PP
+seg-cc-pVDZ-PP                         seg-cc-pVDZ-PP
+seg-cc-pVQZ-PP                         seg-cc-pVQZ-PP
+seg-cc-pVTZ-PP                         seg-cc-pVTZ-PP
+seg-cc-pwCV5Z-PP                       seg-cc-pwCV5Z-PP
+seg-cc-pwCVDZ-PP                       seg-cc-pwCVDZ-PP
+seg-cc-pwCVQZ-PP                       seg-cc-pwCVQZ-PP
+seg-cc-pwCVTZ-PP                       seg-cc-pwCVTZ-PP
+sigmaDZ                                sigmaDZ basis
+sigmaDZHF                              sigmaDZHF basis for Hellmann-Feynman forces
+sigmaQZ                                sigmaQZ basis
+sigmaSZHF                              sigmaSZHF basis for Hellmann-Feynman forces
+sigmaTZ                                sigmaTZ basis
+sigmaTZHF                              sigmaTZHF basis for Hellmann-Feynman forces
+STO-2G                                 STO-2G Minimal Basis (2 functions/AO)
+STO-3G                                 STO-3G Minimal Basis (3 functions/AO)
+STO-3G*                                MBP     Minimal Basis + Polarization on second row
+STO-4G                                 STO-4G Minimal Basis (4 functions/AO)
+STO-5G                                 STO-5G Minimal Basis (5 functions/AO)
+STO-6G                                 STO-6G Minimal Basis (6 functions/AO)
+Stuttgart RLC                          Stuttgart RLC ECP + Valence basis
+Stuttgart RLC ECP                      Stuttgart RLC ECP
+Stuttgart RSC 1997                     Stuttgart RSC 1997 ECP + Valence basis
+Stuttgart RSC 1997 ECP                 Stuttgart RSC 1997 ECP
+Stuttgart RSC ANO                      Stuttgart RSC 1997 + Quadruple Zeta Basis Set designed for an ECP
+Stuttgart RSC Segmented + ECP          Stuttgart RSC 1997 + Quadruple Zeta Basis Set designed for an ECP
+SV (Dunning-Hay)                       VDZ     Valence Double Zeta: 2 Funct.'s/Valence AO
+SV + Double Rydberg (Dunning-Hay)      VDZ2R   Valence Double Zeta + Double Rydberg Functions
+SV + Rydberg (Dunning-Hay)             VDZ1R   Valence Double Zeta + Diffuse Rydberg Functions
+SVP (Dunning-Hay)                      VDZP    Valence Double Zeta + Polarization on All Atoms
+SVP + Diffuse (Dunning-Hay)            VDZPD   Valence Double Zeta + Polarization + Diffuse
+SVP + Diffuse + Rydberg (Dunning-Hay)  VDZPD1R Valence Double Zeta + Polar. + Diffuse + Rydberg
+SVP + Rydberg (Dunning-Hay)            VDZP1R  Valence Double Zeta + Polarization + Rydberg
+TZ (Dunning-Hay)                       TZ (Dunning-Hay)
+TZP-ZORA                               TZP-ZORA, all-electron triple-zeta basis for calculations with the ZORA approach
+UGBS                                   Universal Gaussian Basis Set
+un-ccemd-ref                           un-ccemd-ref: uncontracted correlation consistent electron momentum density-ref
+un-pcemd-ref                           un-pcemd-ref: uncontracted polarization consistent electron momentum density-ref
+Wachters+f                             VDZP    Valence Double Zeta + Polarization on All Atoms
+WTBS                                   MB      Minimal Basis: 1 Function/AO
+x2c-JFIT                               x2c coulomb fitting
+x2c-JFIT-universal                     x2c coulomb fitting
+x2c-QZVPall                            All-electron relativistic polarized quadruple-zeta basis for one-component calculations
+x2c-QZVPall-2c                         All-electron relativistic polarized quadruple-zeta basis for two-component calculations
+x2c-QZVPall-2c-s                       All-electron relativistic polarized quadruple-zeta basis for two-component calculations of NMR shielding
+x2c-QZVPall-s                          All-electron relativistic polarized quadruple-zeta basis for one-component calculations of NMR shielding
+x2c-QZVPPall                           All-electron relativistic doubly polarized quadruple-zeta basis for one-component calculations
+x2c-QZVPPall-2c                        All-electron relativistic doubly polarized quadruple-zeta basis for two-component calculations
+x2c-QZVPPall-2c-s                      All-electron relativistic doubly polarized quadruple-zeta basis for two-component calculations of NMR shielding
+x2c-QZVPPall-s                         All-electron relativistic doubly polarized quadruple-zeta basis for one-component calculations of NMR shielding
+x2c-SV(P)all                           x2c-SV(P)all
+x2c-SV(P)all-2c                        x2c-SV(P)all-2c
+x2c-SV(P)all-s                         All-electron relativistic split-valence for NMR shielding
+x2c-SVPall                             x2c-SVPall
+x2c-SVPall-2c                          x2c-SVPall-2c
+x2c-SVPall-s                           All-electron relativistic split-valence for NMR shielding
+x2c-TZVPall                            x2c-TZVPall
+x2c-TZVPall-2c                         x2c-TZVPall-2c
+x2c-TZVPall-s                          All-electron relativistic triple-zeta for NMR shielding
+x2c-TZVPPall                           x2c-TZVPPall
+x2c-TZVPPall-2c                        x2c-TZVPPall-2c
+x2c-TZVPPall-s                         All-electron relativistic triple-zeta for NMR shielding

@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Two Column Layout</title>
+    <!-- Link to Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    .container-fluid {
+      min-height: 100vh;
+      border: 1px solid #f8f9fa; /* Light border */
+    }
+  </style>
+  <body>
+    <div class="container-fluid border bg-light">
+      <div class="row">
+        <!-- Left Column: Form Inputs -->
+        <div class="col-md-8">
+          <div class="p-3 mt-3">
+            <h3>General</h3>
+            <form id="selectionForm">
+              <!-- Row for Program and Calculation Type -->
+              <div class="row mb-3">
+                <div class="col-auto">
+                  <label for="qc_program" class="form-label">Program</label>
+                  <select
+                    id="qc_program"
+                    class="form-select"
+                    onchange="updateTextField()"
+                    disabled
+                  >
+                    <option value="Orca">Orca</option>
+                    <option value="Molcas">Molcas</option>
+                    <option value="Pyscf">Pyscf</option>
+                  </select>
+                </div>
+
+                <div class="col-auto">
+                  <label for="calc_type" class="form-label"
+                    >Calculation Type</label
+                  >
+                  <select
+                    id="calc_type"
+                    class="form-select"
+                    onchange="updateTextField()"
+                  >
+                    <option value="SP">Single Point</option>
+                    <option value="OPT">Geometry Opt</option>
+                    <option value="OPTTS">Transition State Opt</option>
+                  </select>
+                </div>
+                <div class="col-auto text-center">
+                  <label for="freq_checkbox" class="form-label d-block"
+                    >Freq</label
+                  >
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="freq_checkbox"
+                    onchange="generateInputFile()"
+                  />
+                </div>
+              </div>
+
+              <!-- Calculation Parameters Section -->
+              <h4>Calculation Parameters</h4>
+              <div class="row mb-3">
+                <div class="col-auto">
+                  <label for="calc_param" class="form-label">Method</label>
+                  <select
+                    id="calc_param"
+                    class="form-select"
+                    onchange="updateCalculationMethod(); updateScfTypeOptions()"
+                  >
+                    <option value="HF">HF</option>
+                    <option value="DFT">DFT</option>
+                    <option value="CASSCF">CASSCF</option>
+                    <option value="MP2">MP2</option>
+                    <option value="CCSD">CCSD</option>
+                    <option value="CCSD(T)">CCSD(T)</option>
+                    <option value="CCSDT">CCSDT</option>
+                  </select>
+                </div>
+                <div class="col-auto">
+                  <label for="basis_param" class="form-label">Basis Set</label>
+                  <select
+                    id="basis_param"
+                    class="form-select"
+                    onchange="updateCalculationMethod()"
+                  ></select>
+                </div>
+                <div class="col-auto">
+                  <label for="scf_type" class="form-label">SCF Type</label>
+                  <select
+                    id="scf_type"
+                    class="form-select"
+                    onchange="updateTextField()"
+                  ></select>
+                </div>
+                <!-- DFT or CASSCF options -->
+                <div id="dft-options" class="d-none col-auto">
+                  <label for="dft_functional" class="form-label"
+                    >DFT Functional</label
+                  >
+                  <select
+                    id="dft_functional"
+                    class="form-select"
+                    onchange="updateTextField()"
+                  >
+                    <option value="B3LYP">B3LYP</option>
+                    <option value="PBE">PBE</option>
+                    <option value="M06-2X">M06-2X</option>
+                  </select>
+                </div>
+              </div>
+
+              <div id="casscf-options" class="d-none">
+                <label for="active_space" class="form-label"
+                  >Active Space</label
+                >
+                <div class="row">
+                  <div class="col-2">
+                    <label for="active_electrons" class="form-label"
+                      ># Electrons</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="active_electrons"
+                      oninput="updateTextField()"
+                    />
+                  </div>
+                  <div class="col-2">
+                    <label for="active_orbitals" class="form-label"
+                      ># Orbitals</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="active_orbitals"
+                      oninput="updateTextField()"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <h4>Molecule</h4>
+              <div class="row">
+                <div class="col-2">
+                  <label for="charge" class="form-label">Charge</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="charge"
+                    value="0"
+                    oninput="updateTextField()"
+                  />
+                </div>
+                <div class="col-2 mb-3">
+                  <label for="multiplicity" class="form-label"
+                    >Multiplicity</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="multiplicity"
+                    value="1"
+                    oninput="updateTextField()"
+                  />
+                </div>
+              </div>
+
+              <!-- File Input or XYZ Geometry Input -->
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="fileCheckbox"
+                  onclick="toggleFileInput()"
+                />
+                <label class="form-check-label" for="fileCheckbox">File</label>
+              </div>
+
+              <div id="file-input" class="d-none">
+                <label for="filename" class="form-label">Filename</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="filename"
+                  oninput="updateTextField()"
+                />
+              </div>
+
+              <div id="xyz-input" class="col-8">
+                <label for="xyz_file" class="form-label">XYZ Geometry</label>
+                <textarea
+                  id="xyz_file"
+                  class="form-control"
+                  rows="6"
+                  oninput="updateTextField()"
+                ></textarea>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right Column: Display Area -->
+        <div class="col-4">
+          <div class="p-3 mt-3">
+            <h3>Generated Input File</h3>
+            <textarea
+              id="output_text"
+              class="form-control"
+              rows="20"
+              readonly
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript to update the text area -->
+    <script src="./main.js"></script>
+  </body>
+</html>
