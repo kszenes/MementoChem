@@ -200,7 +200,7 @@ function getTemplate(calcMethod) {
   // Stability check
   const doStab = document.getElementById('stability_checkbox').checked;
   if (doStab) {
-    template = template.replace("{{STAB_STRING}}", "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart the if unstable");
+    template = template.replace("{{STAB_STRING}}", "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable");
   } else {
     template = template.replace("{{STAB_STRING}}", "");
   }
