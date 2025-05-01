@@ -15,7 +15,10 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [ ] Add resolution of identity / cholesky
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
-- [ ] Add other chemistry programs
+- [ ] Add other chemistry programs:
+  - OpenMolcas
+  - Psi4
+  - PySCF
 
 ### DONE
 - [x] Add MRPT2
