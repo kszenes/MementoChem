@@ -21,7 +21,7 @@ function updateCalculationMethod() {
   const scfType = document.getElementById('scf_type').value;
 
   // Hide all options first
-  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options'].forEach(hideElement);
+  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'stability_checkbox_container'].forEach(hideElement);
 
   // Show/hide SCF type based on method
   const scfTypeContainer = document.getElementById('scf-type-container');
@@ -127,17 +127,7 @@ const inputTemplates = {
   HF: `! {{CALC_TYPE}} {{BASIS_SET}}
 
 %scf
-  HFTyp {{SCF_TYPE}}
-end
-
-* xyz {{CHARGE}} {{MULTIPLICITY}}
-{{MOLECULE_STRUCTURE}}
-*`,
-  UHF: `! {{CALC_TYPE}} {{BASIS_SET}}
-
-%scf
-  HFTyp {{SCF_TYPE}}
-  {{STAB_STRING}}
+  HFTyp {{SCF_TYPE}}{{STAB_STRING}}
 end
 
 * xyz {{CHARGE}} {{MULTIPLICITY}}
@@ -146,7 +136,7 @@ end
   DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}
 
 %scf
-  HFTyp {{SCF_TYPE}}
+  HFTyp {{SCF_TYPE}}{{STAB_STRING}}
 end
 
 * xyz {{CHARGE}} {{MULTIPLICITY}}
@@ -154,8 +144,7 @@ end
 *`,
   MP2: `! {{CALC_TYPE}} {{BASIS_SET}}
 
-%mp2
-  {{ENABLE_NATORB}}
+%mp2{{ENABLE_NATORB}}
 end
 
 * xyz {{CHARGE}} {{MULTIPLICITY}}
@@ -167,8 +156,7 @@ end
   nel    {{ACTIVE_ELECTRONS}}
   norb   {{ACTIVE_ORBITALS}}
   mult   {{MULTIPLICITY}}
-  roots  {{ACTIVE_NROOTS}}
-  {{PT_STRING}}
+  roots  {{ACTIVE_NROOTS}}{{PT_STRING}}
 end
 
 * xyz {{CHARGE}} {{MULTIPLICITY}}
@@ -184,7 +172,7 @@ function getTemplate(calcMethod) {
   } else if (calcMethod === "MP2") {
     template = inputTemplates.MP2;
     const natorb = document.getElementById('natorb_checkbox').checked;
-    template = template.replace("{{ENABLE_NATORB}}", natorb ? "  NatOrbs  true" : "");
+    template = template.replace("{{ENABLE_NATORB}}", natorb ? "\n  NatOrbs  true" : "");
   } else if (calcMethod === "CASSCF") {
     template = inputTemplates.CASSCF;
     const ptMethod = document.getElementById('active_pt').value;
@@ -192,23 +180,29 @@ function getTemplate(calcMethod) {
 
     switch (ptMethod) {
       case "SC_NEVPT2":
-        ptStr = "\n   # strongly contracted\n   PTMethod SC_NEVPT2";
+        ptStr = "\n\n  # strongly contracted\n  PTMethod SC_NEVPT2";
         break;
       case "FIC_NEVPT2":
-        ptStr = "\n   # fully internally contracted\n   PTMethod FIC_NEVPT2";
+        ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_NEVPT2";
         break;
       case "CASPT2":
-        ptStr = "\n   # canonical CASPT2 approach\n   PTMethod FIC_CASPT2\n" +
-          "     # Detailed settings\n     PTSettings CASPT2_ishift 0.0\n" +
-          "     CASPT2_rshift 0.0\n     CASPT2_IPEAshift 0.0";
+        ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_CASPT2\n" +
+          "  # Detailed settings\n  PTSettings\n    CASPT2_ishift 0.0     # imaginary shift (recommended)\n" +
+          "    CASPT2_rshift 0.0     # real shift\n    CASPT2_IPEAshift 0.0";
         break;
     }
     template = template.replace("{{PT_STRING}}", ptStr);
   } else if (calcMethod === "HF") {
-    const scfType = document.getElementById('scf_type').value;
-    template = scfType === "UHF" ? inputTemplates.UHF : inputTemplates.HF;
+    template = inputTemplates.HF;
   } else {
     template = inputTemplates[calcMethod] || inputTemplates.DEFAULT;
+  }
+  // Stability check
+  const doStab = document.getElementById('stability_checkbox').checked;
+  if (doStab) {
+    template = template.replace("{{STAB_STRING}}", "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart the if unstable");
+  } else {
+    template = template.replace("{{STAB_STRING}}", "");
   }
 
   return template;
