@@ -117,14 +117,14 @@ function updateScfTypeOptions() {
   });
 }
 
-// Template Functions
-const inputTemplates = {
-  DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
+const programTemplates = {
+  Orca: {
+    DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
 
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
-  HF: `! {{CALC_TYPE}} {{BASIS_SET}}
+    HF: `! {{CALC_TYPE}} {{BASIS_SET}}
 
 %scf
   HFTyp {{SCF_TYPE}}{{STAB_STRING}}
@@ -133,7 +133,7 @@ end
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
-  DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}
+    DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}
 
 %scf
   HFTyp {{SCF_TYPE}}{{STAB_STRING}}
@@ -142,7 +142,7 @@ end
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
-  MP2: `! {{CALC_TYPE}} {{BASIS_SET}}
+    MP2: `! {{CALC_TYPE}} {{BASIS_SET}}
 
 %mp2{{ENABLE_NATORB}}
 end
@@ -150,7 +150,7 @@ end
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
-  CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}
+    CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}
 
 %casscf
   nel    {{ACTIVE_ELECTRONS}}
@@ -162,19 +162,62 @@ end
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`
-};
+  },
+  PySCF: {
+    DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
+
+* xyz {{CHARGE}} {{MULTIPLICITY}}
+{{MOLECULE_STRUCTURE}}
+*`,
+    // TODO: multiplicity needs to be changed
+    HF: `from pyscf import gto, scf
+geom="""
+{{MOLECULE_STRUCTURE}}
+"""
+mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
+mf = scf.{{SCF_TYPE}}(mol).run()
+`,
+    // TODO: Add exchange correlation functional
+    DFT: `from pyscf import gto, scf
+geom="""
+{{MOLECULE_STRUCTURE}}
+"""
+mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
+mf = scf.{{SCF_TYPE}}(mol).run()
+`,
+    // TODO: Add natural obrbitals
+    MP2: `from pyscf import gto, scf
+geom="""
+{{MOLECULE_STRUCTURE}}
+"""
+mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
+mf = scf.{{SCF_TYPE}}(mol).run()
+mf.MP2().run()
+`,
+    CASSCF: `from pyscf import gto, scf, mcscf
+geom="""
+{{MOLECULE_STRUCTURE}}
+"""
+mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
+mf = scf.{{SCF_TYPE}}(mol).run()
+mc = mcscf.CASSCF(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}).run()
+`,
+  }
+}
 
 function getTemplate(calcMethod) {
   let template;
+  const program = document.getElementById('qc_program').value;
+  const programTemplate = programTemplates[program];
 
   if (calcMethod.startsWith("CC")) {
-    template = inputTemplates.DEFAULT.replace("{{CALC_METHOD}}", calcMethod);
+    template = programTemplate.DEFAULT.replace("{{CALC_METHOD}}", calcMethod);
   } else if (calcMethod === "MP2") {
-    template = inputTemplates.MP2;
+    template = programTemplate.MP2;
     const natorb = document.getElementById('natorb_checkbox').checked;
     template = template.replace("{{ENABLE_NATORB}}", natorb ? "\n  NatOrbs  true" : "");
   } else if (calcMethod === "CASSCF") {
-    template = inputTemplates.CASSCF;
+    template = programTemplate.CASSCF;
     const ptMethod = document.getElementById('active_pt').value;
     let ptStr = "";
 
@@ -193,9 +236,9 @@ function getTemplate(calcMethod) {
     }
     template = template.replace("{{PT_STRING}}", ptStr);
   } else if (calcMethod === "HF") {
-    template = inputTemplates.HF;
+    template = programTemplate.HF;
   } else {
-    template = inputTemplates[calcMethod] || inputTemplates.DEFAULT;
+    template = programTemplate[calcMethod] || programTemplate.DEFAULT;
   }
   // Stability check
   const doStab = document.getElementById('stability_checkbox').checked;
@@ -258,7 +301,7 @@ function initializeForm() {
 
   // Set up event listeners
   const formElements = [
-    'calc_param', 'basis_param', 'scf_type',
+    'qc_program', 'calc_param', 'basis_param', 'scf_type',
     'calc_type', 'freq_checkbox', 'charge',
     'multiplicity', 'xyz_file', 'dft_functional',
     'active_electrons', 'active_orbitals', 'active_nroots',
