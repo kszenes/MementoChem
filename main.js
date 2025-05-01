@@ -1,254 +1,123 @@
-function updateCalculationType() {
-  const calcType = document.getElementById("calc_type").value;
-  
-  // Hide additional options based on calculation type
-  document.getElementById("dft-options").classList.add("d-none");
-  document.getElementById("casscf-options").classList.add("d-none");
+// DOM Helper Functions
+function hideElement(id) {
+  const element = document.getElementById(id);
+  if (element) element.classList.add('d-none');
+}
 
-  // Always update the text area
-  updateTextField();
+function showElement(id) {
+  const element = document.getElementById(id);
+  if (element) element.classList.remove('d-none');
+}
+
+function toggleElementVisibility(id, isVisible) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.classList.toggle('d-none', !isVisible);
+  }
 }
 
 function updateCalculationMethod() {
-  const calcParam = document.getElementById("calc_param").value;
-  
-  // Hide all parameter options first
-  document.getElementById("dft-options").classList.add("d-none");
-  document.getElementById("casscf-options").classList.add("d-none");
+  const calcMethod = document.getElementById('calc_param').value;
+  const scfType = document.getElementById('scf_type').value;
 
-  // Show relevant options based on the method chosen
-  if (calcParam === "DFT") {
-    document.getElementById("dft-options").classList.remove("d-none");
-  } else if (calcParam === "CASSCF") {
-    document.getElementById("casscf-options").classList.remove("d-none");
+  // Hide all options first
+  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options'].forEach(hideElement);
+
+  // Show/hide SCF type based on method
+  const scfTypeContainer = document.getElementById('scf-type-container');
+  if (calcMethod === 'HF' || calcMethod === 'DFT') {
+    scfTypeContainer.classList.remove('d-none');
+
+    // Show stability checkbox only for UHF/UKS
+    const showStability = (calcMethod === 'HF' && scfType === 'UHF') ||
+      (calcMethod === 'DFT' && scfType === 'UKS');
+    toggleElementVisibility('stability_checkbox_container', showStability);
+  } else {
+    scfTypeContainer.classList.add('d-none');
   }
 
-  // Always update the text area
-  updateTextField();
+  // Show relevant options based on method
+  switch (calcMethod) {
+    case 'DFT':
+      showElement('dft-options');
+      break;
+    case 'CASSCF':
+      showElement('casscf-options');
+      break;
+    case 'MP2':
+      showElement('mp2-options');
+      break;
+  }
+
+  generateInputFile();
 }
+
 
 function toggleFileInput() {
   const isChecked = document.getElementById("fileCheckbox").checked;
-  if (isChecked) {
-    document.getElementById("file-input").classList.remove("d-none");
-    document.getElementById("xyz-input").classList.add("d-none");
-  } else {
-    document.getElementById("file-input").classList.add("d-none");
-    document.getElementById("xyz-input").classList.remove("d-none");
-  }
+  toggleElementVisibility("file-input", isChecked);
+  toggleElementVisibility("xyz-input", !isChecked);
 }
 
-// Main function to update the right column based on left column inputs
-function updateTextField() {
-    // Get values from form elements
-    const program = document.getElementById('qc_program').value;
-    const calcType = document.getElementById('calc_type').value;
-    
-    // You may need to add more specific inputs based on your actual form
-    let formData = {};
-
-    formData.qc_program = program;
-    formData.calcType = calcType;
-    
-    // Get all other form inputs (assuming they exist)
-    const formElements = document.getElementById('selectionForm').elements;
-    // Collect all form data
-    for (let element of formElements) {
-        if (element.id) {
-            if (element.type === 'checkbox') {
-                formData[element.id] = element.checked;
-            } else if (element.type === 'select-one' || element.type === 'text' || 
-                      element.type === 'textarea' || element.type === 'number') {
-                formData[element.id] = element.value;
-            }
-        }
-    }
-    
-    // Generate the appropriate output for the right column
-    let outputText = generateOutput(formData);
-    
-    // Update the right column text area (assuming there's an element with id 'outputText')
-    const outputElement = document.getElementById('outputText');
-    if (outputElement) {
-        outputElement.value = outputText;
-    }
-}
-
-// Function to generate output based on form data
-function generateOutput(formData) {
-    // Customize this function based on your specific needs
-    // This is where you'll format the right column text based on the program selected
-    
-    let output = '';
-    
-    if (formData.qc_program === 'Orca') {
-        output = `! ${formData.calc_type} calculation\n\n`;
-        // Add more Orca-specific formatting
-    } else if (formData.qc_program === 'Molcas') {
-        output = `&GATEWAY\n  ${formData.calc_type}\n`;
-        // Add more Molcas-specific formatting
-    } else if (formData.qc_program === 'Pyscf') {
-        output = `import pyscf\n\n# ${formData.calc_type} calculation\n`;
-        // Add more Pyscf-specific formatting
-    }
-    
-    // Add custom geometry section, basis set, etc.
-    if (formData.geometry) {k
-        output += `\n# Geometry\n${formData.geometry}\n`;
-    }
-    
-    return output;
-}
-
-// Function to load basis sets from the text file
-async function loadBasisSets() {
+// Data Loading Functions
+async function loadTextData(url, elementId, defaultValue) {
   try {
-    // Fetch the basis_sets.txt file
-    const response = await fetch('./basis_sets.txt');
+    const response = await fetch(url);
     const text = await response.text();
-    
-    // Parse the file
-    const lines = text.split('\n');
-    
-    // Skip the first two comment lines
-    const basisSets = [];
-    for (let i = 2; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (line) {
-        // Extract basis set name (up to column 39) and description (after column 39)
-        const name = line.substring(0, 39).trim();
-        const description = line.substring(39).trim();
-        
-        if (name) {
-          basisSets.push({ name, description });
-        }
-      }
-    }
-    
-    // Get the basis_param select element
-    const basisSelect = document.getElementById('basis_param');
-    
-    // Clear existing options
-    basisSelect.innerHTML = '';
-    
-    // Add the parsed basis sets as options
-    basisSets.forEach(basisSet => {
+    const lines = text.split('\n').slice(2); // Skip first two comment lines
+
+    const data = lines.map(line => {
+      const name = line.substring(0, 39).trim();
+      const description = line.substring(39).trim();
+      return { name, description };
+    }).filter(item => item.name);
+
+    const selectElement = document.getElementById(elementId);
+    selectElement.innerHTML = '';
+
+    data.forEach(item => {
       const option = document.createElement('option');
-      option.value = basisSet.name.toLowerCase().replace(/\s+/g, ''); // Create a valid value
-      option.textContent = basisSet.name;
-      option.title = basisSet.description; // Add description as tooltip
-      basisSelect.appendChild(option);
+      option.value = item.name.toLowerCase().replace(/\s+/g, '');
+      option.textContent = item.name;
+      option.title = item.description;
+      selectElement.appendChild(option);
     });
 
-    // Select default value
-    basisSelect.value = "cc-pvdz";
-
-    
-    // Trigger the onchange event to ensure any dependent logic is executed
-    if (typeof updateCalculationMethod === 'function') {
-      updateCalculationMethod();
-    }
+    selectElement.value = defaultValue;
+    updateCalculationMethod();
 
   } catch (error) {
-    console.error('Error loading basis sets:', error);
+    console.error(`Error loading data from ${url}:`, error);
   }
 }
 
-// Function to load basis sets from the text file
-async function loadDFTXC() {
-  try {
-    // Fetch the basis_sets.txt file
-    const response = await fetch('./dft_functionals.txt');
-    const text = await response.text();
-    
-    // Parse the file
-    const lines = text.split('\n');
-    
-    // Skip the first two comment lines
-    const functionalSets = [];
-    for (let i = 2; i < lines.length; i++) {
-      const line = lines[i].trim();
-      if (line) {
-        // Extract basis set name (up to column 39) and description (after column 39)
-        const name = line.substring(0, 39).trim();
-        const description = line.substring(39).trim();
-        
-        if (name) {
-          functionalSets.push({ name, description });
-        }
-      }
-    }
-    
-    // Get the basis_param select element
-    const functionalSelect = document.getElementById('dft_functional');
-    
-    // Clear existing options
-    functionalSelect.innerHTML = '';
-    
-    // Add the parsed basis sets as options
-    functionalSets.forEach(functionalSet => {
-      const option = document.createElement('option');
-      option.value = functionalSet.name.toLowerCase().replace(/\s+/g, ''); // Create a valid value
-      option.textContent = functionalSet.name;
-      option.title = functionalSet.description; // Add description as tooltip
-      functionalSelect.appendChild(option);
-    });
-
-    // Select default value
-    functionalSelect.value = "b3lyp";
-
-    
-    // Trigger the onchange event to ensure any dependent logic is executed
-    if (typeof updateCalculationMethod === 'function') {
-      updateCalculationMethod();
-    }
-
-  } catch (error) {
-    console.error('Error loading basis sets:', error);
-  }
-}
-
-// Function to update SCF type options based on calculation method
+// SCF Type Functions
 function updateScfTypeOptions() {
   const calcMethod = document.getElementById('calc_param').value;
+
+  if (calcMethod !== 'HF' && calcMethod !== 'DFT') return;
+
   const scfTypeSelect = document.getElementById('scf_type');
-  
-  // Clear existing options
   scfTypeSelect.innerHTML = '';
-  
-  // Add appropriate options based on calculation method
-  if (calcMethod === 'DFT') {
-    // DFT options
-    const dftOptions = [
-      { value: 'RKS', text: 'RKS' },
-      { value: 'UKS', text: 'UKS' },
-      { value: 'ROKS', text: 'ROKS' }
-    ];
-    
-    dftOptions.forEach(option => {
-      const optionElement = document.createElement('option');
-      optionElement.value = option.value;
-      optionElement.textContent = option.text;
-      scfTypeSelect.appendChild(optionElement);
-    });
-  } else {
-    // HF options (default)
-    const hfOptions = [
-      { value: 'RHF', text: 'RHF' },
-      { value: 'UHF', text: 'UHF' },
-      { value: 'ROHF', text: 'ROHF' }
-    ];
-    
-    hfOptions.forEach(option => {
-      const optionElement = document.createElement('option');
-      optionElement.value = option.value;
-      optionElement.textContent = option.text;
-      scfTypeSelect.appendChild(optionElement);
-    });
-  }
+
+  const options = calcMethod === 'DFT' ?
+    ['RKS', 'UKS', 'ROKS'] :
+    ['RHF', 'UHF', 'ROHF'];
+
+  options.forEach(option => {
+    const optionElement = document.createElement('option');
+    optionElement.value = option;
+    optionElement.textContent = option;
+    scfTypeSelect.appendChild(optionElement);
+  });
+
+  // Add change listener to update stability checkbox visibility
+  scfTypeSelect.addEventListener('change', function() {
+    updateCalculationMethod();
+  });
 }
 
-// Define template for different calculation methods
+// Template Functions
 const inputTemplates = {
   DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
 
@@ -264,7 +133,16 @@ end
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
+  UHF: `! {{CALC_TYPE}} {{BASIS_SET}}
 
+%scf
+  HFTyp {{SCF_TYPE}}
+  {{STAB_STRING}}
+end
+
+* xyz {{CHARGE}} {{MULTIPLICITY}}
+{{MOLECULE_STRUCTURE}}
+*`,
   DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}
 
 %scf
@@ -274,13 +152,23 @@ end
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
+  MP2: `! {{CALC_TYPE}} {{BASIS_SET}}
 
+%mp2
+  {{ENABLE_NATORB}}
+end
+
+* xyz {{CHARGE}} {{MULTIPLICITY}}
+{{MOLECULE_STRUCTURE}}
+*`,
   CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}
 
 %casscf
-  nel {{ACTIVE_ELECTRONS}}
-  norb {{ACTIVE_ORBITALS}}
-  mult {{MULTIPLICITY}}
+  nel    {{ACTIVE_ELECTRONS}}
+  norb   {{ACTIVE_ORBITALS}}
+  mult   {{MULTIPLICITY}}
+  roots  {{ACTIVE_NROOTS}}
+  {{PT_STRING}}
 end
 
 * xyz {{CHARGE}} {{MULTIPLICITY}}
@@ -289,137 +177,124 @@ end
 };
 
 function getTemplate(calcMethod) {
+  let template;
+
   if (calcMethod.startsWith("CC")) {
-    let template = inputTemplates["DEFAULT"];
-    template = template.replace("{{CALC_METHOD}}", calcMethod);
-    return template;
+    template = inputTemplates.DEFAULT.replace("{{CALC_METHOD}}", calcMethod);
+  } else if (calcMethod === "MP2") {
+    template = inputTemplates.MP2;
+    const natorb = document.getElementById('natorb_checkbox').checked;
+    template = template.replace("{{ENABLE_NATORB}}", natorb ? "  NatOrbs  true" : "");
+  } else if (calcMethod === "CASSCF") {
+    template = inputTemplates.CASSCF;
+    const ptMethod = document.getElementById('active_pt').value;
+    let ptStr = "";
+
+    switch (ptMethod) {
+      case "SC_NEVPT2":
+        ptStr = "\n   # strongly contracted\n   PTMethod SC_NEVPT2";
+        break;
+      case "FIC_NEVPT2":
+        ptStr = "\n   # fully internally contracted\n   PTMethod FIC_NEVPT2";
+        break;
+      case "CASPT2":
+        ptStr = "\n   # canonical CASPT2 approach\n   PTMethod FIC_CASPT2\n" +
+          "     # Detailed settings\n     PTSettings CASPT2_ishift 0.0\n" +
+          "     CASPT2_rshift 0.0\n     CASPT2_IPEAshift 0.0";
+        break;
+    }
+    template = template.replace("{{PT_STRING}}", ptStr);
+  } else if (calcMethod === "HF") {
+    const scfType = document.getElementById('scf_type').value;
+    template = scfType === "UHF" ? inputTemplates.UHF : inputTemplates.HF;
   } else {
-    return inputTemplates[calcMethod];
+    template = inputTemplates[calcMethod] || inputTemplates.DEFAULT;
   }
+
+  return template;
 }
 
-// Function to generate input file based on selected parameters
+// Input Generation Functions
 function generateInputFile() {
-  // Get selected calculation method
   const calcType = document.getElementById('calc_type').value;
-
-  // Get selected calculation method
   const calcMethod = document.getElementById('calc_param').value;
-
-  // Get frequency calculation checkbox state
   const includeFreq = document.getElementById('freq_checkbox').checked;
-  
-  // Get selected basis set
   const basisSet = document.getElementById('basis_param').value;
-
-  // Get selected SCF type
   const scfType = document.getElementById('scf_type').value;
-  
-  // Get molecule structure from the textarea
-  const moleculeStructure = document.getElementById('xyz_file').value.trim();
-  
-  // Get charge and multiplicity (add these fields to your UI if they don't exist)
-  const charge = document.getElementById('charge') ? document.getElementById('charge').value : '0';
-  const multiplicity = document.getElementById('multiplicity') ? document.getElementById('multiplicity').value : '1';
-  
-  // Get template for the selected calculation method
-  let template = getTemplate(calcMethod);
+  const moleculeStructure = document.getElementById('xyz_file').value;
+  const charge = document.getElementById('charge')?.value || '0';
+  const multiplicity = document.getElementById('multiplicity')?.value || '1';
 
-  // Replace placeholders with actual values
-  let calculationType = calcType;
-  if (includeFreq) {
-    calculationType += " FREQ";
-  }
-  
-  // Replace placeholders with actual values
-  template = template.replace('{{CALC_TYPE}}', calculationType);
-  template = template.replace('{{BASIS_SET}}', basisSet);
-  template = template.replace('{{CHARGE}}', charge);
-  template = template.replaceAll('{{MULTIPLICITY}}', multiplicity);
-  template = template.replace('{{MOLECULE_STRUCTURE}}', moleculeStructure);
-  template = template.replace('{{SCF_TYPE}}', scfType);
-  
-  // Handle method-specific parameters
+  let template = getTemplate(calcMethod);
+  let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
+
+  // Common replacements
+  template = template
+    .replace('{{CALC_TYPE}}', calculationType)
+    .replace('{{BASIS_SET}}', basisSet)
+    .replace('{{CHARGE}}', charge)
+    .replaceAll('{{MULTIPLICITY}}', multiplicity)
+    .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
+    .replace('{{SCF_TYPE}}', scfType);
+
+  // Method-specific replacements
   if (calcMethod === 'DFT') {
     const dftFunctional = document.getElementById('dft_functional').value;
     template = template.replace('{{DFT_FUNCTIONAL}}', dftFunctional);
   } else if (calcMethod === 'CASSCF') {
-    const activeElectrons = document.getElementById('active_electrons') ? 
-                           document.getElementById('active_electrons').value : '3';
-    const activeOrbitals = document.getElementById('active_orbitals') ? 
-                           document.getElementById('active_orbitals').value : '3';
-    template = template.replace('{{ACTIVE_ELECTRONS}}', activeElectrons);
-    template = template.replace('{{ACTIVE_ORBITALS}}', activeOrbitals);
+    const activeElectrons = document.getElementById('active_electrons')?.value || '3';
+    const activeOrbitals = document.getElementById('active_orbitals')?.value || '3';
+    const activeNroots = document.getElementById('active_nroots')?.value || '1';
+    template = template
+      .replace('{{ACTIVE_ELECTRONS}}', activeElectrons)
+      .replace('{{ACTIVE_ORBITALS}}', activeOrbitals)
+      .replace('{{ACTIVE_NROOTS}}', activeNroots);
   }
-  
-  // Display the generated input in the right column text box
+
+  // Update output
   const outputTextArea = document.getElementById('output_text');
-  outputTextArea.value = template;
+  if (outputTextArea) outputTextArea.value = template;
 }
 
-// Update existing function to generate input file when parameters change
-function updateCalculationMethod() {
-  const calcMethod = document.getElementById('calc_param').value;
-  
-  // Show/hide method-specific options
-  if (calcMethod === 'DFT') {
-    document.getElementById('dft-options').classList.remove('d-none');
-    if (document.getElementById('casscf-options')) {
-      document.getElementById('casscf-options').classList.add('d-none');
-    }
-  } else if (calcMethod === 'CASSCF') {
-    if (document.getElementById('dft-options')) {
-      document.getElementById('dft-options').classList.add('d-none');
-    }
-    if (document.getElementById('casscf-options')) {
-      document.getElementById('casscf-options').classList.remove('d-none');
-    }
-  } else {
-    if (document.getElementById('dft-options')) {
-      document.getElementById('dft-options').classList.add('d-none');
-    }
-    if (document.getElementById('casscf-options')) {
-      document.getElementById('casscf-options').classList.add('d-none');
-    }
-  }
-  
-  // Generate the input file based on the selected parameters
-  generateInputFile();
-}
+// In the initializeForm() function, update the formElements array and event listeners:
+function initializeForm() {
+  // Load data
+  loadTextData('./basis_sets.txt', 'basis_param', 'cc-pvdz');
+  loadTextData('./dft_functionals.txt', 'dft_functional', 'b3lyp');
 
-// Add event listeners to form inputs to update the input file when they change
-document.addEventListener('DOMContentLoaded', function() {
-  // Load basis sets (from the previous solution)
-  loadBasisSets();
-
-  // Load dft functionals
-  loadDFTXC();
-  
-  // Add event listeners to all form elements that should trigger an update
+  // Set up event listeners
   const formElements = [
-    'qc_program',
-    'calc_type',
-    'molecule_structure',
-    'charge',
-    'multiplicity',
-    'dft_functional',
-    'active_electrons',
-    'active_orbitals',
-    'xyz_file',
-    'scf_type'
+    'calc_param', 'basis_param', 'scf_type',
+    'calc_type', 'freq_checkbox', 'charge',
+    'multiplicity', 'xyz_file', 'dft_functional',
+    'active_electrons', 'active_orbitals', 'active_nroots',
+    'active_pt', 'natorb_checkbox', 'stability_checkbox'
   ];
-  
+
   formElements.forEach(id => {
     const element = document.getElementById(id);
     if (element) {
       element.addEventListener('change', generateInputFile);
-      element.addEventListener('input', generateInputFile);
+      if (element.type === 'text' || element.tagName === 'TEXTAREA' || element.type === 'number') {
+        element.addEventListener('input', generateInputFile);
+      }
     }
   });
-  
-  // Set initial SCF type options
-  updateScfTypeOptions();
 
-  // Initial generation of input file
+  // Special case for calc_param
+  const calcParamElement = document.getElementById('calc_param');
+  if (calcParamElement) {
+    calcParamElement.addEventListener('change', function() {
+      updateScfTypeOptions();
+      updateCalculationMethod();
+    });
+  }
+
+  // Set initial values
+  updateScfTypeOptions();
+  document.getElementById('xyz_file').value = "N 0 0 0\nN 0 0 1.098";
   generateInputFile();
-});
+}
+
+// Start the application
+document.addEventListener('DOMContentLoaded', initializeForm);
