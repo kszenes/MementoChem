@@ -1,0 +1,68 @@
+# adapted from the orca documentation https://www.faccts.de/docs/orca/6.0/manual/contents/detailed/model.html
+
+HFS                                    Hartree-Fock Slater (Slater exchange only)
+LSD                                    Local spin density (VWN-5A form)
+VWN5                                   Local spin density (VWN-5)
+VWN3                                   Local spin density (VWN-3)
+PWLDA                                  Local spin density (PW-LDA)
+
+BNULL                                  Becke '88 exchange, no correlation
+BVWN                                   Becke '88 exchange, VWN-5 correlation
+BP                                     Becke '88 exchange, Perdew '86 correlation
+PW91                                   Perdew-Wang (PW) GGA-II '91 functional
+mPWPW                                  Modified PW exchange, PW correlation
+mPWLYP                                 Modified PW exchange, Lee-Yang-Parr (LYP) correlation
+BLYP                                   Becke '88 exchange, LYP correlation
+GP                                     Gill '96 exchange, Perdew '86 correlation
+GLYP                                   Gill '96 exchange, LYP correlation
+PBE                                    Perdew-Burke-Ernzerhof (PBE) functional
+revPBE                                 Revised PBE (exchange scaling)
+RPBE                                   Revised PBE (modified exchange functional)
+PWP                                    PW '91 exchange, Perdew '86 correlation
+OLYP                                   Hoe/Cohen/Handy's optimized exchange, LYP correlation
+OPBE                                   Hoe/Cohen/Handy's optimized exchange, PBE correlation
+XLYP                                   Xu/Goddard exchange, LYP correlation
+B97D                                   Grimme's GGA including D2 dispersion correction
+PW86PBE                                PW '86 exchange, PBE correlation (as used for vdw-DF and related)
+RPW86PBE                               Revised PW '86 exchange, PBE correlation
+
+M06L                                   Truhlar's semi-local functional
+TPSS                                   TPSS functional
+revTPSS                                Revised TPSS functional
+SCANfunc                               Perdew's SCAN functional
+RSCAN                                  Regularized SCAN functional
+R2SCAN                                 Regularized and restored SCAN functional
+
+B1LYP                                  1-parameter hybrid of BLYP (25% HF exchange)
+B1P                                    Similar with Perdew '86 correlation
+G1LYP                                  1-parameter analog with Gill '96 exchange
+G1P                                    Similar with Perdew '86 correlation
+B3LYP                                  3-parameter Hybrid of BLYP (20% HF exchange)
+B3P                                    Similar with Perdew '86 correlation
+G3LYP                                  3-parameter analog with Gill '96 exchange
+G3P                                    Similar with Perdew '86 correlation
+PBE0                                   1-parameter version of PBE (25% HF exchange)
+PWP1                                   1-parameter version of PWP (analog of PBE0)
+mPW1PW                                 1-parameter version of mPWPW (analog of PBE0)
+mPW1LYP                                2-parameter version of mPWLYP (analog of PBE0)
+PW91_0                                 1-parameter version of PW91 (analog of PBE0)
+O3LYP                                  3-parameter version of OLYP 
+X3LYP                                  3-parameter version of XLYP 
+B97                                    Becke's original hybrid functional
+BHANDHLYP                              Becke's half-and-half hybrid functional (50% HF exchange)
+
+TPSSh                                  TPSS hybrid with 10% HF exchange
+TPSS0                                  TPSS hybrid with 25% HF exchange
+PW6B95                                 Truhlar's 6-parameter hybrid functional 
+M06                                    Truhlar's 2006 low-HF hybrid (27% HF exchange)
+M062X                                  Truhlar's 2006 high-HF hybrid (54% HF exchange)
+r2SCANh                                r2SCAN global hybrid with 10% HF exchange
+r2SCAN0                                r2SCAN global hybrid with 25% HF exchange 
+r2SCAN50                               r2SCAN global hybrid with 50% HF exchange
+
+wB97                                   Head-Gordon's fully variable DF 
+wB97X                                  Head-Gordon's DF with minimal HF exchange 
+CAMB3LYP                               Handy's fit 
+LC_BLYP                                Hirao's original application 
+LC_PBE                                 Hirao's PBE-based range-separated hybrid 
+wr2SCAN                                r2SCAN range-separated hybrid
