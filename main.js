@@ -220,7 +220,7 @@ function getTemplate(calcMethod) {
   const doRI = document.getElementById('ri_toggle').checked;
 
   if (calcMethod.startsWith("CC")) {
-    template = programTemplate.DEFAULT.replace("{{CALC_METHOD}}", calcMethod);
+    template = programTemplate.DEFAULT.replace("{{CALC_METHOD}}", doRI ? `RI-${calcMethod}` : `${calcMethod}`);
   } else if (calcMethod === "MP2") {
     template = programTemplate.MP2;
     const natorb = document.getElementById('natorb_toggle').checked;

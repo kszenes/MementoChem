@@ -12,6 +12,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 #### TODO
 
 - [ ] Add CASCI (no orbital rotations)
+- [ ] Add explicit correlation
 - [ ] Add counterpoise correction
 - [ ] Add support for second-order solvers
 - [ ] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
