@@ -1,3 +1,23 @@
+import ProgramManager from './ProgramManager.js';
+import OrcaProgram from "./programs/orca.js";
+
+// Configuration: Switch between programs easily
+const PROGRAMS = {
+  Orca: OrcaProgram,
+};
+
+// Initialize manager
+const programManager = new ProgramManager(document);
+programManager.registerProgram('Orca', OrcaProgram);
+
+// Set default program
+programManager.setProgram('Orca'); // Starts with ORCA
+
+// Switch program via UI (e.g., dropdown)
+document.getElementById('qc_program').addEventListener('change', (e) => {
+  programManager.setProgram(e.target.value); // Live switch!
+});
+
 // DOM Helper Functions
 function hideElement(id) {
   const element = document.getElementById(id);
@@ -14,6 +34,32 @@ function toggleElementVisibility(id, isVisible) {
   if (element) {
     element.classList.toggle('d-none', !isVisible);
   }
+}
+
+// SCF Type Functions
+function updateScfTypeOptions() {
+  const calcMethod = document.getElementById('calc_param').value;
+
+  if (calcMethod !== 'HF' && calcMethod !== 'DFT') return;
+
+  const scfTypeSelect = document.getElementById('scf_type');
+  scfTypeSelect.innerHTML = '';
+
+  const options = calcMethod === 'DFT' ?
+    ['Auto', 'RKS', 'UKS', 'ROKS'] :
+    ['Auto', 'RHF', 'UHF', 'ROHF'];
+
+  options.forEach(option => {
+    const optionElement = document.createElement('option');
+    optionElement.value = option;
+    optionElement.textContent = option;
+    scfTypeSelect.appendChild(optionElement);
+  });
+
+  // Add change listener to update stability checkbox visibility
+  scfTypeSelect.addEventListener('change', function() {
+    updateCalculationMethod();
+  });
 }
 
 function updateCalculationMethod() {
@@ -52,7 +98,7 @@ function updateCalculationMethod() {
       break;
   }
 
-  generateInputFile();
+  programManager.currentProgram.generateInputFile();
 }
 
 
@@ -94,304 +140,6 @@ async function loadTextData(url, elementId, defaultValue) {
   }
 }
 
-// SCF Type Functions
-function updateScfTypeOptions() {
-  const calcMethod = document.getElementById('calc_param').value;
-
-  if (calcMethod !== 'HF' && calcMethod !== 'DFT') return;
-
-  const scfTypeSelect = document.getElementById('scf_type');
-  scfTypeSelect.innerHTML = '';
-
-  const options = calcMethod === 'DFT' ?
-    ['Auto', 'RKS', 'UKS', 'ROKS'] :
-    ['Auto', 'RHF', 'UHF', 'ROHF'];
-
-  options.forEach(option => {
-    const optionElement = document.createElement('option');
-    optionElement.value = option;
-    optionElement.textContent = option;
-    scfTypeSelect.appendChild(optionElement);
-  });
-
-  // Add change listener to update stability checkbox visibility
-  scfTypeSelect.addEventListener('change', function() {
-    updateCalculationMethod();
-  });
-}
-
-function buildCoordsStr() {
-  const charge = document.getElementById("charge").value;
-  const multiplicity = document.getElementById("multiplicity").value;
-  const useFile = document.getElementById("file_toggle").checked;
-  if (useFile) {
-    const fname = document.getElementById("xyz_file_name").value;
-    return `* xyzfile ${charge} ${multiplicity} ${fname}`
-  } else {
-    const coords = document.getElementById("xyz_geom").value
-    return `* xyz ${charge} ${multiplicity}
-${coords}
-*`
-  }
-}
-
-function buildSCFStr() {
-  const scfType = document.getElementById("scf_type").value;
-
-  if (scfType === "Auto") {
-    return "";
-  }
-
-  const doDirect = document.getElementById("integral_direct_toggle").checked;
-  const doStab = document.getElementById('stability_toggle').checked;
-
-  let scfTemplate = `
-
-%scf
-  HFType {{SCF_TYPE}}{{DIRECT_BLOCK}}{{STAB_STRING}}
-end`
-
-  scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", scfType);
-  scfTemplate = scfTemplate.replace("{{DIRECT_BLOCK}}", doDirect ? "\n  SCFMode Direct" : "");
-  scfTemplate = scfTemplate.replace("{{DIRECT_BLOCK}}", doDirect ? "\n  SCFMode Direct" : "");
-  scfTemplate = scfTemplate.replace("{{STAB_STRING}}", doStab ? "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable" : "");
-
-  return scfTemplate;
-}
-
-const programTemplates = {
-  Orca: {
-    DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}
-{{UNIT}}
-{{MOLECULE_STRUCTURE}}
-`,
-    HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{MIX_GUESS}}{{SCF_BLOCK}}
-{{UNIT}}
-{{MOLECULE_STRUCTURE}}
-`,
-    DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{MIX_GUESS}}{{SCF_BLOCK}}
-{{UNIT}}
-{{MOLECULE_STRUCTURE}}
-`,
-    MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}{{NATORB_BLOCK}}
-{{UNIT}}
-{{MOLECULE_STRUCTURE}}
-`,
-    CAS: `! {{CALC_TYPE}} {{BASIS_SET}}{{DIRECT_BLOCK}}
-{{ORB_ROT}}
-%casscf
-  nel     {{ACTIVE_ELECTRONS}}
-  norb    {{ACTIVE_ORBITALS}}
-  mult    {{MULTIPLICITY}}
-  nroots  {{ACTIVE_NROOTS}}{{RI_BLOCK}}{{PT_STRING}}
-end
-{{UNIT}}
-{{MOLECULE_STRUCTURE}}
-`
-  },
-  PySCF: {
-    DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
-
-* xyz {{CHARGE}} {{MULTIPLICITY}}
-{{MOLECULE_STRUCTURE}}
-*`,
-    // TODO: multiplicity needs to be changed
-    HF: `from pyscf import gto, scf
-geom="""
-{{MOLECULE_STRUCTURE}}
-"""
-mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
-mf = scf.{{SCF_TYPE}}(mol).run()
-`,
-    // TODO: Add exchange correlation functional
-    DFT: `from pyscf import gto, scf
-geom="""
-{{MOLECULE_STRUCTURE}}
-"""
-mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
-mf = scf.{{SCF_TYPE}}(mol).run()
-`,
-    // TODO: Add natural obrbitals
-    MP2: `from pyscf import gto, scf
-geom="""
-{{MOLECULE_STRUCTURE}}
-"""
-mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
-mf = scf.{{SCF_TYPE}}(mol).run()
-mf.MP2().run()
-`,
-    CAS: `from pyscf import gto, scf, mcscf
-geom="""
-{{MOLECULE_STRUCTURE}}
-"""
-mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLICITY}})
-mf = scf.{{SCF_TYPE}}(mol).run()
-mc = mcscf.CASSCF(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}).run()
-`,
-  }
-}
-
-function getTemplate(calcMethod) {
-  let template;
-  const program = document.getElementById('qc_program').value;
-  const programTemplate = programTemplates[program];
-  const doRI = document.getElementById('ri_toggle').checked;
-
-  if (calcMethod.startsWith("CC")) {
-    template = programTemplate.DEFAULT.replace("{{CALC_METHOD}}", doRI ? `RI-${calcMethod}` : `${calcMethod}`);
-  } else if (calcMethod === "MP2") {
-    template = programTemplate.MP2;
-    const natorb = document.getElementById('natorb_toggle').checked;
-    template = template.replace("{{CALC_METHOD}}", doRI ? "RI-MP2" : "MP2");
-    if (natorb) {
-      template = template.replace("{{NATORB_BLOCK}}", `
-
-%mp2
-  NatOrbs true
-%end`);
-    }
-    else {
-      template = template.replace("{{NATORB_BLOCK}}", "");
-    }
-  } else if (calcMethod.startsWith("CAS")) {
-    template = programTemplate.CAS;
-
-    if (calcMethod === "CASSCF") {
-      template = template.replace("{{ORB_ROT}}", "");
-    } else if (calcMethod === "CASCI") {
-      template = template.replace("{{ORB_ROT}}", `
-!MORead NoIter
-%MoInp "your-orbitals.gbw"`);
-    }
-
-    // RI approx
-    template = template.replace("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI" : "");
-
-    // Perturbation theory
-    const ptMethod = document.getElementById('active_pt').value;
-    let ptStr = "";
-
-    switch (ptMethod) {
-      case "SC_NEVPT2":
-        ptStr = "\n\n  # strongly contracted\n  PTMethod SC_NEVPT2";
-        break;
-      case "FIC_NEVPT2":
-        ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_NEVPT2";
-        break;
-      case "CASPT2":
-        ptStr = "\n\n  # fully internally contracted\n";
-        ptStr += "  PTMethod FIC_CASPT2\n"
-        ptStr += "  PTSettings\n";
-        ptStr += "    CASPT2_ishift    0.0     # imaginary shift\n";
-        ptStr += "    CASPT2_rshift    0.0     # real shift\n";
-        ptStr += "    CASPT2_IPEAshift 0.0";
-        break;
-    }
-    template = template.replace("{{PT_STRING}}", ptStr);
-  } else if (calcMethod === "HF") {
-    template = programTemplate.HF;
-  } else {
-    template = programTemplate[calcMethod] || programTemplate.DEFAULT;
-  }
-
-  // Mix Guess
-  const isUnrestriced = document.getElementById("scf_type").value.startsWith("U");
-  const mixGuess = document.getElementById('guessmix_toggle').checked;
-  if (isUnrestriced && mixGuess) {
-    template = template.replace("{{MIX_GUESS}}", " GUESSMIX");
-  } else {
-    template = template.replace("{{MIX_GUESS}}", "");
-  };
-
-  return template;
-}
-
-function formatCodeWithComments(codeText, commentChar = '#') {
-  // Split by newlines and process each line
-  return codeText.split('\n').map(line => {
-    const commentIndex = line.indexOf(commentChar);
-
-    // If comment character exists
-    if (commentIndex !== -1) {
-      const codePart = line.slice(0, commentIndex);  // The code before the comment
-      const commentPart = line.slice(commentIndex);  // The comment part
-
-      // Retain leading whitespace before the code
-      return `${codePart}<span class="comment">${commentPart}</span>`;
-    }
-
-    // If no comment character, return the line as it is
-    return line;
-  }).join('\n');
-}
-
-// Input Generation Functions
-function generateInputFile() {
-  const calcType = document.getElementById('calc_type').value;
-  const calcMethod = document.getElementById('calc_param').value;
-  const includeFreq = document.getElementById('freq_toggle').checked;
-  let basisSet = document.getElementById('basis_param').value;
-  const scfType = document.getElementById('scf_type').value;
-  let moleculeStructure = buildCoordsStr();
-  const charge = document.getElementById('charge')?.value || '0';
-  const multiplicity = document.getElementById('multiplicity')?.value || '1';
-  const doRI = document.getElementById("ri_toggle").checked;
-  const useBohr = document.getElementById("dist_unit").value === "Bohr";
-  const doDirect = document.getElementById("integral_direct_toggle").checked;
-
-  if (doRI) {
-    basisSet += " " + basisSet + "/C";
-  }
-
-  let template = getTemplate(calcMethod);
-
-  const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
-  if (isSCF) {
-    const scfBlock = buildSCFStr();
-    template = template.replace("{{SCF_BLOCK}}", scfBlock);
-  }
-
-  if (doDirect) {
-    if (!isSCF) {
-      template = template.replace("{{DIRECT_BLOCK}}", `
-
-%scf
-  SCFMode Direct
-end`);
-    }
-  } else {
-    template = template.replace("{{DIRECT_BLOCK}}", "");
-  }
-
-  let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
-
-  // Common replacements
-  template = template
-    .replace('{{CALC_TYPE}}', calculationType)
-    .replace('{{BASIS_SET}}', basisSet)
-    .replace('{{CHARGE}}', charge)
-    .replaceAll('{{MULTIPLICITY}}', multiplicity)
-    .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
-    .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "");
-
-  // Method-specific replacements
-  if (calcMethod === 'DFT') {
-    const dftFunctional = document.getElementById('dft_functional').value.toUpperCase();
-    template = template.replace('{{DFT_FUNCTIONAL}}', dftFunctional);
-  } else if (calcMethod.startsWith("CAS")) {
-    const activeElectrons = document.getElementById('active_electrons')?.value || '6';
-    const activeOrbitals = document.getElementById('active_orbitals')?.value || '6';
-    const activeNroots = document.getElementById('active_nroots')?.value || '1';
-    template = template
-      .replace('{{ACTIVE_ELECTRONS}}', activeElectrons)
-      .replace('{{ACTIVE_ORBITALS}}', activeOrbitals)
-      .replace('{{ACTIVE_NROOTS}}', activeNroots);
-  }
-
-  // Update output
-  const outputTextArea = document.getElementById('output_text');
-  if (outputTextArea) outputTextArea.innerHTML = formatCodeWithComments(template);
-}
 
 // Clipboard function
 function copyToClipboard() {
@@ -436,30 +184,11 @@ function adjustPadding() {
 
 // In the initializeForm() function, update the formElements array and event listeners:
 function initializeForm() {
+
   // Load data
   // NOTE: CASE SENSITIVE
   loadTextData('./basis_sets.txt', 'basis_param', 'cc-pVDZ');
   loadTextData('./dft_functionals.txt', 'dft_functional', 'B3LYP');
-
-  // Set up event listeners
-  const formElements = [
-    'qc_program', 'calc_param', 'basis_param', 'scf_type',
-    'calc_type', 'freq_toggle', 'charge',
-    'multiplicity', 'xyz_geom', 'dft_functional',
-    'active_electrons', 'active_orbitals', 'active_nroots',
-    'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
-    "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle"
-  ];
-
-  formElements.forEach(id => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.addEventListener('change', generateInputFile);
-      if (element.type === 'text' || element.tagName === 'TEXTAREA' || element.type === 'number') {
-        element.addEventListener('input', generateInputFile);
-      }
-    }
-  });
 
   // Special case for calc_param
   const calcParamElement = document.getElementById('calc_param');
@@ -481,7 +210,7 @@ function initializeForm() {
   updateScfTypeOptions();
   document.getElementById('xyz_geom').value = "N 0 0 0\nN 0 0 1.098";
   document.getElementById('xyz_file_name').value = "geom.xyz";
-  generateInputFile();
+  programManager.currentProgram.generateInputFile();
 
   // Set up copy button
   const copyBtn = document.querySelector('.copy-btn');

@@ -154,7 +154,9 @@
                     id="integral_direct_toggle"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-secondary" for="integral_direct_toggle"
+                  <label
+                    class="btn btn-outline-secondary"
+                    for="integral_direct_toggle"
                     >Direct</label
                   >
                 </div>
@@ -266,6 +268,78 @@
                       <option value="CASPT2">CASPT2</option>
                     </select>
                     <label for="active_pt">MRPT</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion mb-3 d-none" id="accordionExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button
+                      class="accordion-button p-1"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      Advanced Options
+                    </button>
+                  </h2>
+                  <div
+                    id="collapseOne"
+                    class="accordion-collapse collapse show"
+                    data-bs-parent="#accordionExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="row">
+                        <div class="col-4 mb-3">
+                          <div class="form-floating">
+                            <select id="initial_guess" class="form-select">
+                              <option value=""></option>
+                              <option value="HCore">HCore</option>
+                              <option value="Hueckel">Hueckel</option>
+                              <option value="PAtom">PAtom</option>
+                            </select>
+                            <label for="initial_guess">Guess</label>
+                          </div>
+                        </div>
+                        <div class="col-4 mb-3">
+                          <div class="form-floating">
+                            <select id="active_pt" class="form-select">
+                              <option value=""></option>
+                              <option value="SC_NEVPT2">SC_NEVPT2</option>
+                              <option value="FIC_NEVPT2">FIC_NEVPT2</option>
+                              <option value="CASPT2">CASPT2</option>
+                            </select>
+                            <label for="active_pt">Solver</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="row border rounded-border"
+                        id="conv_thresh_box"
+                      >
+                        <label for="conv_thresh_box" class="form-label"
+                          >Thresholds</label
+                        >
+                        <div class="col mb-3">
+                          <div class="form-floating">
+                            <input class="form-control" id="energy_threshold" />
+                            <label for="energy_threshold">Energy</label>
+                          </div>
+                        </div>
+                        <div class="col mb-3">
+                          <div class="form-floating">
+                            <input
+                              class="form-control"
+                              id="gradient_threshold"
+                            />
+                            <label for="gradient_threshold">Gradient</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -392,6 +466,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- JavaScript to update the text area -->
-    <script src="./main.js"></script>
+    <script type="module" src="./main.js"></script>
   </body>
 </html>
