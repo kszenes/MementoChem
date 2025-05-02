@@ -247,7 +247,7 @@ function getTemplate(calcMethod) {
       template = template.replace("{{NATORB_BLOCK}}", `
 
 %mp2
-  NatOrb true
+  NatOrbs true
 %end`);
     }
     else {
