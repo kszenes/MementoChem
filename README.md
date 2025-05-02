@@ -11,7 +11,6 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 
 #### TODO
 
-- [ ] Add CASCI (no orbital rotations)
 - [ ] Add explicit correlation
 - [ ] Add counterpoise correction
 - [ ] Add support for second-order solvers
@@ -27,15 +26,16 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 
 #### DONE
 
-- [x] Add MRPT2
-- [x] Add stability analysis for unrestricted calculations
-- [x] Finish MP2 (add natural orbital option)
-- [x] Add roots to CASSCF
-- [x] Add resolution of identity / cholesky
+- [x] Add CASCI (no orbital rotations)
 - [x] Add UHF guess mix
 - [x] Add units for xyz
 - [x] Support loading from structure from a file
 - [x] Add support for integral direct methods
+- [x] Add resolution of identity / cholesky
+- [x] Add roots to CASSCF
+- [x] Finish MP2 (add natural orbital option)
+- [x] Add stability analysis for unrestricted calculations
+- [x] Add MRPT2
 
 ## Credit
 

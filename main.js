@@ -104,8 +104,8 @@ function updateScfTypeOptions() {
   scfTypeSelect.innerHTML = '';
 
   const options = calcMethod === 'DFT' ?
-    ['RKS', 'UKS', 'ROKS'] :
-    ['RHF', 'UHF', 'ROHF'];
+    ['Auto', 'RKS', 'UKS', 'ROKS'] :
+    ['Auto', 'RHF', 'UHF', 'ROHF'];
 
   options.forEach(option => {
     const optionElement = document.createElement('option');
@@ -120,7 +120,7 @@ function updateScfTypeOptions() {
   });
 }
 
-function buildCoords() {
+function buildCoordsStr() {
   const charge = document.getElementById("charge").value;
   const multiplicity = document.getElementById("multiplicity").value;
   const useFile = document.getElementById("file_toggle").checked;
@@ -135,25 +135,41 @@ ${coords}
   }
 }
 
+function buildSCFStr() {
+  const scfType = document.getElementById("scf_type").value;
+
+  if (scfType === "Auto") {
+    return "";
+  }
+
+  const doDirect = document.getElementById("integral_direct_toggle").checked;
+  const doStab = document.getElementById('stability_toggle').checked;
+
+  let scfTemplate = `
+
+%scf
+  HFType {{SCF_TYPE}}{{DIRECT_BLOCK}}{{STAB_STRING}}
+end`
+
+  scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", scfType);
+  scfTemplate = scfTemplate.replace("{{DIRECT_BLOCK}}", doDirect ? "\n  SCFMode Direct" : "");
+  scfTemplate = scfTemplate.replace("{{DIRECT_BLOCK}}", doDirect ? "\n  SCFMode Direct" : "");
+  scfTemplate = scfTemplate.replace("{{STAB_STRING}}", doStab ? "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable" : "");
+
+  return scfTemplate;
+}
+
 const programTemplates = {
   Orca: {
     DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-    HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{MIX_GUESS}}
-
-%scf
-  HFTyp {{SCF_TYPE}}{{DIRECT_BLOCK}}{{STAB_STRING}}
-end
+    HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{MIX_GUESS}}{{SCF_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-    DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{MIX_GUESS}}
-
-%scf
-  HFTyp {{SCF_TYPE}}{{DIRECT_BLOCK}}{{STAB_STRING}}
-end
+    DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{MIX_GUESS}}{{SCF_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
@@ -277,17 +293,9 @@ function getTemplate(calcMethod) {
   } else {
     template = programTemplate[calcMethod] || programTemplate.DEFAULT;
   }
-  // Stability check
-  const doStab = document.getElementById('stability_toggle').checked;
-  const isUnrestriced = document.getElementById("scf_type").value.startsWith("U");
-
-  if (isUnrestriced && doStab) {
-    template = template.replace("{{STAB_STRING}}", "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable");
-  } else {
-    template = template.replace("{{STAB_STRING}}", "");
-  }
 
   // Mix Guess
+  const isUnrestriced = document.getElementById("scf_type").value.startsWith("U");
   const mixGuess = document.getElementById('guessmix_toggle').checked;
   if (isUnrestriced && mixGuess) {
     template = template.replace("{{MIX_GUESS}}", " GUESSMIX");
@@ -324,7 +332,7 @@ function generateInputFile() {
   const includeFreq = document.getElementById('freq_toggle').checked;
   let basisSet = document.getElementById('basis_param').value;
   const scfType = document.getElementById('scf_type').value;
-  let moleculeStructure = buildCoords();
+  let moleculeStructure = buildCoordsStr();
   const charge = document.getElementById('charge')?.value || '0';
   const multiplicity = document.getElementById('multiplicity')?.value || '1';
   const doRI = document.getElementById("ri_toggle").checked;
@@ -337,11 +345,14 @@ function generateInputFile() {
 
   let template = getTemplate(calcMethod);
 
+  const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
+  if (isSCF) {
+    const scfBlock = buildSCFStr();
+    template = template.replace("{{SCF_BLOCK}}", scfBlock);
+  }
+
   if (doDirect) {
-    const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
-    if (isSCF) {
-      template = template.replace("{{DIRECT_BLOCK}}", "\n  SCFMode Direct");
-    } else {
+    if (!isSCF) {
       template = template.replace("{{DIRECT_BLOCK}}", `
 
 %scf
@@ -350,7 +361,6 @@ end`);
     }
   } else {
     template = template.replace("{{DIRECT_BLOCK}}", "");
-
   }
 
   let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
@@ -362,7 +372,6 @@ end`);
     .replace('{{CHARGE}}', charge)
     .replaceAll('{{MULTIPLICITY}}', multiplicity)
     .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
-    .replace('{{SCF_TYPE}}', scfType)
     .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "");
 
   // Method-specific replacements
