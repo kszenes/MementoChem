@@ -230,7 +230,7 @@ function getTemplate(calcMethod) {
         break;
       case "CASPT2":
         ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_CASPT2\n" +
-          "  PTSettings\n    CASPT2_ishift 0.0     # imaginary shift (recommended to increase)\n" +
+          "  PTSettings\n    CASPT2_ishift 0.0     # imaginary shift\n" +
           "    CASPT2_rshift 0.0     # real shift\n    CASPT2_IPEAshift 0.0";
         break;
     }
@@ -249,6 +249,25 @@ function getTemplate(calcMethod) {
   }
 
   return template;
+}
+
+function formatCodeWithComments(codeText, commentChar = '#') {
+  // Split by newlines and process each line
+  return codeText.split('\n').map(line => {
+    const commentIndex = line.indexOf(commentChar);
+
+    // If comment character exists
+    if (commentIndex !== -1) {
+      const codePart = line.slice(0, commentIndex);  // The code before the comment
+      const commentPart = line.slice(commentIndex);  // The comment part
+
+      // Retain leading whitespace before the code
+      return `${codePart}<span class="comment">${commentPart}</span>`;
+    }
+
+    // If no comment character, return the line as it is
+    return line;
+  }).join('\n');
 }
 
 // Input Generation Functions
@@ -290,7 +309,7 @@ function generateInputFile() {
 
   // Update output
   const outputTextArea = document.getElementById('output_text');
-  if (outputTextArea) outputTextArea.innerText = template;
+  if (outputTextArea) outputTextArea.innerHTML = formatCodeWithComments(template);
 }
 
 // Clipboard function

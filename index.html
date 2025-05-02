@@ -48,6 +48,10 @@
       white-space: pre-wrap; /* Wrap long lines instead of breaking them */
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for extra contrast */
     }
+    code .comment {
+      color: #888; /* Grey color */
+      font-style: italic;
+    }
   </style>
   <body>
     <div class="container-fluid border bg-light">
@@ -79,15 +83,18 @@
                     <option value="OPTTS">Transition State Opt</option>
                   </select>
                 </div>
-                <div class="col-auto">
-                  <label for="freq_checkbox" class="form-label d-block"
-                    >Freq</label
-                  >
-                  <input
-                    type="checkbox"
-                    class="form-check-input mt-2"
-                    id="freq_checkbox"
-                  />
+
+                <div class="col-auto d-flex align-items-end">
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <label for="freq_checkbox" class="form-label mb-0"
+                      >Freq</label
+                    >
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      id="freq_checkbox"
+                    />
+                  </div>
                 </div>
               </div>
 
