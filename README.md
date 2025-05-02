@@ -19,7 +19,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
   - [ ] OpenMolcas
   - [ ] Psi4
   - [ ] PySCF
-- [~] Add syntax highlighting
+- [ ] Add syntax highlighting
 
 #### DONE
 - [x] Add MRPT2
