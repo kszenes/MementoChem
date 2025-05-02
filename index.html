@@ -35,6 +35,19 @@
       z-index: 1030; /* Same as Bootstrap's navbar, high enough to be above most elements */
       border-top: 1px solid #dee2e6; /* Subtle separator */
     }
+    #output_text {
+      display: block; /* Make it a block-level element */
+      padding: 10px; /* Add some padding for better spacing */
+      background-color: #f1f1f1; /* Light background to contrast with light-bg */
+      border: 1px solid #ccc; /* Add a subtle border */
+      border-radius: 5px; /* Rounded corners */
+      font-family:
+        Consolas, Monaco, monospace; /* Monospace font for code appearance */
+      color: #333; /* Dark text for contrast */
+      overflow-x: auto; /* Allow horizontal scrolling if the content overflows */
+      white-space: pre-wrap; /* Wrap long lines instead of breaking them */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for extra contrast */
+    }
   </style>
   <body>
     <div class="container-fluid border bg-light">
@@ -229,12 +242,14 @@
         <div class="col-6">
           <div class="p-3 mt-3">
             <h3>Generated Input File</h3>
-            <textarea
-              id="output_text"
-              class="form-control"
-              rows="20"
-              readonly
-            ></textarea>
+            <div class="code-container position-relative">
+              <button
+                class="copy-btn btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2"
+              >
+                Copy
+              </button>
+              <code id="output_text"></code>
+            </div>
           </div>
         </div>
       </div>

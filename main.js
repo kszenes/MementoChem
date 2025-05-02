@@ -290,7 +290,38 @@ function generateInputFile() {
 
   // Update output
   const outputTextArea = document.getElementById('output_text');
-  if (outputTextArea) outputTextArea.value = template;
+  if (outputTextArea) outputTextArea.innerText = template;
+}
+
+// Clipboard function
+function copyToClipboard() {
+  const outputText = document.getElementById('output_text');
+  if (!outputText) return;
+
+  // Create range and select the text
+  const range = document.createRange();
+  range.selectNode(outputText);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+
+  try {
+    // Execute copy command
+    const successful = document.execCommand('copy');
+    const copyBtn = document.querySelector('.copy-btn');
+
+    if (successful && copyBtn) {
+      // Visual feedback
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+      }, 2000);
+    }
+  } catch (err) {
+    console.error('Failed to copy text: ', err);
+  }
+
+  // Clean up
+  window.getSelection().removeAllRanges();
 }
 
 // In the initializeForm() function, update the formElements array and event listeners:
@@ -331,6 +362,12 @@ function initializeForm() {
   updateScfTypeOptions();
   document.getElementById('xyz_file').value = "N 0 0 0\nN 0 0 1.098";
   generateInputFile();
+
+  // Set up copy button
+  const copyBtn = document.querySelector('.copy-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', copyToClipboard);
+  }
 }
 
 // Start the application
