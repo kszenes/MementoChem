@@ -1,7 +1,7 @@
 ## Description
 
 <p align="center">
-  <img width="700" alt="Screenshot 2025-05-02 at 09 56 34" src="https://github.com/user-attachments/assets/d34f471c-ffd2-4f75-93b9-c10100e5fd4f" />
+  <img width="700" alt="Screenshot 2025-05-02 at 10 35 07" src="https://github.com/user-attachments/assets/93306aa7-e0c2-4f60-9b5e-af6efec696bc" />
 </p>
 
 This repo hosts the source for the website https://kszenes.github.io/QCMemento/ which provides an interface for generating input files for common quantum chemistry programs.
@@ -20,6 +20,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
   - [ ] Psi4
   - [ ] PySCF
 - [ ] Add syntax highlighting
+- [ ] Add input validation (e.g., multiplicity makes sense)
 
 #### DONE
 - [x] Add MRPT2
