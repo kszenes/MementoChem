@@ -1,7 +1,7 @@
 ## Description
 
 <p align="center">
-  <img width="700" alt="Screenshot 2025-05-02 at 10 35 07" src="https://github.com/user-attachments/assets/93306aa7-e0c2-4f60-9b5e-af6efec696bc" />
+  <img width="800" alt="Screenshot 2025-05-02 at 13 44 08" src="https://github.com/user-attachments/assets/c1f39fee-4f4f-4a41-a0d1-b4f322ea2d5f" />
 </p>
 
 This repo hosts the source for the website https://kszenes.github.io/MementoQC/ which provides an interface for generating input files for common quantum chemistry programs.
