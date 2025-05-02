@@ -128,8 +128,7 @@ function buildCoords() {
     const coords = document.getElementById("xyz_geom").value
     return `* xyz ${charge} ${multiplicity}
 ${coords}
-*
-    `
+*`
   }
 }
 
