@@ -13,7 +13,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 
 - [ ] Add CASCI (no orbital rotations)
 - [ ] Add counterpoise correction
-- [ ] Add UHF guest mix
+- [ ] Add UHF guess mix
 - [ ] Add support for second-order solvers
 - [ ] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
 - [ ] Add support for integral direct methods
