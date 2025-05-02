@@ -4,7 +4,7 @@
   <img width="700" alt="Screenshot 2025-05-02 at 10 35 07" src="https://github.com/user-attachments/assets/93306aa7-e0c2-4f60-9b5e-af6efec696bc" />
 </p>
 
-This repo hosts the source for the website https://kszenes.github.io/QCMemento/ which provides an interface for generating input files for common quantum chemistry programs.
+This repo hosts the source for the website https://kszenes.github.io/MementoQC/ which provides an interface for generating input files for common quantum chemistry programs.
 It has currently limited capabilities (only supports ORCA so far) but will be extended in the future, see Roadmap below.
 
 ### Roadmap
