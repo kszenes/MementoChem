@@ -44,6 +44,9 @@ function updateCalculationMethod() {
     case 'CASSCF':
       showElement('casscf-options');
       break;
+    case 'CASCI':
+      showElement('casscf-options');
+      break;
     case 'MP2':
       showElement('mp2-options');
       break;
@@ -158,8 +161,8 @@ end
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-    CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}{{DIRECT_BLOCK}}
-
+    CAS: `! {{CALC_TYPE}} {{BASIS_SET}}{{DIRECT_BLOCK}}
+{{ORB_ROT}}
 %casscf
   nel     {{ACTIVE_ELECTRONS}}
   norb    {{ACTIVE_ORBITALS}}
@@ -201,7 +204,7 @@ mol = gto.M(atom=geom, basis="{{BASIS_SET}}", charge={{CHARGE}}, spin={{MULTIPLI
 mf = scf.{{SCF_TYPE}}(mol).run()
 mf.MP2().run()
 `,
-    CASSCF: `from pyscf import gto, scf, mcscf
+    CAS: `from pyscf import gto, scf, mcscf
 geom="""
 {{MOLECULE_STRUCTURE}}
 """
@@ -234,9 +237,21 @@ function getTemplate(calcMethod) {
     else {
       template = template.replace("{{NATORB_BLOCK}}", "");
     }
-  } else if (calcMethod === "CASSCF") {
-    template = programTemplate.CASSCF;
+  } else if (calcMethod.startsWith("CAS")) {
+    template = programTemplate.CAS;
+
+    if (calcMethod === "CASSCF") {
+      template = template.replace("{{ORB_ROT}}", "");
+    } else if (calcMethod === "CASCI") {
+      template = template.replace("{{ORB_ROT}}", `
+!MORead NoIter
+%MoInp "your-orbitals.gbw"`);
+    }
+
+    // RI approx
     template = template.replace("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI" : "");
+
+    // Perturbation theory
     const ptMethod = document.getElementById('active_pt').value;
     let ptStr = "";
 
@@ -354,7 +369,7 @@ end`);
   if (calcMethod === 'DFT') {
     const dftFunctional = document.getElementById('dft_functional').value.toUpperCase();
     template = template.replace('{{DFT_FUNCTIONAL}}', dftFunctional);
-  } else if (calcMethod === 'CASSCF') {
+  } else if (calcMethod.startsWith("CAS")) {
     const activeElectrons = document.getElementById('active_electrons')?.value || '6';
     const activeOrbitals = document.getElementById('active_orbitals')?.value || '6';
     const activeNroots = document.getElementById('active_nroots')?.value || '1';
