@@ -13,6 +13,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 
 - [ ] Add CASCI (no orbital rotations)
 - [ ] Add counterpoise correction
+- [ ] Add support for second-order solvers
 - [ ] Add resolution of identity / cholesky
 - [ ] Add PES scan
 - [ ] Add units for xyz
