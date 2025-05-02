@@ -54,9 +54,9 @@ function updateCalculationMethod() {
 
 
 function toggleFileInput() {
-  const isChecked = document.getElementById("fileCheckbox").checked;
-  toggleElementVisibility("file-input", isChecked);
-  toggleElementVisibility("xyz-input", !isChecked);
+  const isChecked = document.getElementById("file_toggle").checked;
+  toggleElementVisibility("xyz_file_field", isChecked);
+  toggleElementVisibility("xyz_input_field", !isChecked);
 }
 
 // Data Loading Functions
@@ -117,36 +117,48 @@ function updateScfTypeOptions() {
   });
 }
 
+function buildCoords() {
+  const charge = document.getElementById("charge").value;
+  const multiplicity = document.getElementById("multiplicity").value;
+  const useFile = document.getElementById("file_toggle").checked;
+  if (useFile) {
+    const fname = document.getElementById("xyz_file_name").value;
+    return `* xyzfile ${charge} ${multiplicity} ${fname}`
+  } else {
+    const coords = document.getElementById("xyz_geom").value
+    return `* xyz ${charge} ${multiplicity}
+${coords}
+*
+    `
+  }
+}
+
 const programTemplates = {
   Orca: {
     DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
 {{UNIT}}
-* xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
-*`,
+`,
     HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{MIX_GUESS}}
 
 %scf
   HFTyp {{SCF_TYPE}}{{STAB_STRING}}
 end
 {{UNIT}}
-* xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
-*`,
+`,
     DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{MIX_GUESS}}
 
 %scf
   HFTyp {{SCF_TYPE}}{{STAB_STRING}}
 end
 {{UNIT}}
-* xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
-*`,
+`,
     MP2: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}{{NATORB_BLOCK}}
 {{UNIT}}
-* xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
-*`,
+`,
     CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}
 
 %casscf
@@ -156,9 +168,8 @@ end
   nroots  {{ACTIVE_NROOTS}}{{RI_BLOCK}}{{PT_STRING}}
 end
 {{UNIT}}
-* xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
-*`
+`
   },
   PySCF: {
     DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
@@ -299,7 +310,7 @@ function generateInputFile() {
   const includeFreq = document.getElementById('freq_toggle').checked;
   let basisSet = document.getElementById('basis_param').value.toUpperCase();
   const scfType = document.getElementById('scf_type').value;
-  let moleculeStructure = document.getElementById('xyz_file').value;
+  let moleculeStructure = buildCoords();
   const charge = document.getElementById('charge')?.value || '0';
   const multiplicity = document.getElementById('multiplicity')?.value || '1';
   const doRI = document.getElementById("ri_toggle").checked;
@@ -327,8 +338,8 @@ function generateInputFile() {
     const dftFunctional = document.getElementById('dft_functional').value.toUpperCase();
     template = template.replace('{{DFT_FUNCTIONAL}}', dftFunctional);
   } else if (calcMethod === 'CASSCF') {
-    const activeElectrons = document.getElementById('active_electrons')?.value || '3';
-    const activeOrbitals = document.getElementById('active_orbitals')?.value || '3';
+    const activeElectrons = document.getElementById('active_electrons')?.value || '6';
+    const activeOrbitals = document.getElementById('active_orbitals')?.value || '6';
     const activeNroots = document.getElementById('active_nroots')?.value || '1';
     template = template
       .replace('{{ACTIVE_ELECTRONS}}', activeElectrons)
@@ -380,8 +391,6 @@ function adjustPadding() {
   container.style.paddingBottom = `${footerHeight}px`;
   container.style.minHeight = `calc(100vh - ${footerHeight}px)`;
 }
-window.addEventListener("load", adjustPadding);
-window.addEventListener("resize", adjustPadding);
 
 
 // In the initializeForm() function, update the formElements array and event listeners:
@@ -394,9 +403,10 @@ function initializeForm() {
   const formElements = [
     'qc_program', 'calc_param', 'basis_param', 'scf_type',
     'calc_type', 'freq_toggle', 'charge',
-    'multiplicity', 'xyz_file', 'dft_functional',
+    'multiplicity', 'xyz_geom', 'dft_functional',
     'active_electrons', 'active_orbitals', 'active_nroots',
-    'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit", "guessmix_toggle"
+    'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
+    "guessmix_toggle", "file_toggle", "xyz_file_name"
   ];
 
   formElements.forEach(id => {
@@ -418,9 +428,17 @@ function initializeForm() {
     });
   }
 
+  const fileToggle = document.getElementById("file_toggle");
+  if (fileToggle) {
+    fileToggle.addEventListener("change", function() {
+      toggleFileInput();
+    })
+  }
+
   // Set initial values
   updateScfTypeOptions();
-  document.getElementById('xyz_file').value = "N 0 0 0\nN 0 0 1.098";
+  document.getElementById('xyz_geom').value = "N 0 0 0\nN 0 0 1.098";
+  document.getElementById('xyz_file_name').value = "geom.xyz";
   generateInputFile();
 
   // Set up copy button

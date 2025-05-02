@@ -85,7 +85,7 @@
                 <div class="col">
                   <div class="form-floating">
                     <select id="calc_type" class="form-select">
-                      <option value="SP">Single Point</option>
+                      <option value="SP">Energy</option>
                       <option value="OPT">Geometry Opt</option>
                       <option value="OPTTS">Transition State Opt</option>
                     </select>
@@ -291,16 +291,50 @@
                     <label for="dist_unit">Units</label>
                   </div>
                 </div>
+                <div class="col">
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="file_toggle"
+                    autocomplete="off"
+                  />
+                  <label class="btn btn-outline-secondary" for="file_toggle"
+                    >File</label
+                  >
+                </div>
               </div>
 
               <!-- XYZ Geometry Input -->
               <div id="xyz-input" class="col">
-                <label for="xyz_file" class="form-label">XYZ Geometry</label>
-                <textarea
-                  id="xyz_file"
-                  class="form-control"
-                  rows="6"
-                ></textarea>
+                <div class="container p-0">
+                  <div class="row">
+                    <div class="col" id="xyz_input_field">
+                      <label for="xyz_geom" class="form-label"
+                        >XYZ Geometry</label
+                      >
+                      <textarea
+                        id="xyz_geom"
+                        class="form-control"
+                        rows="6"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col d-none" id="xyz_file_field">
+                      <div class="input-group mt-3">
+                        <span class="input-group-text" id="basic-addon1"
+                          >XYZ File</span
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="xyz_file_name"
+                          value="geom.xyz"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </form>
           </div>

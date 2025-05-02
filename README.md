@@ -26,6 +26,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [ ] Add input validation (e.g., multiplicity makes sense)
 
 #### DONE
+
 - [x] Add MRPT2
 - [x] Add stability analysis for unrestricted calculations
 - [x] Finish MP2 (add natural orbital option)
@@ -33,6 +34,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [x] Add resolution of identity / cholesky
 - [x] Add UHF guess mix
 - [x] Add units for xyz
+- [x] Support loading from structure from a file
 
 ## Credit
 
