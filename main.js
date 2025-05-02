@@ -153,10 +153,10 @@ end
     CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}
 
 %casscf
-  nel    {{ACTIVE_ELECTRONS}}
-  norb   {{ACTIVE_ORBITALS}}
-  mult   {{MULTIPLICITY}}
-  roots  {{ACTIVE_NROOTS}}{{PT_STRING}}
+  nel     {{ACTIVE_ELECTRONS}}
+  norb    {{ACTIVE_ORBITALS}}
+  mult    {{MULTIPLICITY}}
+  nroots  {{ACTIVE_NROOTS}}{{PT_STRING}}
 end
 
 * xyz {{CHARGE}} {{MULTIPLICITY}}
