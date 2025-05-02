@@ -118,7 +118,7 @@
                       <option value="MP2">MP2</option>
                       <option value="CCSD">CCSD</option>
                       <option value="CCSD(T)">CCSD(T)</option>
-                      <option value="CCSDT">CCSDT</option>
+                      <!-- <option value="CCSDT">CCSDT</option> -->
                     </select>
                     <label for="calc_param">Method</label>
                   </div>
@@ -135,7 +135,7 @@
                     <label for="scf_type">SCF Type</label>
                   </div>
                 </div>
-                <div class="col">
+                <div class="col-auto pe-1">
                   <input
                     type="checkbox"
                     class="btn-check"
@@ -146,12 +146,23 @@
                     >RI / DF</label
                   >
                 </div>
+                <div class="col-auto ps-1">
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="integral_direct_toggle"
+                    autocomplete="off"
+                  />
+                  <label class="btn btn-outline-secondary" for="integral_direct_toggle"
+                    >Direct</label
+                  >
+                </div>
               </div>
 
               <!-- Method-specific options -->
 
               <div class="row">
-                <div id="dft-options" class="d-none col mb-3">
+                <div id="dft-options" class="d-none col-auto mb-3">
                   <div class="form-floating">
                     <select id="dft_functional" class="form-select"></select>
                     <label for="dft_functional">XC Functional</label>

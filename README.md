@@ -15,7 +15,6 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [ ] Add counterpoise correction
 - [ ] Add support for second-order solvers
 - [ ] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
-- [ ] Add support for integral direct methods
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
 - [ ] Add other chemistry programs:
@@ -35,6 +34,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [x] Add UHF guess mix
 - [x] Add units for xyz
 - [x] Support loading from structure from a file
+- [x] Add support for integral direct methods
 
 ## Credit
 

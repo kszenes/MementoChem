@@ -77,7 +77,7 @@ async function loadTextData(url, elementId, defaultValue) {
 
     data.forEach(item => {
       const option = document.createElement('option');
-      option.value = item.name.toLowerCase().replace(/\s+/g, '');
+      option.value = item.name.replace(/\s+/g, '');
       option.textContent = item.name;
       option.title = item.description;
       selectElement.appendChild(option);
@@ -135,14 +135,14 @@ ${coords}
 
 const programTemplates = {
   Orca: {
-    DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
+    DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
     HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{MIX_GUESS}}
 
 %scf
-  HFTyp {{SCF_TYPE}}{{STAB_STRING}}
+  HFTyp {{SCF_TYPE}}{{DIRECT_BLOCK}}{{STAB_STRING}}
 end
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
@@ -150,16 +150,16 @@ end
     DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{MIX_GUESS}}
 
 %scf
-  HFTyp {{SCF_TYPE}}{{STAB_STRING}}
+  HFTyp {{SCF_TYPE}}{{DIRECT_BLOCK}}{{STAB_STRING}}
 end
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-    MP2: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}{{NATORB_BLOCK}}
+    MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}{{NATORB_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-    CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}
+    CASSCF: `! {{CALC_TYPE}} {{BASIS_SET}}{{DIRECT_BLOCK}}
 
 %casscf
   nel     {{ACTIVE_ELECTRONS}}
@@ -308,19 +308,37 @@ function generateInputFile() {
   const calcType = document.getElementById('calc_type').value;
   const calcMethod = document.getElementById('calc_param').value;
   const includeFreq = document.getElementById('freq_toggle').checked;
-  let basisSet = document.getElementById('basis_param').value.toUpperCase();
+  let basisSet = document.getElementById('basis_param').value;
   const scfType = document.getElementById('scf_type').value;
   let moleculeStructure = buildCoords();
   const charge = document.getElementById('charge')?.value || '0';
   const multiplicity = document.getElementById('multiplicity')?.value || '1';
   const doRI = document.getElementById("ri_toggle").checked;
   const useBohr = document.getElementById("dist_unit").value === "Bohr";
+  const doDirect = document.getElementById("integral_direct_toggle").checked;
 
   if (doRI) {
     basisSet += " " + basisSet + "/C";
   }
 
   let template = getTemplate(calcMethod);
+
+  if (doDirect) {
+    const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
+    if (isSCF) {
+      template = template.replace("{{DIRECT_BLOCK}}", "\n  SCFMode Direct");
+    } else {
+      template = template.replace("{{DIRECT_BLOCK}}", `
+
+%scf
+  SCFMode Direct
+end`);
+    }
+  } else {
+    template = template.replace("{{DIRECT_BLOCK}}", "");
+
+  }
+
   let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
 
   // Common replacements
@@ -396,8 +414,9 @@ function adjustPadding() {
 // In the initializeForm() function, update the formElements array and event listeners:
 function initializeForm() {
   // Load data
-  loadTextData('./basis_sets.txt', 'basis_param', 'cc-pvdz');
-  loadTextData('./dft_functionals.txt', 'dft_functional', 'b3lyp');
+  // NOTE: CASE SENSITIVE
+  loadTextData('./basis_sets.txt', 'basis_param', 'cc-pVDZ');
+  loadTextData('./dft_functionals.txt', 'dft_functional', 'B3LYP');
 
   // Set up event listeners
   const formElements = [
@@ -406,7 +425,7 @@ function initializeForm() {
     'multiplicity', 'xyz_geom', 'dft_functional',
     'active_electrons', 'active_orbitals', 'active_nroots',
     'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
-    "guessmix_toggle", "file_toggle", "xyz_file_name"
+    "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle"
   ];
 
   formElements.forEach(id => {
