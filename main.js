@@ -343,6 +343,18 @@ function copyToClipboard() {
   window.getSelection().removeAllRanges();
 }
 
+// JavaScript to dynamically adjust padding-bottom based on footer height
+function adjustPadding() {
+  const footer = document.querySelector('footer.fixed-footer');
+  const container = document.querySelector('.container-fluid');
+  const footerHeight = footer.offsetHeight;
+  container.style.paddingBottom = `${footerHeight}px`;
+  container.style.minHeight = `calc(100vh - ${footerHeight}px)`;
+}
+window.addEventListener("load", adjustPadding);
+window.addEventListener("resize", adjustPadding);
+
+
 // In the initializeForm() function, update the formElements array and event listeners:
 function initializeForm() {
   // Load data

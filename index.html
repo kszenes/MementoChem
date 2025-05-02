@@ -12,12 +12,9 @@
   </head>
   <style>
     html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
     .container-fluid {
-      min-height: 100vh;
+      min-height: calc(100vh - 20px); /* Adjust based on footer height */
+      padding-bottom: 20px; /* Adjust to the footer height */
       border: 1px solid #f8f9fa; /* Light border */
     }
     .fixed-footer {
@@ -25,6 +22,7 @@
       left: 0;
       right: 0;
       bottom: 0;
+      min-height: 20px;
       background-color: rgba(
         248,
         249,
@@ -57,13 +55,13 @@
     <div class="container-fluid border bg-light">
       <div class="row">
         <!-- Left Column: Form Inputs -->
-        <div class="col-md-6 col-sm-12">
+        <div class="col-sm-6">
           <div class="p-3 mt-3">
             <h3>General</h3>
             <form id="selectionForm">
               <!-- Row for Program and Calculation Type -->
               <div class="row mb-3">
-                <div class="col-auto">
+                <div class="col">
                   <label for="qc_program" class="form-label">Program</label>
                   <select id="qc_program" class="form-select" disabled>
                     <option value="Orca">Orca</option>
@@ -73,9 +71,9 @@
                   </select>
                 </div>
 
-                <div class="col-auto">
+                <div class="col">
                   <label for="calc_type" class="form-label"
-                    >Calculation Type</label
+                    >Calc Type</label
                   >
                   <select id="calc_type" class="form-select">
                     <option value="SP">Single Point</option>
@@ -84,7 +82,7 @@
                   </select>
                 </div>
 
-                <div class="col-auto d-flex align-items-end">
+                <div class="col d-flex align-items-end">
                   <input
                     type="checkbox"
                     class="btn-check"
@@ -100,7 +98,7 @@
               <!-- Calculation Parameters Section -->
               <h4>Calculation Parameters</h4>
               <div class="row mb-3">
-                <div class="col-auto">
+                <div class="col">
                   <label for="calc_param" class="form-label">Method</label>
                   <select id="calc_param" class="form-select">
                     <option value="HF">HF</option>
@@ -112,11 +110,11 @@
                     <option value="CCSDT">CCSDT</option>
                   </select>
                 </div>
-                <div class="col-4">
-                  <label for="basis_param" class="form-label">Basis Set</label>
+                <div class="col">
+                  <label for="basis_param" class="form-label">Basis</label>
                   <select id="basis_param" class="form-select"></select>
                 </div>
-                <div class="col-auto" id="scf-type-container">
+                <div class="col" id="scf-type-container">
                   <label for="scf_type" class="form-label">SCF Type</label>
                   <select id="scf_type" class="form-select"></select>
                 </div>
@@ -125,7 +123,7 @@
               <!-- Method-specific options -->
 
               <div class="row">
-                <div id="dft-options" class="d-none col-auto mb-3">
+                <div id="dft-options" class="d-none col mb-3">
                   <label for="dft_functional" class="form-label"
                     >XC Functional</label
                   >
@@ -134,7 +132,7 @@
 
                 <div
                   id="stability_checkbox_container"
-                  class="col-auto d-none mb-3 align-self-end"
+                  class="col d-none mb-3 align-self-end"
                 >
                   <input
                     type="checkbox"
@@ -150,7 +148,7 @@
                 </div>
               </div>
 
-              <div id="mp2-options" class="d-none col-auto mb-3">
+              <div id="mp2-options" class="d-none col mb-3">
                 <input
                   type="checkbox"
                   class="btn-check"
@@ -166,7 +164,7 @@
                   >Active Space</label
                 >
                 <div class="row">
-                  <div class="col-2 mb-3">
+                  <div class="col mb-3">
                     <label for="active_electrons" class="form-label"
                       ># Elec</label
                     >
@@ -177,7 +175,7 @@
                       value="2"
                     />
                   </div>
-                  <div class="col-2 mb-3">
+                  <div class="col mb-3">
                     <label for="active_orbitals" class="form-label"
                       ># Orbs</label
                     >
@@ -188,7 +186,7 @@
                       value="2"
                     />
                   </div>
-                  <div class="col-2 mb-3">
+                  <div class="col mb-3">
                     <label for="active_nroots" class="form-label"
                       ># Roots</label
                     >
@@ -199,7 +197,7 @@
                       value="1"
                     />
                   </div>
-                  <div class="col-auto mb-3">
+                  <div class="col mb-3">
                     <label for="active_pt" class="form-label">MRPT</label>
                     <select id="active_pt" class="form-select">
                       <option value=""></option>
@@ -213,7 +211,7 @@
 
               <h4>Molecule</h4>
               <div class="row">
-                <div class="col-md-3 col-sm-4 mb-3">
+                <div class="col mb-3">
                   <label for="charge" class="form-label">Charge</label>
                   <input
                     type="number"
@@ -222,7 +220,7 @@
                     value="0"
                   />
                 </div>
-                <div class="col-md-3 col-sm-4 mb-3">
+                <div class="col mb-3">
                   <label for="multiplicity" class="form-label"
                     >Multiplicity</label
                   >
@@ -236,7 +234,7 @@
               </div>
 
               <!-- XYZ Geometry Input -->
-              <div id="xyz-input" class="col-9">
+              <div id="xyz-input" class="col">
                 <label for="xyz_file" class="form-label">XYZ Geometry</label>
                 <textarea
                   id="xyz_file"
@@ -249,7 +247,7 @@
         </div>
 
         <!-- Right Column: Display Area -->
-        <div class="col-md-6 col-sm-9">
+        <div class="col-sm-6">
           <div class="p-3 mt-3">
             <h3>Generated Input File</h3>
             <div class="code-container position-relative">
@@ -268,7 +266,7 @@
     <footer class="fixed-footer">
       <div class="container">
         <div class="row">
-          <div class="col-md-6 col-sm-12 text-start">
+          <div class="col text-start">
             <p class="mb-0">
               <i>QCMemento</i>: The Input Generator for Forgetful Chemists 🤓
             </p>
