@@ -242,7 +242,8 @@ function getTemplate(calcMethod) {
   }
   // Stability check
   const doStab = document.getElementById('stability_toggle').checked;
-  if (doStab) {
+  const isUnrestriced = document.getElementById("scf_type").value.startsWith("U");
+  if (isUnrestriced && doStab) {
     template = template.replace("{{STAB_STRING}}", "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable");
   } else {
     template = template.replace("{{STAB_STRING}}", "");
