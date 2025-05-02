@@ -85,16 +85,15 @@
                 </div>
 
                 <div class="col-auto d-flex align-items-end">
-                  <div class="d-flex align-items-center gap-2 mb-2">
-                    <label for="freq_checkbox" class="form-label mb-0"
-                      >Freq</label
-                    >
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="freq_checkbox"
-                    />
-                  </div>
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="freq_toggle"
+                    autocomplete="off"
+                  />
+                  <label class="btn btn-outline-secondary" for="freq_toggle"
+                    >Freq</label
+                  >
                 </div>
               </div>
 
@@ -135,29 +134,33 @@
 
                 <div
                   id="stability_checkbox_container"
-                  class="col-auto mb-3 d-none"
+                  class="col-auto d-none mb-3 align-self-end"
                 >
-                  <label class="form-label d-block">Stability Analysis</label>
-                  <div class="form-check mt-3">
-                    <input
-                      type="checkbox"
-                      class="form-check-input"
-                      id="stability_checkbox"
-                    />
-                  </div>
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="stability_toggle"
+                    autocomplete="off"
+                  />
+                  <label
+                    class="btn btn-outline-secondary"
+                    for="stability_toggle"
+                    >Stability Analysis</label
+                  >
                 </div>
               </div>
+
               <div id="mp2-options" class="d-none col-auto mb-3">
-                <label for="natorb_checkbox" class="form-label d-block"
-                  >Natural Orbitals</label
-                >
                 <input
                   type="checkbox"
-                  class="form-check-input"
-                  id="natorb_checkbox"
+                  class="btn-check"
+                  id="natorb_toggle"
+                  autocomplete="off"
                 />
+                <label class="btn btn-outline-secondary" for="natorb_toggle"
+                  >Natural Orbitals</label
+                >
               </div>
-
               <div id="casscf-options" class="d-none">
                 <label for="active_space" class="form-label"
                   >Active Space</label

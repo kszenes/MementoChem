@@ -214,7 +214,7 @@ function getTemplate(calcMethod) {
     template = programTemplate.DEFAULT.replace("{{CALC_METHOD}}", calcMethod);
   } else if (calcMethod === "MP2") {
     template = programTemplate.MP2;
-    const natorb = document.getElementById('natorb_checkbox').checked;
+    const natorb = document.getElementById('natorb_toggle').checked;
     template = template.replace("{{ENABLE_NATORB}}", natorb ? "\n  NatOrbs  true" : "");
   } else if (calcMethod === "CASSCF") {
     template = programTemplate.CASSCF;
@@ -241,7 +241,7 @@ function getTemplate(calcMethod) {
     template = programTemplate[calcMethod] || programTemplate.DEFAULT;
   }
   // Stability check
-  const doStab = document.getElementById('stability_checkbox').checked;
+  const doStab = document.getElementById('stability_toggle').checked;
   if (doStab) {
     template = template.replace("{{STAB_STRING}}", "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable");
   } else {
@@ -274,7 +274,7 @@ function formatCodeWithComments(codeText, commentChar = '#') {
 function generateInputFile() {
   const calcType = document.getElementById('calc_type').value;
   const calcMethod = document.getElementById('calc_param').value;
-  const includeFreq = document.getElementById('freq_checkbox').checked;
+  const includeFreq = document.getElementById('freq_toggle').checked;
   const basisSet = document.getElementById('basis_param').value;
   const scfType = document.getElementById('scf_type').value;
   const moleculeStructure = document.getElementById('xyz_file').value;
@@ -352,10 +352,10 @@ function initializeForm() {
   // Set up event listeners
   const formElements = [
     'qc_program', 'calc_param', 'basis_param', 'scf_type',
-    'calc_type', 'freq_checkbox', 'charge',
+    'calc_type', 'freq_toggle', 'charge',
     'multiplicity', 'xyz_file', 'dft_functional',
     'active_electrons', 'active_orbitals', 'active_nroots',
-    'active_pt', 'natorb_checkbox', 'stability_checkbox'
+    'active_pt', 'natorb_toggle', 'stability_toggle'
   ];
 
   formElements.forEach(id => {
