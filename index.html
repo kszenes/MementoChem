@@ -50,6 +50,13 @@
       color: #888; /* Grey color */
       font-style: italic;
     }
+    .form-floating select {
+      padding-top: 1.25rem; /* Adjust padding as necessary */
+    }
+
+    .form-floating label {
+      padding-left: 0.55rem; /* Adjust left padding if necessary */
+    }
   </style>
   <body>
     <div class="container-fluid border bg-light">
@@ -62,22 +69,26 @@
               <!-- Row for Program and Calculation Type -->
               <div class="row mb-3">
                 <div class="col">
-                  <label for="qc_program" class="form-label">Program</label>
-                  <select id="qc_program" class="form-select" disabled>
-                    <option value="Orca">Orca</option>
-                    <!-- <option value="PySCF">PySCF</option> -->
-                    <!-- <option value="Molcas">Molcas</option> -->
-                    <!-- <option value="Psi4">Psi4</option> -->
-                  </select>
+                  <div class="form-floating">
+                    <select id="qc_program" class="form-select" disabled>
+                      <option value="Orca">Orca</option>
+                      <!-- <option value="PySCF">PySCF</option> -->
+                      <!-- <option value="Molcas">Molcas</option> -->
+                      <!-- <option value="Psi4">Psi4</option> -->
+                    </select>
+                    <label for="qc_program">Program</label>
+                  </div>
                 </div>
 
                 <div class="col">
-                  <label for="calc_type" class="form-label">Calc Type</label>
-                  <select id="calc_type" class="form-select">
-                    <option value="SP">Single Point</option>
-                    <option value="OPT">Geometry Opt</option>
-                    <option value="OPTTS">Transition State Opt</option>
-                  </select>
+                  <div class="form-floating">
+                    <select id="calc_type" class="form-select">
+                      <option value="SP">Single Point</option>
+                      <option value="OPT">Geometry Opt</option>
+                      <option value="OPTTS">Transition State Opt</option>
+                    </select>
+                    <label for="calc_type">Calc Type</label>
+                  </div>
                 </div>
 
                 <div class="col d-flex align-items-end">
@@ -97,24 +108,30 @@
               <h4>Calculation Parameters</h4>
               <div class="row mb-3">
                 <div class="col">
-                  <label for="calc_param" class="form-label">Method</label>
-                  <select id="calc_param" class="form-select">
-                    <option value="HF">HF</option>
-                    <option value="DFT">DFT</option>
-                    <option value="CASSCF">CASSCF</option>
-                    <option value="MP2">MP2</option>
-                    <option value="CCSD">CCSD</option>
-                    <option value="CCSD(T)">CCSD(T)</option>
-                    <option value="CCSDT">CCSDT</option>
-                  </select>
+                  <div class="form-floating">
+                    <select id="calc_param" class="form-select">
+                      <option value="HF">HF</option>
+                      <option value="DFT">DFT</option>
+                      <option value="CASSCF">CASSCF</option>
+                      <option value="MP2">MP2</option>
+                      <option value="CCSD">CCSD</option>
+                      <option value="CCSD(T)">CCSD(T)</option>
+                      <option value="CCSDT">CCSDT</option>
+                    </select>
+                    <label for="calc_param">Method</label>
+                  </div>
                 </div>
                 <div class="col">
-                  <label for="basis_param" class="form-label">Basis</label>
-                  <select id="basis_param" class="form-select"></select>
+                  <div class="form-floating">
+                    <select id="basis_param" class="form-select"></select>
+                    <label for="basis_param">Basis</label>
+                  </div>
                 </div>
                 <div class="col" id="scf-type-container">
-                  <label for="scf_type" class="form-label">SCF Type</label>
-                  <select id="scf_type" class="form-select"></select>
+                  <div class="form-floating">
+                    <select id="scf_type" class="form-select"></select>
+                    <label for="scf_type">SCF Type</label>
+                  </div>
                 </div>
               </div>
 
@@ -122,10 +139,10 @@
 
               <div class="row">
                 <div id="dft-options" class="d-none col mb-3">
-                  <label for="dft_functional" class="form-label"
-                    >XC Functional</label
-                  >
-                  <select id="dft_functional" class="form-select"></select>
+                  <div class="form-floating">
+                    <select id="dft_functional" class="form-select"></select>
+                    <label for="dft_functional">XC Functional</label>
+                  </div>
                 </div>
 
                 <div
@@ -161,48 +178,50 @@
                 <label for="active_space" class="form-label"
                   >Active Space</label
                 >
-                <div class="row">
+                <div class="row" id="active_space">
                   <div class="col mb-3">
-                    <label for="active_electrons" class="form-label"
-                      ># Elec</label
-                    >
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="active_electrons"
-                      value="2"
-                    />
+                    <div class="form-floating">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="active_electrons"
+                        value="2"
+                      />
+                      <label for="active_electrons"># Elec</label>
+                    </div>
                   </div>
                   <div class="col mb-3">
-                    <label for="active_orbitals" class="form-label"
-                      ># Orbs</label
-                    >
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="active_orbitals"
-                      value="2"
-                    />
+                    <div class="form-floating">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="active_orbitals"
+                        value="2"
+                      />
+                      <label for="active_orbitals"># Orbs</label>
+                    </div>
                   </div>
                   <div class="col mb-3">
-                    <label for="active_nroots" class="form-label"
-                      ># Roots</label
-                    >
-                    <input
-                      type="number"
-                      class="form-control"
-                      id="active_nroots"
-                      value="1"
-                    />
+                    <div class="form-floating">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="active_nroots"
+                        value="1"
+                      />
+                      <label for="active_nroots"># Roots</label>
+                    </div>
                   </div>
                   <div class="col mb-3">
-                    <label for="active_pt" class="form-label">MRPT</label>
-                    <select id="active_pt" class="form-select">
-                      <option value=""></option>
-                      <option value="SC_NEVPT2">SC_NEVPT2</option>
-                      <option value="FIC_NEVPT2">FIC_NEVPT2</option>
-                      <option value="CASPT2">CASPT2</option>
-                    </select>
+                    <div class="form-floating">
+                      <select id="active_pt" class="form-select">
+                        <option value=""></option>
+                        <option value="SC_NEVPT2">SC_NEVPT2</option>
+                        <option value="FIC_NEVPT2">FIC_NEVPT2</option>
+                        <option value="CASPT2">CASPT2</option>
+                      </select>
+                      <label for="active_pt">MRPT</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -210,24 +229,26 @@
               <h4>Molecule</h4>
               <div class="row">
                 <div class="col mb-3">
-                  <label for="charge" class="form-label">Charge</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="charge"
-                    value="0"
-                  />
+                  <div class="form-floating">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="charge"
+                      value="0"
+                    />
+                    <label for="charge">Charge</label>
+                  </div>
                 </div>
                 <div class="col mb-3">
-                  <label for="multiplicity" class="form-label"
-                    >Multiplicity</label
-                  >
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="multiplicity"
-                    value="1"
-                  />
+                  <div class="form-floating">
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="multiplicity"
+                      value="1"
+                    />
+                    <label for="multiplicity">Multiplicity</label>
+                  </div>
                 </div>
               </div>
 
