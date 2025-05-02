@@ -53,7 +53,9 @@
     .form-floating select {
       padding-top: 1.25rem; /* Adjust padding as necessary */
     }
-
+    .rounded-border {
+      border-radius: 10px;
+    }
     .form-floating label {
       padding-left: 0.55rem; /* Adjust left padding if necessary */
     }
@@ -174,54 +176,58 @@
                   >Natural Orbitals</label
                 >
               </div>
-              <div id="casscf-options" class="d-none">
-                <label for="active_space" class="form-label"
-                  >Active Space</label
-                >
-                <div class="row" id="active_space">
-                  <div class="col mb-3">
-                    <div class="form-floating">
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="active_electrons"
-                        value="2"
-                      />
-                      <label for="active_electrons"># Elec</label>
+              <div id="casscf-options" class="row ps-2 mb-3 d-none">
+                <div class="col-8">
+                  <div class="row border rounded-border" id="active_space">
+                    <label
+                      for="active_space"
+                      class="form-label"
+                      >Active Space</label
+                    >
+                    <div class="col mb-3">
+                      <div class="form-floating">
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="active_electrons"
+                          value="2"
+                        />
+                        <label for="active_electrons"># Elec</label>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="form-floating">
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="active_orbitals"
+                          value="2"
+                        />
+                        <label for="active_orbitals"># Orbs</label>
+                      </div>
+                    </div>
+                    <div class="col mb-3">
+                      <div class="form-floating">
+                        <input
+                          type="number"
+                          class="form-control"
+                          id="active_nroots"
+                          value="1"
+                        />
+                        <label for="active_nroots"># Roots</label>
+                      </div>
                     </div>
                   </div>
-                  <div class="col mb-3">
-                    <div class="form-floating">
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="active_orbitals"
-                        value="2"
-                      />
-                      <label for="active_orbitals"># Orbs</label>
-                    </div>
-                  </div>
-                  <div class="col mb-3">
-                    <div class="form-floating">
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="active_nroots"
-                        value="1"
-                      />
-                      <label for="active_nroots"># Roots</label>
-                    </div>
-                  </div>
-                  <div class="col mb-3">
-                    <div class="form-floating">
-                      <select id="active_pt" class="form-select">
-                        <option value=""></option>
-                        <option value="SC_NEVPT2">SC_NEVPT2</option>
-                        <option value="FIC_NEVPT2">FIC_NEVPT2</option>
-                        <option value="CASPT2">CASPT2</option>
-                      </select>
-                      <label for="active_pt">MRPT</label>
-                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                  <div class="form-floating">
+                    <select id="active_pt" class="form-select">
+                      <option value=""></option>
+                      <option value="SC_NEVPT2">SC_NEVPT2</option>
+                      <option value="FIC_NEVPT2">FIC_NEVPT2</option>
+                      <option value="CASPT2">CASPT2</option>
+                    </select>
+                    <label for="active_pt">MRPT</label>
                   </div>
                 </div>
               </div>
