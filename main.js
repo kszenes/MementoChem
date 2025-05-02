@@ -1,22 +1,10 @@
-import ProgramManager from './ProgramManager.js';
 import OrcaProgram from "./programs/orca.js";
+import PySCFProgram from "./programs/pyscf.js";
 
-// Configuration: Switch between programs easily
-const PROGRAMS = {
-  Orca: OrcaProgram,
+const programs = {
+  Orca: new OrcaProgram(document),
+  PySCF: new PySCFProgram(document),
 };
-
-// Initialize manager
-const programManager = new ProgramManager(document);
-programManager.registerProgram('Orca', OrcaProgram);
-
-// Set default program
-programManager.setProgram('Orca'); // Starts with ORCA
-
-// Switch program via UI (e.g., dropdown)
-document.getElementById('qc_program').addEventListener('change', (e) => {
-  programManager.setProgram(e.target.value); // Live switch!
-});
 
 // DOM Helper Functions
 function hideElement(id) {
@@ -98,7 +86,7 @@ function updateCalculationMethod() {
       break;
   }
 
-  programManager.currentProgram.generateInputFile();
+  getCurrentProgram().generateInputFile();
 }
 
 
@@ -181,14 +169,41 @@ function adjustPadding() {
   container.style.minHeight = `calc(100vh - ${footerHeight}px)`;
 }
 
+function getCurrentProgram() {
+  const selectedProgram = document.getElementById('qc_program').value;
+  return programs[selectedProgram]; // Returns the active instance
+}
 
 // In the initializeForm() function, update the formElements array and event listeners:
 function initializeForm() {
-
   // Load data
   // NOTE: CASE SENSITIVE
   loadTextData('./basis_sets.txt', 'basis_param', 'cc-pVDZ');
   loadTextData('./dft_functionals.txt', 'dft_functional', 'B3LYP');
+
+  // Set up event listeners
+  const formElements = [
+    'qc_program', 'calc_param', 'basis_param', 'scf_type',
+    'calc_type', 'freq_toggle', 'charge',
+    'multiplicity', 'xyz_geom', 'dft_functional',
+    'active_electrons', 'active_orbitals', 'active_nroots',
+    'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
+    "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle"
+  ];
+
+  formElements.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.addEventListener('change', () => {
+        getCurrentProgram().generateInputFile();
+      });
+      if (element.type === 'text' || element.tagName === 'TEXTAREA' || element.type === 'number') {
+        element.addEventListener('input', () => {
+          getCurrentProgram().generateInputFile();
+        });
+      }
+    }
+  });
 
   // Special case for calc_param
   const calcParamElement = document.getElementById('calc_param');
@@ -210,7 +225,7 @@ function initializeForm() {
   updateScfTypeOptions();
   document.getElementById('xyz_geom').value = "N 0 0 0\nN 0 0 1.098";
   document.getElementById('xyz_file_name').value = "geom.xyz";
-  programManager.currentProgram.generateInputFile();
+  getCurrentProgram().generateInputFile();
 
   // Set up copy button
   const copyBtn = document.querySelector('.copy-btn');
