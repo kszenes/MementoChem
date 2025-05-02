@@ -229,9 +229,12 @@ function getTemplate(calcMethod) {
         ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_NEVPT2";
         break;
       case "CASPT2":
-        ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_CASPT2\n" +
-          "  PTSettings\n    CASPT2_ishift 0.0     # imaginary shift\n" +
-          "    CASPT2_rshift 0.0     # real shift\n    CASPT2_IPEAshift 0.0";
+        ptStr = "\n\n  # fully internally contracted\n";
+        ptStr += "  PTMethod FIC_CASPT2\n"
+        ptStr += "  PTSettings\n";
+        ptStr += "    CASPT2_ishift    0.0     # imaginary shift\n";
+        ptStr += "    CASPT2_rshift    0.0     # real shift\n";
+        ptStr += "    CASPT2_IPEAshift 0.0";
         break;
     }
     template = template.replace("{{PT_STRING}}", ptStr);
