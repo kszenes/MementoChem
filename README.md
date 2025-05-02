@@ -15,6 +15,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [ ] Add counterpoise correction
 - [ ] Add resolution of identity / cholesky
 - [ ] Add PES scan
+- [ ] Add units for xyz
 - [ ] Add other geometry specification methods besides xyz
 - [ ] Add other chemistry programs:
   - [ ] OpenMolcas
