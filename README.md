@@ -13,13 +13,10 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 
 - [ ] Add CASCI (no orbital rotations)
 - [ ] Add counterpoise correction
-- [ ] Add UHF guess mix
 - [ ] Add support for second-order solvers
 - [ ] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
 - [ ] Add support for integral direct methods
-- [ ] Add resolution of identity / cholesky
 - [ ] Add PES scan
-- [ ] Add units for xyz
 - [ ] Add other geometry specification methods besides xyz
 - [ ] Add other chemistry programs:
   - [ ] OpenMolcas
@@ -33,6 +30,9 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [x] Add stability analysis for unrestricted calculations
 - [x] Finish MP2 (add natural orbital option)
 - [x] Add roots to CASSCF
+- [x] Add resolution of identity / cholesky
+- [x] Add UHF guess mix
+- [x] Add units for xyz
 
 ## Credit
 

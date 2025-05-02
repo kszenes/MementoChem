@@ -135,6 +135,17 @@
                     <label for="scf_type">SCF Type</label>
                   </div>
                 </div>
+                <div class="col">
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="ri_toggle"
+                    autocomplete="off"
+                  />
+                  <label class="btn btn-outline-secondary" for="ri_toggle"
+                    >RI / DF</label
+                  >
+                </div>
               </div>
 
               <!-- Method-specific options -->
@@ -148,20 +159,37 @@
                 </div>
 
                 <div
-                  id="stability_checkbox_container"
+                  id="unrestricted-options"
                   class="col d-none mb-3 align-self-end"
                 >
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    id="stability_toggle"
-                    autocomplete="off"
-                  />
-                  <label
-                    class="btn btn-outline-secondary"
-                    for="stability_toggle"
-                    >Stability Analysis</label
-                  >
+                  <div class="row">
+                    <div class="col-auto">
+                      <input
+                        type="checkbox"
+                        class="btn-check"
+                        id="guessmix_toggle"
+                        autocomplete="off"
+                      />
+                      <label
+                        class="btn btn-outline-secondary"
+                        for="guessmix_toggle"
+                        >Mix Guess</label
+                      >
+                    </div>
+                    <div class="col-auto">
+                      <input
+                        type="checkbox"
+                        class="btn-check"
+                        id="stability_toggle"
+                        autocomplete="off"
+                      />
+                      <label
+                        class="btn btn-outline-secondary"
+                        for="stability_toggle"
+                        >Stability Analysis</label
+                      >
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -179,9 +207,7 @@
               <div id="casscf-options" class="row ps-2 mb-3 d-none">
                 <div class="col-8">
                   <div class="row border rounded-border" id="active_space">
-                    <label
-                      for="active_space"
-                      class="form-label"
+                    <label for="active_space" class="form-label"
                       >Active Space</label
                     >
                     <div class="col mb-3">
@@ -254,6 +280,15 @@
                       value="1"
                     />
                     <label for="multiplicity">Multiplicity</label>
+                  </div>
+                </div>
+                <div class="col mb-3">
+                  <div class="form-floating">
+                    <select id="dist_unit" class="form-select">
+                      <option value="Angstrom">Angstrom</option>
+                      <option value="Bohr">Bohr</option>
+                    </select>
+                    <label for="dist_unit">Units</label>
                   </div>
                 </div>
               </div>

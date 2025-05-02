@@ -21,7 +21,7 @@ function updateCalculationMethod() {
   const scfType = document.getElementById('scf_type').value;
 
   // Hide all options first
-  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'stability_checkbox_container'].forEach(hideElement);
+  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options'].forEach(hideElement);
 
   // Show/hide SCF type based on method
   const scfTypeContainer = document.getElementById('scf-type-container');
@@ -29,9 +29,9 @@ function updateCalculationMethod() {
     scfTypeContainer.classList.remove('d-none');
 
     // Show stability checkbox only for UHF/UKS
-    const showStability = (calcMethod === 'HF' && scfType === 'UHF') ||
+    const showUnrestricted = (calcMethod === 'HF' && scfType === 'UHF') ||
       (calcMethod === 'DFT' && scfType === 'UKS');
-    toggleElementVisibility('stability_checkbox_container', showStability);
+    toggleElementVisibility('unrestricted-options', showUnrestricted);
   } else {
     scfTypeContainer.classList.add('d-none');
   }
@@ -120,33 +120,30 @@ function updateScfTypeOptions() {
 const programTemplates = {
   Orca: {
     DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
-
+{{UNIT}}
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
-    HF: `! {{CALC_TYPE}} {{BASIS_SET}}
+    HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{MIX_GUESS}}
 
 %scf
   HFTyp {{SCF_TYPE}}{{STAB_STRING}}
 end
-
+{{UNIT}}
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
-    DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}
+    DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{MIX_GUESS}}
 
 %scf
   HFTyp {{SCF_TYPE}}{{STAB_STRING}}
 end
-
+{{UNIT}}
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
-    MP2: `! {{CALC_TYPE}} {{BASIS_SET}}
-
-%mp2{{ENABLE_NATORB}}
-end
-
+    MP2: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}{{NATORB_BLOCK}}
+{{UNIT}}
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`,
@@ -156,9 +153,9 @@ end
   nel     {{ACTIVE_ELECTRONS}}
   norb    {{ACTIVE_ORBITALS}}
   mult    {{MULTIPLICITY}}
-  nroots  {{ACTIVE_NROOTS}}{{PT_STRING}}
+  nroots  {{ACTIVE_NROOTS}}{{RI_BLOCK}}{{PT_STRING}}
 end
-
+{{UNIT}}
 * xyz {{CHARGE}} {{MULTIPLICITY}}
 {{MOLECULE_STRUCTURE}}
 *`
@@ -209,15 +206,27 @@ function getTemplate(calcMethod) {
   let template;
   const program = document.getElementById('qc_program').value;
   const programTemplate = programTemplates[program];
+  const doRI = document.getElementById('ri_toggle').checked;
 
   if (calcMethod.startsWith("CC")) {
     template = programTemplate.DEFAULT.replace("{{CALC_METHOD}}", calcMethod);
   } else if (calcMethod === "MP2") {
     template = programTemplate.MP2;
     const natorb = document.getElementById('natorb_toggle').checked;
-    template = template.replace("{{ENABLE_NATORB}}", natorb ? "\n  NatOrbs  true" : "");
+    template = template.replace("{{CALC_METHOD}}", doRI ? "RI-MP2" : "MP2");
+    if (natorb) {
+      template = template.replace("{{NATORB_BLOCK}}", `
+
+%mp2
+  NatOrb true
+%end`);
+    }
+    else {
+      template = template.replace("{{NATORB_BLOCK}}", "");
+    }
   } else if (calcMethod === "CASSCF") {
     template = programTemplate.CASSCF;
+    template = template.replace("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI" : "");
     const ptMethod = document.getElementById('active_pt').value;
     let ptStr = "";
 
@@ -246,11 +255,20 @@ function getTemplate(calcMethod) {
   // Stability check
   const doStab = document.getElementById('stability_toggle').checked;
   const isUnrestriced = document.getElementById("scf_type").value.startsWith("U");
+
   if (isUnrestriced && doStab) {
     template = template.replace("{{STAB_STRING}}", "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable");
   } else {
     template = template.replace("{{STAB_STRING}}", "");
   }
+
+  // Mix Guess
+  const mixGuess = document.getElementById('guessmix_toggle').checked;
+  if (isUnrestriced && mixGuess) {
+    template = template.replace("{{MIX_GUESS}}", " GUESSMIX");
+  } else {
+    template = template.replace("{{MIX_GUESS}}", "");
+  };
 
   return template;
 }
@@ -279,11 +297,17 @@ function generateInputFile() {
   const calcType = document.getElementById('calc_type').value;
   const calcMethod = document.getElementById('calc_param').value;
   const includeFreq = document.getElementById('freq_toggle').checked;
-  const basisSet = document.getElementById('basis_param').value;
+  let basisSet = document.getElementById('basis_param').value.toUpperCase();
   const scfType = document.getElementById('scf_type').value;
-  const moleculeStructure = document.getElementById('xyz_file').value;
+  let moleculeStructure = document.getElementById('xyz_file').value;
   const charge = document.getElementById('charge')?.value || '0';
   const multiplicity = document.getElementById('multiplicity')?.value || '1';
+  const doRI = document.getElementById("ri_toggle").checked;
+  const useBohr = document.getElementById("dist_unit").value === "Bohr";
+
+  if (doRI) {
+    basisSet += " " + basisSet + "/C";
+  }
 
   let template = getTemplate(calcMethod);
   let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
@@ -295,11 +319,12 @@ function generateInputFile() {
     .replace('{{CHARGE}}', charge)
     .replaceAll('{{MULTIPLICITY}}', multiplicity)
     .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
-    .replace('{{SCF_TYPE}}', scfType);
+    .replace('{{SCF_TYPE}}', scfType)
+    .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "");
 
   // Method-specific replacements
   if (calcMethod === 'DFT') {
-    const dftFunctional = document.getElementById('dft_functional').value;
+    const dftFunctional = document.getElementById('dft_functional').value.toUpperCase();
     template = template.replace('{{DFT_FUNCTIONAL}}', dftFunctional);
   } else if (calcMethod === 'CASSCF') {
     const activeElectrons = document.getElementById('active_electrons')?.value || '3';
@@ -371,7 +396,7 @@ function initializeForm() {
     'calc_type', 'freq_toggle', 'charge',
     'multiplicity', 'xyz_file', 'dft_functional',
     'active_electrons', 'active_orbitals', 'active_nroots',
-    'active_pt', 'natorb_toggle', 'stability_toggle'
+    'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit", "guessmix_toggle"
   ];
 
   formElements.forEach(id => {
