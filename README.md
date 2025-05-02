@@ -1,4 +1,4 @@
-# Description
+## Description
 
 <p align="center">
   <img width="700" alt="Screenshot 2025-05-02 at 09 07 57" src="https://github.com/user-attachments/assets/28690d65-134b-46b8-a29e-be364fa8dceb" />
@@ -7,9 +7,9 @@
 This repo hosts the website (https://kszenes.github.io/QCMemento/) which allows to generate input files for common quantum chemistry programs.
 It has currently limited capabilities (only supports ORCA so far) but will be extended further in the future, see below.
 
-## Roadmap
+### Roadmap
 
-### TODO
+#### TODO
 
 - [ ] Add CASCI (no orbital rotations)
 - [ ] Add resolution of identity / cholesky
@@ -21,9 +21,13 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
   - [ ] PySCF
 - [ ] Add syntax highlighting
 
-### DONE
+#### DONE
 - [x] Add MRPT2
 - [x] Add stability analysis for unrestricted calculations
 - [x] Finish MP2 (add natural orbital option)
 - [x] Add roots to CASSCF
 
+## Credit
+
+- List of basis sets are taken from [Basis Set Exchange](https://github.com/MolSSI-BSE/basis_set_exchange)
+- List of DFT functionals are adapted from the [ORCA manual](https://www.faccts.de/docs/orca/6.0/manual/contents/detailed/model.html#choice-of-functional)
