@@ -57,7 +57,7 @@
     <div class="container-fluid border bg-light">
       <div class="row">
         <!-- Left Column: Form Inputs -->
-        <div class="col-6">
+        <div class="col-md-6 col-sm-12">
           <div class="p-3 mt-3">
             <h3>General</h3>
             <form id="selectionForm">
@@ -213,7 +213,7 @@
 
               <h4>Molecule</h4>
               <div class="row">
-                <div class="col-2">
+                <div class="col-md-3 col-sm-4 mb-3">
                   <label for="charge" class="form-label">Charge</label>
                   <input
                     type="number"
@@ -222,7 +222,7 @@
                     value="0"
                   />
                 </div>
-                <div class="col-2 mb-3">
+                <div class="col-md-3 col-sm-4 mb-3">
                   <label for="multiplicity" class="form-label"
                     >Multiplicity</label
                   >
@@ -236,7 +236,7 @@
               </div>
 
               <!-- XYZ Geometry Input -->
-              <div id="xyz-input" class="col-8">
+              <div id="xyz-input" class="col-9">
                 <label for="xyz_file" class="form-label">XYZ Geometry</label>
                 <textarea
                   id="xyz_file"
@@ -249,7 +249,7 @@
         </div>
 
         <!-- Right Column: Display Area -->
-        <div class="col-6">
+        <div class="col-md-6 col-sm-9">
           <div class="p-3 mt-3">
             <h3>Generated Input File</h3>
             <div class="code-container position-relative">
@@ -268,7 +268,7 @@
     <footer class="fixed-footer">
       <div class="container">
         <div class="row">
-          <div class="col-md-6 text-start">
+          <div class="col-md-6 col-sm-12 text-start">
             <p class="mb-0">
               <i>QCMemento</i>: The Input Generator for Forgetful Chemists 🤓
             </p>
