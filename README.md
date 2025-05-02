@@ -12,6 +12,7 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 #### TODO
 
 - [ ] Add CASCI (no orbital rotations)
+- [ ] Add counterpoise correction
 - [ ] Add resolution of identity / cholesky
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
