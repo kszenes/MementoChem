@@ -4,9 +4,9 @@
 
 ## Description
 
-This repo hosts the source for the website https://kszenes.github.io/MementoQC/ which provides an interface for generating input files for common quantum chemistry programs.
-`MementoQC` is not meant to contain an exhaustive set of options but serves more as a template for running common calculations which can then be adapted to the user's needs.
-It has currently limited capabilities --- currently only supports Orca and PySCF --- but will be extended in the future, see Roadmap below.
+This repo hosts the source for the website https://kszenes.github.io/MementoChem/ which provides an interface for generating input files for common quantum chemistry programs.
+`MementoChem` is not meant to contain an exhaustive set of options but serves more as a template for running common calculations which can then be adapted to the user's needs.
+It has currently limited capabilities --- currently supports Orca, PySCF and OpenMolcas --- but will be extended in the future, see Roadmap below.
 
 ### Roadmap
 
