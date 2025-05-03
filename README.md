@@ -1,12 +1,20 @@
 <p align="center">
-  <img width="800" alt="Screenshot 2025-05-02 at 18 16 09" src="https://github.com/user-attachments/assets/cc6315e7-e698-4f68-b7d3-7bf5ea560bf2" />
+  <img width="800" alt="Screenshot 2025-05-04 at 00 21 33" src="https://github.com/user-attachments/assets/8481a020-4fd5-4f31-8488-c89560d0dbe2" />
 </p>
+
+
 
 ## Description
 
-This repo hosts the source for the website www.mementochem.com which provides an interface for generating input files for common quantum chemistry programs.
-`MementoChem` is not meant to contain an exhaustive set of options but serves more as a template for running common calculations which can then be adapted to the user's needs.
-It has currently limited capabilities --- currently supports Orca, PySCF and OpenMolcas --- but will be extended in the future, see Roadmap below.
+This repo hosts the source for the website www.mementochem.com, which provides an interface for generating input files for common quantum chemistry programs.
+`MementoChem` is not meant to contain an exhaustive set of options but serves more as a template generator for common calculations, which can subsequently be adapted by the user.
+It has currently support (with varying degrees) for
+- Orca
+- PySCF
+- OpenMolcas
+- Psi4
+
+ The functionality of `MementoChem` is being actively developed, see Roadmap below.
 
 ### Roadmap
 
@@ -19,10 +27,10 @@ It has currently limited capabilities --- currently supports Orca, PySCF and Ope
 - [ ] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
-- [ ] Add other chemistry programs:
-  - [~] PySCF: Missing geometry optimization and frequency calculation
-  - [~] OpenMolcas: Missing geometry optimization and frequency calculation
-  - [ ] Psi4
+- [-] Add other chemistry programs:
+  - [-] PySCF: Missing geometry optimization and frequency calculation
+  - [-] OpenMolcas: Missing geometry optimization and frequency calculation
+  - [-] Psi4
 - [ ] Add input validation (e.g., multiplicity makes sense)
 
 #### DONE
