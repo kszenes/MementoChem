@@ -2,8 +2,7 @@ import BaseProgram from "./base.js"
 
 class OrcaProgram extends BaseProgram {
   constructor(document) {
-    super();
-    this.document = document;
+    super(document);
     this.commentStr = "#";
     this.templates = {
       DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}
@@ -209,6 +208,9 @@ end`);
         .replace('{{ACTIVE_ORBITALS}}', activeOrbitals)
         .replace('{{ACTIVE_NROOTS}}', activeNroots);
     }
+
+    // Add header
+    template = this.getHeader() + template;
 
     // Update output
     const outputTextArea = this.document.getElementById('output_text');

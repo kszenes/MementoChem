@@ -2,8 +2,7 @@ import BaseProgram from "./base.js"
 
 export default class MolcasProgram extends BaseProgram {
   constructor(document) {
-    super();
-    this.document = document;
+    super(document);
     this.commentStr = "*";
     this.templates = {
       HF: `&GATEWAY
@@ -191,6 +190,9 @@ export default class MolcasProgram extends BaseProgram {
       const casBlock = this.buildCASStr();
       template = template.replace("{{CAS}}", casBlock);
     }
+
+    // Add header
+    template = this.getHeader() + template;
 
     // Update output
     const outputTextArea = this.document.getElementById('output_text');

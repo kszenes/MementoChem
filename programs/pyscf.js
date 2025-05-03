@@ -2,8 +2,7 @@ import BaseProgram from "./base.js"
 
 class PySCFProgram extends BaseProgram {
   constructor(document) {
-    super();
-    this.document = document;
+    super(document);
     this.commentStr = "#";
     this.templates = {
       HF: `from pyscf import gto, scf
@@ -239,6 +238,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 mycc.direct = true` : "");
     }
 
+    template = this.getHeader() + template;
 
     // Update output
     const outputTextArea = this.document.getElementById('output_text');

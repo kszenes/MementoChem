@@ -1,4 +1,13 @@
 export default class BaseProgram {
+  constructor(document) {
+    this.document = document;
+    this.commentStr = "*";
+  }
+
+  getHeader() {
+    return `${this.commentStr} Input Generated using MementoQC\n`;
+  }
+
   buildCoordsStr() {
     throw new Error("Method 'buildCoordsStr()' must be implemented");
   }
