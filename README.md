@@ -5,7 +5,8 @@
 ## Description
 
 This repo hosts the source for the website https://kszenes.github.io/MementoQC/ which provides an interface for generating input files for common quantum chemistry programs.
-It has currently limited capabilities (only supports ORCA so far) but will be extended in the future, see Roadmap below.
+`MementoQC` is not meant to contain an exhaustive set of options but serves more as a template for running common calculations which can then be adapted to the user's needs.
+It has currently limited capabilities --- currently only supports Orca and PySCF --- but will be extended in the future, see Roadmap below.
 
 ### Roadmap
 
@@ -18,9 +19,9 @@ It has currently limited capabilities (only supports ORCA so far) but will be ex
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
 - [ ] Add other chemistry programs:
-  - [ ] OpenMolcas
+  - [~] PySCF: Missing geometry optimization and frequency calculation
   - [ ] Psi4
-  - [ ] PySCF
+  - [ ] OpenMolcas
 - [ ] Add syntax highlighting
 - [ ] Add input validation (e.g., multiplicity makes sense)
 
