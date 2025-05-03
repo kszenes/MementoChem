@@ -12,6 +12,7 @@ It has currently limited capabilities --- currently supports Orca, PySCF and Ope
 
 #### TODO
 
+- [ ] Add frozen core
 - [ ] Add explicit correlation
 - [ ] Add counterpoise correction
 - [ ] Add support for second-order solvers
