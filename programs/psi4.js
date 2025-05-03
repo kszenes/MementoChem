@@ -42,20 +42,7 @@ ${coords}
   }
 
   buildSCFStr() {
-    const scfType = this.document.getElementById("scf_type").value;
-    const calcMethod = this.document.getElementById("calc_param").value;
-    const charge = this.document.getElementById("charge").value;
-    const multiplicity = this.document.getElementById("multiplicity").value;
-    const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
-
     let template = `set reference {{scf_type}}`;
-
-    template = template.replace("{{CHARGE_LINE}}", parseInt(charge) != 0 ? `\n  Charge = ${charge}` : "");
-    template = template.replace("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin = ${multiplicity}` : "");
-
-    template = template.replace("{{UNRESTRICTED}}", scfType.startsWith("U") ? "\n  UHF" : "");
-    template = template.replace("{{DFT_FUNCTIONAL}}", (calcMethod === "DFT") ? `\n  KSDFT = ${dftFunctional}` : "");
-
     return template;
   }
 
@@ -70,7 +57,7 @@ ${coords}
 
     // TODO: Add guess
 
-    let inner = `basis ${basisSet}\nreference ${scfType}`
+    let inner = `basis ${basisSet.toLowerCase()}\nreference ${scfType.toLowerCase()}`
     if (isUnrestriced) {
       inner += mixGuess ? "\nguess_mix true" : "";
       inner += doStab ? "\nstability_analysis follow   # restart if unstable" : "";
@@ -100,7 +87,7 @@ ${inner}
         inner = "scf";
         break;
       case 'DFT':
-        inner = `${dftFunctional}`;
+        inner = `${dftFunctional.toLowerCase()}`;
         break;
       case "CCSD_T":
         inner = "ccsd(t)";
@@ -127,47 +114,6 @@ ${inner}
     return ret;
   }
 
-  buildCASStr() {
-    const activeElectrons = this.document.getElementById('active_electrons')?.value || '6';
-    const activeOrbitals = this.document.getElementById('active_orbitals')?.value || '6';
-    const activeNroots = this.document.getElementById('active_nroots')?.value || '1';
-    const charge = this.document.getElementById("charge").value;
-    const doOrbRot = this.document.getElementById("calc_param").value === "CASSCF";
-
-    const rootStr = `${activeNroots} ${activeNroots} 1`
-
-    let template = `&RASSCF{{ORBROT}}
-  Nactel  = {{NELEC}}
-  RAS2    = {{RAS}}
-  CIRoots = {{ROOTS}}   * State-averaged with equal weight
-  Charge = {{CHARGE_LINE}}   * Automatically deduces #inactive{{PT}}
-`
-
-    template = template
-
-
-    template = template
-      .replace("{{ORBROT}}", doOrbRot ? "" : "\n  CIOnly   * CASCI: No Orbital Rotation")
-      .replace("{{CHARGE_LINE}}", charge)
-      .replace('{{NELEC}}', activeElectrons)
-      .replace('{{RAS}}', activeOrbitals)
-      .replace('{{ROOTS}}', rootStr);
-
-    const ptMethod = this.document.getElementById('active_pt').value;
-    let ptStr = ""
-    if (ptMethod) {
-      ptStr = "\n\n&CASPT2\n";
-      ptStr += "  IPEA  = 0.0\n";
-      ptStr += "  Imag  = 0.0   * Imaginary Shift\n"
-      ptStr += "  Shift = 0.0   * Real Shift"
-    }
-
-    template = template.replace("{{PT}}", ptStr);
-
-    return template;
-
-  }
-
   getTemplate(calcMethod) {
     let template;
 
@@ -180,9 +126,7 @@ ${inner}
     return template;
   }
   generateInputFile() {
-    const calcType = this.document.getElementById('calc_type').value;
     const calcMethod = this.document.getElementById('calc_param').value;
-    const includeFreq = this.document.getElementById('freq_toggle').checked;
 
     let template = this.getTemplate(calcMethod);
 
@@ -200,16 +144,6 @@ ${inner}
 
     const compBlock = this.buildCompStr();
     template = template.replace("{{COMP_BLOCK}}", compBlock);
-
-
-    // TODO:
-    let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
-
-    // Method-specific replacements
-    if (calcMethod.startsWith("CAS")) {
-      const casBlock = this.buildCASStr();
-      template = template.replace("{{CAS}}", casBlock);
-    }
 
     // Add header
     template = this.getHeader() + template;

@@ -42,7 +42,8 @@ function updateScfTypeOptions() {
   if (program === "OpenMolcas") {
     options = calcMethod === "DFT" ? ["RKS", "UKS"] : ["RHF", "UHF"];
   } else if (program === "Psi4") {
-    options = calcMethod === "DFT" ? ["RKS", "UKS", "ROKS"] : ["RHF", "UHF", "ROHF"];
+    // NOTE: no ROKS in Psi4
+    options = calcMethod === "DFT" ? ["RKS", "UKS"] : ["RHF", "UHF", "ROHF"];
   } else {
     options = calcMethod === 'DFT' ?
       ['Auto', 'RKS', 'UKS', 'ROKS'] :
