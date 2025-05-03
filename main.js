@@ -1,9 +1,11 @@
 import OrcaProgram from "./programs/orca.js";
 import PySCFProgram from "./programs/pyscf.js";
+import MolcasProgram from "./programs/openmolcas.js";
 
 const programs = {
   Orca: new OrcaProgram(document),
   PySCF: new PySCFProgram(document),
+  OpenMolcas: new MolcasProgram(document)
 };
 
 // DOM Helper Functions
@@ -33,9 +35,16 @@ function updateScfTypeOptions() {
   const scfTypeSelect = document.getElementById('scf_type');
   scfTypeSelect.innerHTML = '';
 
-  const options = calcMethod === 'DFT' ?
-    ['Auto', 'RKS', 'UKS', 'ROKS'] :
-    ['Auto', 'RHF', 'UHF', 'ROHF'];
+  const program = document.getElementById('qc_program').value;
+  let options;
+  if (program === "OpenMolcas") {
+    options = calcMethod === "DFT" ? ["RKS", "UKS"] : ["RHF", "UHF"];
+  } else {
+    options = calcMethod === 'DFT' ?
+      ['Auto', 'RKS', 'UKS', 'ROKS'] :
+      ['Auto', 'RHF', 'UHF', 'ROHF'];
+  }
+
 
   options.forEach(option => {
     const optionElement = document.createElement('option');

@@ -35,25 +35,6 @@ end
 `
     }
   }
-  formatCodeWithComments(codeText, commentChar = '#') {
-    // Split by newlines and process each line
-    return codeText.split('\n').map(line => {
-      const commentIndex = line.indexOf(commentChar);
-
-      // If comment character exists
-      if (commentIndex !== -1) {
-        const codePart = line.slice(0, commentIndex);  // The code before the comment
-        const commentPart = line.slice(commentIndex);  // The comment part
-
-        // Retain leading whitespace before the code
-        return `${codePart}<span class="comment">${commentPart}</span>`;
-      }
-
-      // If no comment character, return the line as it is
-      return line;
-    }).join('\n');
-  }
-
   buildCoordsStr() {
     const charge = this.document.getElementById("charge").value;
     const multiplicity = this.document.getElementById("multiplicity").value;
@@ -97,7 +78,8 @@ end`
     let template;
     const doRI = this.document.getElementById('ri_toggle').checked;
 
-    if (calcMethod.startsWith("CC")) {
+    if (calcMethod.includes("CC")) {
+      calcMethod = calcMethod.replace("_T", "(T)");
       template = this.templates.DEFAULT.replace("{{CALC_METHOD}}", doRI ? `RI-${calcMethod}` : `${calcMethod}`);
     } else if (calcMethod === "MP2") {
       template = this.templates.MP2;
@@ -230,10 +212,24 @@ end`);
 
     // Update output
     const outputTextArea = this.document.getElementById('output_text');
-    if (outputTextArea) outputTextArea.innerHTML = this.formatCodeWithComments(template, this.commentStr);
+    if (outputTextArea) {
+      outputTextArea.innerHTML = this.formatCodeWithComments(template, this.commentStr);
+    }
   }
   updateCapabilities() {
     // Adapt selection options
+    this._updateSelection("calc_param", {
+      "HF": "HF",
+      "DFT": "DFT",
+      "CASSCF": "CASSCF",
+      "CASCI": "CASCI",
+      "MP2": "MP2",
+      "CCSD": "CCSD",
+      "CCSD(T)": "CCSD_T",
+      "CCSDT": "CCSDT",
+      "DLPNO-CCSD": "DLPNO-CCSD",
+      "DLPNO-CCSD(T)": "DLPNO-CCSD_T",
+    });
     this._updateSelection("calc_type", {
       "Energy": "SP",
       "Geometry Opt": "OPT",
@@ -250,6 +246,8 @@ end`);
     // Toggle Elements
     this._enableElem("guessmix_full");
     this._enableElem("freq_full");
+    this._enableElem("stability_full");
+    this._enableElem("mp2_natorb_full");
   }
 }
 

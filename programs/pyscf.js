@@ -253,6 +253,15 @@ mycc.direct = true` : "");
   }
   updateCapabilities() {
     // Adapt selection options
+    this._updateSelection("calc_param", {
+      "HF": "HF",
+      "DFT": "DFT",
+      "CASSCF": "CASSCF",
+      "CASCI": "CASCI",
+      "MP2": "MP2",
+      "CCSD": "CCSD",
+      "CCSD(T)": "CCSD_T"
+    });
     this._updateSelection("calc_type", {
       "Energy": "SP",
     }
@@ -265,6 +274,8 @@ mycc.direct = true` : "");
     // Toggle Elements
     this._disableElem("guessmix_full");
     this._disableElem("freq_full");
+    this._enableElem("stability_full");
+    this._enableElem("mp2_natorb_full");
   }
 }
 

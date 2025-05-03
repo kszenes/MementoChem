@@ -84,7 +84,7 @@
                     <select id="qc_program" class="form-select">
                       <option value="Orca">Orca</option>
                       <option value="PySCF">PySCF</option>
-                      <!-- <option value="Molcas">Molcas</option> -->
+                      <option value="OpenMolcas">OpenMolcas</option>
                       <!-- <option value="Psi4">Psi4</option> -->
                     </select>
                     <label for="qc_program">Program</label>
@@ -199,7 +199,7 @@
                         >Mix Guess</label
                       >
                     </div>
-                    <div class="col-auto">
+                    <div class="col-auto" id="stability_full">
                       <input
                         type="checkbox"
                         class="btn-check"
@@ -217,15 +217,19 @@
               </div>
 
               <div id="mp2-options" class="d-none col mb-3">
-                <input
-                  type="checkbox"
-                  class="btn-check"
-                  id="natorb_toggle"
-                  autocomplete="off"
-                />
-                <label class="btn btn-outline-secondary" for="natorb_toggle"
-                  >Natural Orbitals</label
-                >
+                <div class="row">
+                  <div class="col" id="mp2_natorb_full">
+                    <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="natorb_toggle"
+                    autocomplete="off"
+                    />
+                    <label class="btn btn-outline-secondary" for="natorb_toggle"
+                      >Natural Orbitals</label
+                    >
+                  </div>
+                </div>
               </div>
               <div id="casscf-options" class="row ps-2 mb-3 d-none">
                 <div class="col-8">

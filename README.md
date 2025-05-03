@@ -20,8 +20,8 @@ It has currently limited capabilities --- currently only supports Orca and PySCF
 - [ ] Add other geometry specification methods besides xyz
 - [ ] Add other chemistry programs:
   - [~] PySCF: Missing geometry optimization and frequency calculation
+  - [~] OpenMolcas: Missing geometry optimization and frequency calculation
   - [ ] Psi4
-  - [ ] OpenMolcas
 - [ ] Add input validation (e.g., multiplicity makes sense)
 
 #### DONE
