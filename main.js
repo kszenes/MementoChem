@@ -209,6 +209,7 @@ function initializeForm() {
   const qcProgram = document.getElementById('qc_program');
   if (qcProgram) {
     qcProgram.addEventListener('change', () => {
+      updateScfTypeOptions();
       getCurrentProgram().updateCapabilities();
       updateUI();
     });
