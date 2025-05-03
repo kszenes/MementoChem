@@ -108,7 +108,7 @@ export default class MolcasProgram extends BaseProgram {
     const activeOrbitals = this.document.getElementById('active_orbitals')?.value || '6';
     const activeNroots = this.document.getElementById('active_nroots')?.value || '1';
     const charge = this.document.getElementById("charge").value;
-    const doOrbRot = this.document.getElementById("calc_param") === "CASSCF";
+    const doOrbRot = this.document.getElementById("calc_param").value === "CASSCF";
 
     const rootStr = `${activeNroots} ${activeNroots} 1`
 
@@ -123,7 +123,7 @@ export default class MolcasProgram extends BaseProgram {
 
 
     template = template
-      .replace("{{ORBROT}}", doOrbRot ? "" : "\n  CINONLY   * CASCI: No Orbital Rotation")
+      .replace("{{ORBROT}}", doOrbRot ? "" : "\n  CIOnly   * CASCI: No Orbital Rotation")
       .replace("{{CHARGE_LINE}}", charge)
       .replace('{{NELEC}}', activeElectrons)
       .replace('{{RAS}}', activeOrbitals)
