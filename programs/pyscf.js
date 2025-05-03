@@ -1,5 +1,8 @@
-class PySCFProgram {
+import BaseProgram from "./base.js"
+
+class PySCFProgram extends BaseProgram {
   constructor(document) {
+    super();
     this.document = document;
     this.commentStr = "#";
     this.templates = {
@@ -28,35 +31,19 @@ mc.kernel(){{PT_STRING}}
       CCSD: `from pyscf import gto, scf, cc
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mycc = cc.CCSD(mf).run(){{DIRECT_BLOCK}}
+mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
+mycc.kernel()
 e_tot = mycc.e_tot`,
 
       CCSD_T: `from pyscf import gto, scf, cc
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mycc = cc.CCSD(mf).run(){{DIRECT_BLOCK}}
+mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
+mycc.kernel()
 e_triples = mycc.ccsd_t()
 e_tot = mycc.e_tot + e_triples
 `
     }
-  }
-  formatCodeWithComments(codeText, commentChar = '#') {
-    // Split by newlines and process each line
-    return codeText.split('\n').map(line => {
-      const commentIndex = line.indexOf(commentChar);
-
-      // If comment character exists
-      if (commentIndex !== -1) {
-        const codePart = line.slice(0, commentIndex);  // The code before the comment
-        const commentPart = line.slice(commentIndex);  // The comment part
-
-        // Retain leading whitespace before the code
-        return `${codePart}<span class="comment">${commentPart}</span>`;
-      }
-
-      // If no comment character, return the line as it is
-      return line;
-    }).join('\n');
   }
 
   buildCoordsStr() {
@@ -176,14 +163,13 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
-      let ptStr = ptMethod ? "\nmrpt.NEVPT(mc).kernel()" : "";
+      let ptStr = ptMethod ? "\n\nmrpt.NEVPT(mc).kernel()" : "";
       template = template.replace("{{PT_STRING}}", ptStr);
     } else if (calcMethod === "HF") {
       template = this.templates.HF;
     } else {
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
-
 
     return template;
   }
@@ -203,11 +189,12 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 
     let template = this.getTemplate(calcMethod);
 
-    const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
     const scfBlock = this.buildSCFStr();
     template = template.replace("{{SCF_BLOCK}}", scfBlock);
 
+    // TODO
     //     if (doDirect) {
+    //       const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
     //       if (!isSCF) {
     //         template = template.replace("{{DIRECT_BLOCK}}", `
     //
@@ -219,6 +206,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     //       template = template.replace("{{DIRECT_BLOCK}}", "");
     //     }
 
+    // TODO:
     let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
 
     // Common replacements
@@ -233,6 +221,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
+      // TODO: Add support for functional
       const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
       template = template.replace('{{DFT_FUNCTIONAL}}', dftFunctional);
     } else if (calcMethod.startsWith("CAS")) {
@@ -248,9 +237,31 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 mycc.direct = true` : "");
     }
 
+
     // Update output
     const outputTextArea = this.document.getElementById('output_text');
-    if (outputTextArea) outputTextArea.innerHTML = this.formatCodeWithComments(template, this.commentStr);
+    if (outputTextArea) {
+      const highlightedCode = hljs.highlight(
+        `${template}`,
+        { language: 'python' }
+      ).value
+      outputTextArea.innerHTML = highlightedCode;
+    }
+
+  }
+  updateCapabilities() {
+    // Adapt selection options
+    this._updateSelection("calc_type", {
+      "Energy": "SP",
+    }
+    );
+    this._updateSelection("active_pt", {
+      "": "",
+      "SC_NEVPT2": "SC_NECPT2"
+    })
+
+    // Toggle Elements
+    this._disableElem("guessmix_full");
   }
 }
 

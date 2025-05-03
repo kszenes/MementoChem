@@ -128,7 +128,6 @@ async function loadTextData(url, elementId, defaultValue) {
   }
 }
 
-
 // Clipboard function
 function copyToClipboard() {
   const outputText = document.getElementById('output_text');
@@ -160,6 +159,7 @@ function copyToClipboard() {
   window.getSelection().removeAllRanges();
 }
 
+// TODO: Reimplement this
 // JavaScript to dynamically adjust padding-bottom based on footer height
 function adjustPadding() {
   const footer = document.querySelector('footer.fixed-footer');
@@ -191,6 +191,14 @@ function initializeForm() {
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle"
   ];
 
+  // Special case for calc_param
+  const qcProgram = document.getElementById('qc_program');
+  if (qcProgram) {
+    qcProgram.addEventListener('change', () => {
+      getCurrentProgram().updateCapabilities();
+    });
+  }
+
   formElements.forEach(id => {
     const element = document.getElementById(id);
     if (element) {
@@ -220,6 +228,8 @@ function initializeForm() {
       toggleFileInput();
     })
   }
+
+  getCurrentProgram().updateCapabilities()
 
   // Set initial values
   updateScfTypeOptions();

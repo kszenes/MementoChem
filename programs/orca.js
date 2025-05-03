@@ -1,5 +1,8 @@
-class OrcaProgram {
+import BaseProgram from "./base.js"
+
+class OrcaProgram extends BaseProgram {
   constructor(document) {
+    super();
     this.document = document;
     this.commentStr = "#";
     this.templates = {
@@ -228,6 +231,24 @@ end`);
     // Update output
     const outputTextArea = this.document.getElementById('output_text');
     if (outputTextArea) outputTextArea.innerHTML = this.formatCodeWithComments(template, this.commentStr);
+  }
+  updateCapabilities() {
+    // Adapt selection options
+    this._updateSelection("calc_type", {
+      "Energy": "SP",
+      "Geometry Opt": "OPT",
+      "Transition State Opt": "OPTTS"
+    }
+    );
+    this._updateSelection("active_pt", {
+      "": "",
+      "SC_NEVPT2": "SC_NEVPT2",
+      "FIC_NEVPT2": "FIC_NEVPT2",
+      "CASPT2": "CASPT2"
+    });
+
+    // Toggle Elements
+    this._enableElem("guessmix_full");
   }
 }
 
