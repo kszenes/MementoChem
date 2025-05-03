@@ -74,7 +74,7 @@ export default class MolcasProgram extends BaseProgram {
         .map(line => '  ' + line) // Add 2 spaces to each line
         .join('\n');
       const natoms = coords.split("\n").length;
-      return `  Coord\n  ${natoms}\n\n${coords}\n\n  Basis=${basisSet}`;
+      return `  Coord\n  ${natoms}\n\n${coords}\n\n  Basis = ${basisSet}`;
     }
   }
   buildSewardStr() {

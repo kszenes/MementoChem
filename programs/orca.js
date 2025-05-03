@@ -51,13 +51,21 @@ ${coords}
 
   buildSCFStr() {
     const scfType = this.document.getElementById("scf_type").value;
-
-    if (scfType === "Auto") {
-      return "";
-    }
-
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
     const doStab = this.document.getElementById('stability_toggle').checked;
+
+    if (scfType === "Auto") {
+      if (!doDirect) {
+        return "";
+      } else {
+        return `
+
+%scf
+  HFType Direct
+end`
+      }
+    }
+
 
     let scfTemplate = `
 
