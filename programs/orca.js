@@ -249,6 +249,7 @@ end`);
 
     // Toggle Elements
     this._enableElem("guessmix_full");
+    this._enableElem("freq_full");
   }
 }
 

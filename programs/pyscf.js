@@ -262,6 +262,7 @@ mycc.direct = true` : "");
 
     // Toggle Elements
     this._disableElem("guessmix_full");
+    this._disableElem("freq_full");
   }
 }
 
