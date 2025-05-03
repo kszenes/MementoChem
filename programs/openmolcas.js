@@ -89,14 +89,17 @@ export default class MolcasProgram extends BaseProgram {
     const charge = this.document.getElementById("charge").value;
     const multiplicity = this.document.getElementById("multiplicity").value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
+    const mixGuess = this.document.getElementById('guessmix_toggle').checked;
 
-    let template = `&SCF{{CHARGE_LINE}}{{MULTIPLICITY}}{{DFT_FUNCTIONAL}}{{UNRESTRICTED}}`;
+    let template = `&SCF{{CHARGE_LINE}}{{MULTIPLICITY}}{{DFT_FUNCTIONAL}}{{UNRESTRICTED}}{{MIX_GUESS}}`;
 
     template = template.replace("{{CHARGE_LINE}}", parseInt(charge) != 0 ? `\n  Charge = ${charge}` : "");
     template = template.replace("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin = ${multiplicity}` : "");
 
-    template = template.replace("{{UNRESTRICTED}}", scfType.startsWith("U") ? "\n  UHF" : "");
     template = template.replace("{{DFT_FUNCTIONAL}}", (calcMethod === "DFT") ? `\n  KSDFT = ${dftFunctional}` : "");
+    template = template.replace("{{UNRESTRICTED}}", scfType.startsWith("U") ? "\n  UHF" : "");
+    template = template.replace("{{MIX_GUESS}}", (scfType.startsWith("U") && mixGuess ) ? "\n  * Adds noise to orbitals (can be used for sym breaking)\n  Scramble 0.2 * max noise of arcsin(0.2)" : "");
+
 
     return template;
   }
@@ -217,7 +220,7 @@ export default class MolcasProgram extends BaseProgram {
 
     // TODO: These need to be turned off as well
     // Toggle Elements
-    this._disableElem("guessmix_full");
+    this._enableElem("guessmix_full");
     this._disableElem("stability_full");
     this._disableElem("freq_full");
     this._disableElem("mp2_natorb_full");
