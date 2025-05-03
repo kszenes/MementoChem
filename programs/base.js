@@ -5,7 +5,7 @@ export default class BaseProgram {
   }
 
   getHeader() {
-    return `${this.commentStr} Input Generated using MementoQC\n`;
+    return `${this.commentStr} Input Generated using MementoChem\n`;
   }
 
   buildCoordsStr() {
