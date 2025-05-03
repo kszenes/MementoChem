@@ -55,11 +55,11 @@ function updateScfTypeOptions() {
 
   // Add change listener to update stability checkbox visibility
   scfTypeSelect.addEventListener('change', function() {
-    updateCalculationMethod();
+    updateUI();
   });
 }
 
-function updateCalculationMethod() {
+function updateUI() {
   const calcMethod = document.getElementById('calc_param').value;
   const scfType = document.getElementById('scf_type').value;
 
@@ -130,7 +130,7 @@ async function loadTextData(url, elementId, defaultValue) {
     });
 
     selectElement.value = defaultValue;
-    updateCalculationMethod();
+    updateUI();
 
   } catch (error) {
     console.error(`Error loading data from ${url}:`, error);
@@ -205,6 +205,7 @@ function initializeForm() {
   if (qcProgram) {
     qcProgram.addEventListener('change', () => {
       getCurrentProgram().updateCapabilities();
+      updateUI();
     });
   }
 
@@ -227,7 +228,7 @@ function initializeForm() {
   if (calcParamElement) {
     calcParamElement.addEventListener('change', function() {
       updateScfTypeOptions();
-      updateCalculationMethod();
+      updateUI();
     });
   }
 
