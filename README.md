@@ -22,11 +22,11 @@ It has currently limited capabilities --- currently only supports Orca and PySCF
   - [~] PySCF: Missing geometry optimization and frequency calculation
   - [ ] Psi4
   - [ ] OpenMolcas
-- [ ] Add syntax highlighting
 - [ ] Add input validation (e.g., multiplicity makes sense)
 
 #### DONE
 
+- [x] Add syntax highlighting
 - [x] Add CASCI (no orbital rotations)
 - [x] Add UHF guess mix
 - [x] Add units for xyz

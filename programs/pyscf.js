@@ -21,7 +21,7 @@ class PySCFProgram extends BaseProgram {
 my_mp = {{MP2_LINE}}
 e = my_mp.kernel(){{NATORB_BLOCK}}
 `,
-      CAS: `from pyscf import gto, scf, mcscf
+      CAS: `from pyscf import gto, scf, mcscf{{PT_IMPORT}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}){{DENSITY_FIT}}
@@ -164,7 +164,9 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
       let ptStr = ptMethod ? "\n\nmrpt.NEVPT(mc).kernel()" : "";
-      template = template.replace("{{PT_STRING}}", ptStr);
+      let ptImport = ptMethod ? ", mrpt" : "";
+
+      template = template.replace("{{PT_STRING}}", ptStr).replace("{{PT_IMPORT}}", ptImport);
     } else if (calcMethod === "HF") {
       template = this.templates.HF;
     } else {
