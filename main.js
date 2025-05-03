@@ -1,11 +1,13 @@
 import OrcaProgram from "./programs/orca.js";
 import PySCFProgram from "./programs/pyscf.js";
 import MolcasProgram from "./programs/openmolcas.js";
+import Psi4Program from "./programs/psi4.js";
 
 const programs = {
   Orca: new OrcaProgram(document),
   PySCF: new PySCFProgram(document),
-  OpenMolcas: new MolcasProgram(document)
+  OpenMolcas: new MolcasProgram(document),
+  Psi4: new Psi4Program(document)
 };
 
 // DOM Helper Functions
@@ -39,6 +41,8 @@ function updateScfTypeOptions() {
   let options;
   if (program === "OpenMolcas") {
     options = calcMethod === "DFT" ? ["RKS", "UKS"] : ["RHF", "UHF"];
+  } else if (program === "Psi4") {
+    options = calcMethod === "DFT" ? ["RKS", "UKS", "ROKS"] : ["RHF", "UHF", "ROHF"];
   } else {
     options = calcMethod === 'DFT' ?
       ['Auto', 'RKS', 'UKS', 'ROKS'] :
@@ -66,6 +70,7 @@ function updateUI() {
   // Hide all options first
   ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options'].forEach(hideElement);
 
+  // TODO: Do not hide scfTypeContainer
   // Show/hide SCF type based on method
   const scfTypeContainer = document.getElementById('scf-type-container');
   if (calcMethod === 'HF' || calcMethod === 'DFT') {

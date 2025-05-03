@@ -1,6 +1,6 @@
 import BaseProgram from "./base.js"
 
-class OrcaProgram extends BaseProgram {
+export default class OrcaProgram extends BaseProgram {
   constructor(document) {
     super(document);
     this.commentStr = "#";
@@ -260,5 +260,3 @@ end`);
     this._enableElem("mp2_natorb_full");
   }
 }
-
-export default OrcaProgram;

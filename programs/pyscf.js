@@ -1,6 +1,6 @@
 import BaseProgram from "./base.js"
 
-class PySCFProgram extends BaseProgram {
+export default class PySCFProgram extends BaseProgram {
   constructor(document) {
     super(document);
     this.commentStr = "#";
@@ -278,5 +278,3 @@ mycc.direct = true` : "");
     this._enableElem("mp2_natorb_full");
   }
 }
-
-export default PySCFProgram;

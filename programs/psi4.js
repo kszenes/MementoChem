@@ -1,61 +1,17 @@
 import BaseProgram from "./base.js"
 
-export default class MolcasProgram extends BaseProgram {
+export default class Psi4Program extends BaseProgram {
   constructor(document) {
     super(document);
-    this.commentStr = "*";
+    this.commentStr = "#";
     this.templates = {
-      HF: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
+      DEFAULT: `{{MOLECULE_STRUCTURE}}
+
+{{SET_BLOCK}}
+
+{{COMP_BLOCK}}`,
+      CAS: `{{MOLECULE_STRUCTURE}}
   {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}`,
-      DFT: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}`,
-      MP2: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}
-
-{{MP2}}`,
-      CAS: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}
-
-{{CAS}}`,
-      CCSD: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}`,
-
-      CCSD_T: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
 
 {{SCF_BLOCK}}`
     }
@@ -63,6 +19,10 @@ export default class MolcasProgram extends BaseProgram {
   buildCoordsStr() {
     const useFile = this.document.getElementById("file_toggle").checked;
     const basisSet = this.document.getElementById("basis_param").value;
+    const charge = parseInt(this.document.getElementById("charge").value);
+    const multiplicity = parseInt(this.document.getElementById("multiplicity").value);
+    const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
+    // TODO: Implement useFile
     if (useFile) {
       const fname = this.document.getElementById("xyz_file_name").value;
       return `  Coord = ${fname}\n  Basis = ${basisSet}`;
@@ -71,16 +31,14 @@ export default class MolcasProgram extends BaseProgram {
         .split('\n')
         .map(line => '  ' + line) // Add 2 spaces to each line
         .join('\n');
-      const natoms = coords.split("\n").length;
-      return `  Coord\n  ${natoms}\n\n${coords}\n\n  Basis = ${basisSet}`;
-    }
-  }
-  buildSewardStr() {
-    const doDirect = this.document.getElementById("integral_direct_toggle").checked;
+      const non_default = (charge != 0) || (multiplicity != 1);
+      const charge_spin = non_default ? `\n  ${charge} ${multiplicity}` : "";
+      const units = useBohr ? "\n  units bohr" : "";
 
-    let template = "&SEWARD{{DIRECT}}";
-    template = template.replace("{{DIRECT}}", doDirect ? "\n  Direct" : "");
-    return template;
+      return `molecule {${charge_spin}${units}
+${coords}
+}`;
+    }
   }
 
   buildSCFStr() {
@@ -90,7 +48,7 @@ export default class MolcasProgram extends BaseProgram {
     const multiplicity = this.document.getElementById("multiplicity").value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
 
-    let template = `&SCF{{CHARGE_LINE}}{{MULTIPLICITY}}{{DFT_FUNCTIONAL}}{{UNRESTRICTED}}`;
+    let template = `set reference {{scf_type}}`;
 
     template = template.replace("{{CHARGE_LINE}}", parseInt(charge) != 0 ? `\n  Charge = ${charge}` : "");
     template = template.replace("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin = ${multiplicity}` : "");
@@ -99,6 +57,74 @@ export default class MolcasProgram extends BaseProgram {
     template = template.replace("{{DFT_FUNCTIONAL}}", (calcMethod === "DFT") ? `\n  KSDFT = ${dftFunctional}` : "");
 
     return template;
+  }
+
+  buildSetStr() {
+    const simMethod = this.document.getElementById('calc_type').value;
+    const scfType = this.document.getElementById("scf_type").value;
+    const basisSet = this.document.getElementById("basis_param").value;
+    const mixGuess = this.document.getElementById('guessmix_toggle').checked;
+    const doDirect = this.document.getElementById("integral_direct_toggle").checked;
+    const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
+    const doStab = this.document.getElementById('stability_toggle').checked;
+
+    // TODO: Add guess
+
+    let inner = `basis ${basisSet}\nreference ${scfType}`
+    if (isUnrestriced) {
+      inner += mixGuess ? "\nguess_mix true" : "";
+      inner += doStab ? "\nstability_analysis follow   # restart if unstable" : "";
+
+    }
+    inner += doDirect ? "\nscf_type direct   # integral direct method" : "";
+    inner += simMethod == "OPTTS" ? "\nopt_type ts   # transition state opt" : "";
+
+    inner = inner.split('\n')
+      .map(line => '  ' + line) // Add 2 spaces to each line
+      .join('\n');
+
+    return `set {
+${inner}
+}`;
+  }
+
+  buildCompStr() {
+    const calcMethod = this.document.getElementById('calc_param').value;
+    const simMethod = this.document.getElementById('calc_type').value;
+    const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
+    const includeFreq = this.document.getElementById('freq_toggle').checked;
+
+    let inner = "";
+    switch (calcMethod) {
+      case 'HF':
+        inner = "scf";
+        break;
+      case 'DFT':
+        inner = `${dftFunctional}`;
+        break;
+      case "CCSD_T":
+        inner = "ccsd(t)";
+        break;
+      default:
+        inner = `${calcMethod.toLowerCase()}`;
+    }
+
+    let compStr = "";
+
+    switch (simMethod) {
+      case 'SP':
+        compStr = "energy";
+        break;
+      case 'OPT':
+      case 'OPTTS':
+        compStr = "optimize";
+        break;
+    }
+
+    let ret = `${compStr}("${inner}")`;
+
+    ret += includeFreq ? `\nfrequency("${inner}")` : "";
+    return ret;
   }
 
   buildCASStr() {
@@ -145,14 +171,8 @@ export default class MolcasProgram extends BaseProgram {
   getTemplate(calcMethod) {
     let template;
 
-    if (calcMethod === "MP2") {
-      template = this.templates.MP2;
-
-      template = template.replace("{{MP2}}", "&MBPT2");
-    } else if (calcMethod.startsWith("CAS")) {
+    if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
-    } else if (calcMethod === "HF") {
-      template = this.templates.HF;
     } else {
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
@@ -169,15 +189,17 @@ export default class MolcasProgram extends BaseProgram {
     const doRI = this.document.getElementById("ri_toggle").checked;
     template = template.replace("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
 
-
     const geomBlock = this.buildCoordsStr();
     template = template.replace("{{MOLECULE_STRUCTURE}}", geomBlock);
 
-    const sewardBlock = this.buildSewardStr();
-    template = template.replace("{{SEWARD}}", sewardBlock);
+    const setBlock = this.buildSetStr();
+    template = template.replace("{{SET_BLOCK}}", setBlock);
 
     const scfBlock = this.buildSCFStr();
     template = template.replace("{{SCF_BLOCK}}", scfBlock);
+
+    const compBlock = this.buildCompStr();
+    template = template.replace("{{COMP_BLOCK}}", compBlock);
 
 
     // TODO:
@@ -203,23 +225,24 @@ export default class MolcasProgram extends BaseProgram {
     this._updateSelection("calc_param", {
       "HF": "HF",
       "DFT": "DFT",
-      "CASSCF": "CASSCF",
-      "CASCI": "CASCI",
       "MP2": "MP2",
+      "CCSD": "CCSD",
+      "CCSD(T)": "CCSD_T",
     });
     this._updateSelection("calc_type", {
       "Energy": "SP",
+      "Geometry Opt": "OPT",
+      "Transition State Opt": "OPTTS"
     });
     this._updateSelection("active_pt", {
       "": "",
       "CASPT2": "CASPT2"
     })
 
-    // TODO: These need to be turned off as well
     // Toggle Elements
-    this._disableElem("guessmix_full");
-    this._disableElem("stability_full");
-    this._disableElem("freq_full");
+    this._enableElem("stability_full");
+    this._enableElem("guessmix_full");
+    this._enableElem("freq_full");
     this._disableElem("mp2_natorb_full");
   }
 }
