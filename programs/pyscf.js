@@ -3,12 +3,6 @@ class PySCFProgram {
     this.document = document;
     this.commentStr = "#";
     this.templates = {
-      DEFAULT: `! {{CALC_TYPE}} {{BASIS_SET}} {{CALC_METHOD}}
-
-* xyz {{CHARGE}} {{MULTIPLICITY}}
-{{MOLECULE_STRUCTURE}}
-*`,
-      // TODO: multiplicity needs to be changed
       HF: `from pyscf import gto, scf
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
@@ -18,18 +12,32 @@ class PySCFProgram {
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 `,
-      // TODO: Add natural obrbitals
       MP2: `from pyscf import gto, scf, mp
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mf.MP2().run()
+my_mp = {{MP2_LINE}}
+e = my_mp.kernel(){{NATORB_BLOCK}}
 `,
       CAS: `from pyscf import gto, scf, mcscf
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mc = mcscf.CASSCF(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}).run()
+mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}){{DENSITY_FIT}}
+mc.fcisolver.nroots = {{ACTIVE_NROOTS}}
+mc.kernel(){{PT_STRING}}
 `,
+      CCSD: `from pyscf import gto, scf, cc
+{{MOLECULE_STRUCTURE}}
+{{SCF_BLOCK}}
+mycc = cc.CCSD(mf).run(){{DIRECT_BLOCK}}
+e_tot = mycc.e_tot`,
 
+      CCSD_T: `from pyscf import gto, scf, cc
+{{MOLECULE_STRUCTURE}}
+{{SCF_BLOCK}}
+mycc = cc.CCSD(mf).run(){{DIRECT_BLOCK}}
+e_triples = mycc.ccsd_t()
+e_tot = mycc.e_tot + e_triples
+`
     }
   }
   formatCodeWithComments(codeText, commentChar = '#') {
@@ -57,16 +65,34 @@ mc = mcscf.CASSCF(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}).run()
     const charge = this.document.getElementById("charge").value;
     const multiplicity = this.document.getElementById("multiplicity").value;
     const useFile = this.document.getElementById("file_toggle").checked;
+
+    let args_string = ""
+
+    const spin = parseInt(multiplicity) - 1;
+
+    if (parseInt(spin) != 0) {
+      args_string += `, spin=${spin}`;
+    }
+
+    if (parseInt(charge) != 0) {
+      args_string += `, charge=${charge}`;
+    }
+
+    if (units.toLowerCase() === "bohr") {
+      args_string += `, units="bohr"`;
+    }
+
+
     if (useFile) {
       const fname = this.document.getElementById("xyz_file_name").value;
-      return `\nmol = gto.M(atom="${fname}", basis=${basisSet}, charge="${charge}, spin=${multiplicity}, units="${units.toLowerCase()}")\n`;
+      return `\nmol = gto.M(atom="${fname}", basis="${basisSet}"${args_string})\n`;
     } else {
       const coords = this.document.getElementById("xyz_geom").value
       return `
 geom = """
 ${coords}
 """
-mol = gto.M(atom=geom, basis=${basisSet}, charge=${charge}, spin=${multiplicity}, units="${units.toLowerCase()}")
+mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 `;
     }
   }
@@ -75,8 +101,7 @@ mol = gto.M(atom=geom, basis=${basisSet}, charge=${charge}, spin=${multiplicity}
     const scfType = this.document.getElementById("scf_type").value;
     const calcMethod = this.document.getElementById("calc_param").value;
 
-    let scfTemplate = `mf = scf.{{SCF_TYPE}}(mol).run()`;
-
+    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{DENSITY_FIT}}.run(){{STAB_RUN}}";
 
     if (scfType === "Auto") {
       if (calcMethod === "HF") {
@@ -88,9 +113,43 @@ mol = gto.M(atom=geom, basis=${basisSet}, charge=${charge}, spin=${multiplicity}
       scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", scfType);
     }
 
+    if (calcMethod != "HF" || calcMethod != "DFT") {
+      scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", "HF");
+    }
+
+    const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
+    const mixGuess = this.document.getElementById('guessmix_toggle').checked;
+    const doStab = this.document.getElementById('stability_toggle').checked;
+    if (isUnrestriced) {
+      // TODO: Mix Guess
+      if (mixGuess) {
+        scfTemplate = scfTemplate.replace("{{MIX_GUESS}}", " GUESSMIX");
+
+      } else {
+        scfTemplate = scfTemplate.replace("{{MIX_GUESS}}", "");
+      }
+
+      // Stability analysis
+      if (doStab) {
+        scfTemplate = scfTemplate.replace("{{STAB_FUNC}}", `def stable_opt_internal(mf):
+    mo1, _, stable, _ = mf.stability(return_status=True)
+    cyc = 0
+    while (not stable and cyc < 10):
+        dm1 = mf.make_rdm1(mo1, mf.mo_occ)
+        mf = mf{{DENSITY_FIT}}.run(dm1)
+        mo1, _, stable, _ = mf.stability(return_status=True)
+        cyc += 1
+    return mf\n\n`);
+        scfTemplate = scfTemplate.replace("{{STAB_RUN}}", "\nstable_opt_internal(mf)");
+      } else {
+        scfTemplate = scfTemplate.replace("{{STAB_FUNC}}", "").replace("{{STAB_RUN}}", "");
+      }
+    } else {
+      scfTemplate = scfTemplate.replace("{{STAB_FUNC}}", "").replace("{{STAB_RUN}}", "");
+    }
+
     // TODO:
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
-    const doStab = this.document.getElementById('stability_toggle').checked;
 
     return scfTemplate;
   }
@@ -99,56 +158,25 @@ mol = gto.M(atom=geom, basis=${basisSet}, charge=${charge}, spin=${multiplicity}
     let template;
     const doRI = this.document.getElementById('ri_toggle').checked;
 
-    if (calcMethod.startsWith("CC")) {
-      template = this.templates.DEFAULT.replace("{{CALC_METHOD}}", doRI ? `RI-${calcMethod}` : `${calcMethod}`);
-    } else if (calcMethod === "MP2") {
+    if (calcMethod === "MP2") {
       template = this.templates.MP2;
       const natorb = this.document.getElementById('natorb_toggle').checked;
-      template = template.replace("{{CALC_METHOD}}", doRI ? "RI-MP2" : "MP2");
-      if (natorb) {
-        template = template.replace("{{NATORB_BLOCK}}", `
+      if (doRI) {
+        template = template.replace("{{MP2_LINE}}", "mp.dfmp2_native.DFRMP2(mol)")
+      } else {
+        template = template.replace("{{MP2_LINE}}", "mp.MP2(mol)")
+      }
 
-%mp2
-  NatOrbs true
-%end`);
-      }
-      else {
-        template = template.replace("{{NATORB_BLOCK}}", "");
-      }
+      // Natural Orbitals
+      template = template.replace("{{NATORB_BLOCK}}", natorb ? "\nnatocc, natorb = my_mp.make_natorbs()" : "");
     } else if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
 
-      if (calcMethod === "CASSCF") {
-        template = template.replace("{{ORB_ROT}}", "");
-      } else if (calcMethod === "CASCI") {
-        template = template.replace("{{ORB_ROT}}", `
-!MORead NoIter
-%MoInp "your-orbitals.gbw"`);
-      }
-
-      // RI approx
-      template = template.replace("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI" : "");
+      template = template.replace("{{ORB_ROT}}", calcMethod);
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
-      let ptStr = "";
-
-      switch (ptMethod) {
-        case "SC_NEVPT2":
-          ptStr = "\n\n  # strongly contracted\n  PTMethod SC_NEVPT2";
-          break;
-        case "FIC_NEVPT2":
-          ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_NEVPT2";
-          break;
-        case "CASPT2":
-          ptStr = "\n\n  # fully internally contracted\n";
-          ptStr += "  PTMethod FIC_CASPT2\n"
-          ptStr += "  PTSettings\n";
-          ptStr += "    CASPT2_ishift    0.0     # imaginary shift\n";
-          ptStr += "    CASPT2_rshift    0.0     # real shift\n";
-          ptStr += "    CASPT2_IPEAshift 0.0";
-          break;
-      }
+      let ptStr = ptMethod ? "\nmrpt.NEVPT(mc).kernel()" : "";
       template = template.replace("{{PT_STRING}}", ptStr);
     } else if (calcMethod === "HF") {
       template = this.templates.HF;
@@ -156,14 +184,6 @@ mol = gto.M(atom=geom, basis=${basisSet}, charge=${charge}, spin=${multiplicity}
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
 
-    // Mix Guess
-    const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
-    const mixGuess = this.document.getElementById('guessmix_toggle').checked;
-    if (isUnrestriced && mixGuess) {
-      template = template.replace("{{MIX_GUESS}}", " GUESSMIX");
-    } else {
-      template = template.replace("{{MIX_GUESS}}", "");
-    };
 
     return template;
   }
@@ -181,29 +201,23 @@ mol = gto.M(atom=geom, basis=${basisSet}, charge=${charge}, spin=${multiplicity}
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
 
-    if (doRI) {
-      basisSet += " " + basisSet + "/C";
-    }
-
     let template = this.getTemplate(calcMethod);
 
     const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
-    if (isSCF) {
-      const scfBlock = this.buildSCFStr();
-      template = template.replace("{{SCF_BLOCK}}", scfBlock);
-    }
+    const scfBlock = this.buildSCFStr();
+    template = template.replace("{{SCF_BLOCK}}", scfBlock);
 
-    if (doDirect) {
-      if (!isSCF) {
-        template = template.replace("{{DIRECT_BLOCK}}", `
-
-%scf
-  SCFMode Direct
-end`);
-      }
-    } else {
-      template = template.replace("{{DIRECT_BLOCK}}", "");
-    }
+    //     if (doDirect) {
+    //       if (!isSCF) {
+    //         template = template.replace("{{DIRECT_BLOCK}}", `
+    //
+    // %scf
+    //   SCFMode Direct
+    // end`);
+    //       }
+    //     } else {
+    //       template = template.replace("{{DIRECT_BLOCK}}", "");
+    //     }
 
     let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
 
@@ -214,7 +228,8 @@ end`);
       .replace('{{CHARGE}}', charge)
       .replaceAll('{{MULTIPLICITY}}', multiplicity)
       .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
-      .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "");
+      .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
+      .replaceAll("{{DENSITY_FIT}}", doRI ? ".density_fit()" : "");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
@@ -228,6 +243,9 @@ end`);
         .replace('{{ACTIVE_ELECTRONS}}', activeElectrons)
         .replace('{{ACTIVE_ORBITALS}}', activeOrbitals)
         .replace('{{ACTIVE_NROOTS}}', activeNroots);
+    } else if (calcMethod.startsWith("CC")) {
+      template = template.replace("{{DIRECT_BLOCK}}", doDirect ? `
+mycc.direct = true` : "");
     }
 
     // Update output
