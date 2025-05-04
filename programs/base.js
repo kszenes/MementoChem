@@ -74,4 +74,9 @@ export default class BaseProgram {
       element.classList.remove('d-none');
     }
   }
+  getTightConvCriteria() {
+    const energyTol = 1e-9;
+    const gradTol = 2e-6;
+    return [energyTol, gradTol];
+  }
 }

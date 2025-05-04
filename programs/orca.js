@@ -38,6 +38,8 @@ end
     const charge = this.document.getElementById("charge").value;
     const multiplicity = this.document.getElementById("multiplicity").value;
     const useFile = this.document.getElementById("file_toggle").checked;
+    const doTightConv = this.document.getElementById("tight_conv").checked;
+
     if (useFile) {
       const fname = this.document.getElementById("xyz_file_name").value;
       return `* xyzfile ${charge} ${multiplicity} ${fname}`
@@ -53,30 +55,31 @@ ${coords}
     const scfType = this.document.getElementById("scf_type").value;
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
     const doStab = this.document.getElementById('stability_toggle').checked;
+    const doTightConv = this.document.getElementById("tight_conv").checked;
+    const initialGuess = this.document.getElementById("initial_guess").value;
 
-    if (scfType === "Auto") {
-      if (!doDirect) {
+    if (scfType === "Auto" && (!doDirect && !doTightConv && (initialGuess === "Default"))) {
         return "";
-      } else {
-        return `
-
-%scf
-  HFType Direct
-end`
-      }
     }
 
 
     let scfTemplate = `
 
 %scf
-  HFType {{SCF_TYPE}}{{DIRECT_BLOCK}}{{STAB_STRING}}
-end`
+{{SCF_TYPE}}{{GUESS}}{{DIRECT_BLOCK}}{{STAB_STRING}}{{TOL}}end`
 
-    scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", scfType);
-    scfTemplate = scfTemplate.replace("{{DIRECT_BLOCK}}", doDirect ? "\n  SCFMode Direct" : "");
-    scfTemplate = scfTemplate.replace("{{DIRECT_BLOCK}}", doDirect ? "\n  SCFMode Direct" : "");
-    scfTemplate = scfTemplate.replace("{{STAB_STRING}}", doStab ? "\n  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable" : "");
+    scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", (scfType === "Auto") ? "" : `  HFType ${scfType}\n`);
+    scfTemplate = scfTemplate.replace("{{GUESS}}", (initialGuess === "Default") ? "" : `  Guess ${initialGuess}\n`);
+    scfTemplate = scfTemplate.replace("{{DIRECT_BLOCK}}", doDirect ? "  SCFMode Direct\n" : "");
+    scfTemplate = scfTemplate.replace("{{STAB_STRING}}", doStab ? "  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable\n" : "");
+
+    if (doTightConv) {
+      const [etol, gtol] = this.getTightConvCriteria();
+      scfTemplate = scfTemplate.replace("{{TOL}}", `  TolE ${etol}   # energy tolerance
+  TolG ${gtol}   # orbital gradient tolerance\n`);
+    } else {
+      scfTemplate = scfTemplate.replace("{{TOL}}", "")
+    }
 
     return scfTemplate;
   }
@@ -147,7 +150,7 @@ end`
     const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
     if (isUnrestriced && mixGuess) {
-      template = template.replace("{{MIX_GUESS}}", " GUESSMIX");
+      template = template.replace("{{MIX_GUESS}}", " GuessMix");
     } else {
       template = template.replace("{{MIX_GUESS}}", "");
     };
@@ -241,7 +244,7 @@ end`);
       "DLPNO-CCSD(T)": "DLPNO-CCSD_T",
     });
     this._updateSelection("initial_guess", {
-      "SAD (default)": "default",
+      "SAD (default)": "Default",
       "Core": "HCore",
       "Huckel": "Hueckel",
     })

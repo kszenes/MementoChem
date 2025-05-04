@@ -87,8 +87,9 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     const scfType = this.document.getElementById("scf_type").value;
     const calcMethod = this.document.getElementById("calc_param").value;
     const initialGuess = this.document.getElementById("initial_guess").value;
+    const doTightConv = this.document.getElementById("tight_conv").checked;
 
-    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{SOSCF}}{{DENSITY_FIT}}\n{{GUESS}}mf.kernel(){{STAB_RUN}}";
+    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{SOSCF}}{{DENSITY_FIT}}\n{{GUESS}}{{TOL}}mf.kernel(){{STAB_RUN}}";
 
     if (scfType === "Auto") {
       if (calcMethod === "HF") {
@@ -104,7 +105,17 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
       scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", "HF");
     }
 
+    // Initial guess
     scfTemplate = scfTemplate.replace("{{GUESS}}", (initialGuess != "default") ? `mf.init_guess = "${initialGuess}"\n` : "");
+    
+    // Tight conv
+    if (doTightConv) {
+      const [etol, gtol] = this.getTightConvCriteria();
+      scfTemplate = scfTemplate.replace("{{TOL}}", `mf.conv_tol = ${etol}        # energy tolerance
+mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
+    } else {
+      scfTemplate = scfTemplate.replace("{{TOL}}", "");
+    }
 
     const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
