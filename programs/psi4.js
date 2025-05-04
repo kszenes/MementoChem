@@ -55,6 +55,7 @@ ${coords}
     const doStab = this.document.getElementById('stability_toggle').checked;
     const doSOSCF = this.document.getElementById("solver_method").value === "SOSCF";
     const initialGuess = this.document.getElementById("initial_guess").value;
+    const doTightConv = this.document.getElementById("tight_conv").checked;
 
     let inner = `basis ${basisSet.toLowerCase()}\nreference ${scfType.toLowerCase()}`
 
@@ -70,6 +71,13 @@ ${coords}
       inner += doStab ? "\nstability_analysis follow   # restart if unstable" : "";
 
     }
+
+    if (doTightConv) {
+      const [etol, gtol] = this.getTightConvCriteria();
+      inner += `\ne_convergence ${etol}   # energy criteria`;
+      inner += `\nd_convergence ${gtol}   # orbital gradient criteria`;
+    }
+
     inner += doDirect ? "\nscf_type direct   # integral direct method" : "";
     inner += simMethod == "OPTTS" ? "\nopt_type ts   # transition state opt" : "";
 

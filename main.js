@@ -78,7 +78,7 @@ function updateUI() {
   const scfType = document.getElementById('scf_type').value;
 
   // Hide all options first
-  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'scf-type-container'].forEach(hideElement);
+  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'scf-type-container', "accordian_advanced_opts"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
   // Show/hide SCF type based on method
@@ -91,6 +91,8 @@ function updateUI() {
     const showUnrestricted = (calcMethod === 'HF' && scfType === 'UHF') ||
       (calcMethod === 'DFT' && scfType === 'UKS');
     toggleElementVisibility('unrestricted-options', showUnrestricted);
+
+    showElement("accordian_advanced_opts");
   }
 
   // Show relevant options based on method
@@ -212,7 +214,7 @@ function initializeForm() {
     'active_electrons', 'active_orbitals', 'active_nroots',
     'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
-    "tight_conv", "solver_method", "initial_guess"
+    "tight_conv", "solver_method", "initial_guess", "accordian_advanced_opts"
   ];
 
   // Special case for calc_param
