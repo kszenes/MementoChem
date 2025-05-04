@@ -174,7 +174,7 @@ function copyToClipboard() {
   window.getSelection().removeAllRanges();
 }
 
-// TODO: Reimplement this
+// TODO: Reimplement this, currently unused
 // JavaScript to dynamically adjust padding-bottom based on footer height
 function adjustPadding() {
   const footer = document.querySelector('footer.fixed-footer');

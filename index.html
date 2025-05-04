@@ -104,14 +104,17 @@
                   </div>
                 </div>
 
-                <div class="col d-flex align-items-end" id="freq_full">
+                <div class="col" id="freq_full">
                   <input
                     type="checkbox"
                     class="btn-check"
                     id="freq_toggle"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-secondary" for="freq_toggle"
+                  <label
+                    class="btn btn-outline-secondary"
+                    for="freq_toggle"
+                    title="Enable frequency calculation"
                     >Freq</label
                   >
                 </div>
@@ -147,29 +150,40 @@
                     <label for="scf_type">SCF Type</label>
                   </div>
                 </div>
-                <div class="col-auto pe-1">
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    id="ri_toggle"
-                    autocomplete="off"
-                  />
-                  <label class="btn btn-outline-secondary" for="ri_toggle"
-                    >RI / DF</label
-                  >
-                </div>
-                <div class="col-auto ps-1" id="integral_direct_full">
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    id="integral_direct_toggle"
-                    autocomplete="off"
-                  />
-                  <label
-                    class="btn btn-outline-secondary"
-                    for="integral_direct_toggle"
-                    >Direct</label
-                  >
+                <div
+                  class="col-auto"
+                  style="display: flex; flex-direction: column"
+                >
+                  <div class="pb-1">
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="ri_toggle"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-secondary"
+                      for="ri_toggle"
+                      title="Enable resolution of identity approx (density fitting)"
+                      style="font-size: x-small"
+                      >RI / DF</label
+                    >
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="integral_direct_toggle"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-secondary"
+                      for="integral_direct_toggle"
+                      title="Enable integral direct algorithm (avoids storing integrals)"
+                      style="font-size: x-small"
+                      >Direct</label
+                    >
+                  </div>
                 </div>
               </div>
 
@@ -198,6 +212,7 @@
                       <label
                         class="btn btn-outline-secondary"
                         for="guessmix_toggle"
+                        title="Break alpha beta spin symmetry (otherwise, by default UHF will converge to RHF)"
                         >Mix Guess</label
                       >
                     </div>
@@ -211,6 +226,7 @@
                       <label
                         class="btn btn-outline-secondary"
                         for="stability_toggle"
+                        title="Restarts calculation if converged to saddle point instead of minimum"
                         >Stability Analysis</label
                       >
                     </div>
@@ -404,8 +420,11 @@
                     id="file_toggle"
                     autocomplete="off"
                   />
-                  <label class="btn btn-outline-secondary" for="file_toggle"
-                    >File</label
+                  <label
+                    class="btn btn-outline-secondary"
+                    for="file_toggle"
+                    title="Use XYZ file as input instead of raw geometry"
+                    >XYZ File</label
                   >
                 </div>
               </div>
