@@ -234,8 +234,8 @@ end`);
     this._updateSelection("calc_param", {
       "HF": "HF",
       "DFT": "DFT",
-      "CASSCF": "CASSCF",
-      "CASCI": "CASCI",
+      "CASSCF (+MRPT)": "CASSCF",
+      "CASCI (+MRPT)": "CASCI",
       "MP2": "MP2",
       "CCSD": "CCSD",
       "CCSD(T)": "CCSD_T",

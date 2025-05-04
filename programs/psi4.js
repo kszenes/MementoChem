@@ -60,7 +60,7 @@ ${coords}
     let inner = `basis ${basisSet.toLowerCase()}\nreference ${scfType.toLowerCase()}`
 
     if (initialGuess != "default") {
-      inner += `\nguess ${initialGuess}   # Initial guess`
+      inner += `\nguess ${initialGuess}   # initial guess`
     }
 
     inner += doSOSCF ? "\nsoscf true   # second order SCF solver" : "";
