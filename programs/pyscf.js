@@ -86,8 +86,9 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
   buildSCFStr() {
     const scfType = this.document.getElementById("scf_type").value;
     const calcMethod = this.document.getElementById("calc_param").value;
+    const initialGuess = this.document.getElementById("initial_guess").value;
 
-    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{DENSITY_FIT}}.run(){{STAB_RUN}}";
+    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{SOSCF}}{{DENSITY_FIT}}\n{{GUESS}}mf.kernel(){{STAB_RUN}}";
 
     if (scfType === "Auto") {
       if (calcMethod === "HF") {
@@ -102,6 +103,8 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     if (calcMethod != "HF" || calcMethod != "DFT") {
       scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", "HF");
     }
+
+    scfTemplate = scfTemplate.replace("{{GUESS}}", (initialGuess != "default") ? `mf.init_guess = "${initialGuess}"\n` : "");
 
     const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
@@ -122,7 +125,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     cyc = 0
     while (not stable and cyc < 10):
         dm1 = mf.make_rdm1(mo1, mf.mo_occ)
-        mf = mf{{DENSITY_FIT}}.run(dm1)
+        mf = mf{{DENSITY_FIT}}{{SOSCF}}.run(dm1)
         mo1, _, stable, _ = mf.stability(return_status=True)
         cyc += 1
     return mf\n\n`);
@@ -187,6 +190,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     const doRI = this.document.getElementById("ri_toggle").checked;
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
+    const doSOSCF = this.document.getElementById("solver_method").value === "SOSCF";
 
     let template = this.getTemplate(calcMethod);
 
@@ -218,7 +222,8 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
       .replaceAll('{{MULTIPLICITY}}', multiplicity)
       .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
       .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
-      .replaceAll("{{DENSITY_FIT}}", doRI ? ".density_fit()" : "");
+      .replaceAll("{{DENSITY_FIT}}", doRI ? ".density_fit()" : "")
+      .replace("{{SOSCF}}", doSOSCF ? ".newton()": "");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
@@ -262,6 +267,15 @@ mycc.direct = true` : "");
       "CCSD": "CCSD",
       "CCSD(T)": "CCSD_T"
     });
+    this._updateSelection("initial_guess", {
+      "SAD (default)": "default",
+      "Core": "1e",
+      "Huckel": "huckel",
+    })
+    // this._updateSelection("solver_method", {
+    //   "DIIS (default)": "DIIS",
+    //   "SOSCF": "SOSCF",
+    // })
     this._updateSelection("calc_type", {
       "Energy": "SP",
     }

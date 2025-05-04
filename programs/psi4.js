@@ -18,7 +18,6 @@ export default class Psi4Program extends BaseProgram {
   }
   buildCoordsStr() {
     const useFile = this.document.getElementById("file_toggle").checked;
-    const basisSet = this.document.getElementById("basis_param").value;
     const charge = parseInt(this.document.getElementById("charge").value);
     const multiplicity = parseInt(this.document.getElementById("multiplicity").value);
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
@@ -54,12 +53,20 @@ ${coords}
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
     const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
     const doStab = this.document.getElementById('stability_toggle').checked;
-
-    // TODO: Add guess
+    const doSOSCF = this.document.getElementById("solver_method").value === "SOSCF";
+    const initialGuess = this.document.getElementById("initial_guess").value;
 
     let inner = `basis ${basisSet.toLowerCase()}\nreference ${scfType.toLowerCase()}`
+
+    if (initialGuess != "default") {
+      inner += `\nguess ${initialGuess}   # Initial guess`
+    }
+
+    inner += doSOSCF ? "\nsoscf true   # second order SCF solver" : "";
+
+
     if (isUnrestriced) {
-      inner += mixGuess ? "\nguess_mix true" : "";
+      inner += mixGuess ? "\nguess_mix true   # break alpha beta spin symmetry" : "";
       inner += doStab ? "\nstability_analysis follow   # restart if unstable" : "";
 
     }
@@ -163,6 +170,17 @@ ${inner}
       "CCSD": "CCSD",
       "CCSD(T)": "CCSD_T",
     });
+    // TODO: Add more guesses
+    this._updateSelection("initial_guess", {
+      "SAD (default)": "default",
+      "Core": "core",
+      "Huckel": "huckel",
+    })
+    // TODO: Add convergence settings
+    // this._updateSelection("solver_method", {
+    //   "DIIS (default)": "diis",
+    //   "SOSCF": "soscf",
+    // })
     this._updateSelection("calc_type", {
       "Energy": "SP",
       "Geometry Opt": "OPT",

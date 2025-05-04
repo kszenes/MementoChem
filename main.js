@@ -211,7 +211,8 @@ function initializeForm() {
     'multiplicity', 'xyz_geom', 'dft_functional',
     'active_electrons', 'active_orbitals', 'active_nroots',
     'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
-    "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle"
+    "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
+    "tight_conv", "solver_method", "initial_guess"
   ];
 
   // Special case for calc_param

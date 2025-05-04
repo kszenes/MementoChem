@@ -5,19 +5,19 @@ export default class OrcaProgram extends BaseProgram {
     super(document);
     this.commentStr = "#";
     this.templates = {
-      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}
+      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-      HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{MIX_GUESS}}{{SCF_BLOCK}}
+      HF: `! {{CALC_TYPE}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-      DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{MIX_GUESS}}{{SCF_BLOCK}}
+      DFT: `! {{CALC_TYPE}} {{BASIS_SET}} {{DFT_FUNCTIONAL}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-      MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SCF_BLOCK}}{{NATORB_BLOCK}}
+      MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}{{NATORB_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
@@ -167,6 +167,7 @@ end`
     const doRI = this.document.getElementById("ri_toggle").checked;
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
+    const doSOSCF = this.document.getElementById("solver_method").value === "SOSCF";
 
     if (doRI) {
       basisSet += " " + basisSet + "/C";
@@ -199,7 +200,8 @@ end`);
       .replace('{{CHARGE}}', charge)
       .replaceAll('{{MULTIPLICITY}}', multiplicity)
       .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
-      .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "");
+      .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
+      .replace("{{SOSCF}}", doSOSCF ? " SOSCF": "");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
@@ -238,6 +240,11 @@ end`);
       "DLPNO-CCSD": "DLPNO-CCSD",
       "DLPNO-CCSD(T)": "DLPNO-CCSD_T",
     });
+    this._updateSelection("initial_guess", {
+      "SAD (default)": "default",
+      "Core": "HCore",
+      "Huckel": "Hueckel",
+    })
     this._updateSelection("calc_type", {
       "Energy": "SP",
       "Geometry Opt": "OPT",

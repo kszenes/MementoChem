@@ -77,6 +77,17 @@
       background: #444;
       margin: 1rem 0;
     }
+    /* Change the background color of the accordion buttons when collapsed */
+    .accordion-button {
+      background-color: #f0f0f0; /* Light grey background when collapsed */
+      border: 1px solid #ddd; /* Optional: add a border to define the edges */
+    }
+
+    /* Change the background color when the accordion is active (expanded) */
+    .accordion-button:not(.collapsed) {
+      background-color: #007bff; /* Blue background for active state */
+      color: white; /* Make the text white when active */
+    }
   </style>
   <body>
     <div class="container-fluid border bg-light">
@@ -313,71 +324,61 @@
                   </div>
                 </div>
               </div>
-
-              <div class="accordion mb-3 d-none" id="accordionExample">
+              <div
+                class="accordion accordion-flush mb-3"
+                id="accordian_advanced_opts"
+              >
                 <div class="accordion-item">
                   <h2 class="accordion-header">
                     <button
-                      class="accordion-button p-1"
+                      class="accordion-button collapsed p-1"
                       type="button"
                       data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
+                      data-bs-target="#flush-collapseOne"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseOne"
+                      style="border-radius: 5px"
                     >
                       Advanced Options
                     </button>
                   </h2>
                   <div
-                    id="collapseOne"
-                    class="accordion-collapse collapse show"
-                    data-bs-parent="#accordionExample"
+                    id="flush-collapseOne"
+                    class="accordion-collapse collapse"
+                    data-bs-parent="#accordionFlushExample"
                   >
-                    <div class="accordion-body">
+                    <div class="accordion-body m-0 pb-2">
                       <div class="row">
-                        <div class="col-4 mb-3">
+                        <div class="col" id="xyz_file_full">
+                          <input
+                            type="checkbox"
+                            class="btn-check"
+                            id="tight_conv"
+                            autocomplete="off"
+                          />
+                          <label
+                            class="btn btn-outline-secondary"
+                            for="tight_conv"
+                            title="Use tight convergence criteria"
+                            >Tight Conv</label
+                          >
+                        </div>
+                        <div class="col">
+                          <div class="form-floating">
+                            <select id="solver_method" class="form-select">
+                              <option value="DIIS">DIIS</option>
+                              <option value="SOSCF">SOSCF</option>
+                            </select>
+                            <label for="solver_method">Solver</label>
+                          </div>
+                        </div>
+                        <div class="col">
                           <div class="form-floating">
                             <select id="initial_guess" class="form-select">
-                              <option value=""></option>
-                              <option value="HCore">HCore</option>
-                              <option value="Hueckel">Hueckel</option>
-                              <option value="PAtom">PAtom</option>
+                              <option value="SAD">Sad</option>
+                              <option value="Core">HCore</option>
                             </select>
-                            <label for="initial_guess">Guess</label>
-                          </div>
-                        </div>
-                        <div class="col-4 mb-3">
-                          <div class="form-floating">
-                            <select id="active_pt" class="form-select">
-                              <option value=""></option>
-                              <option value="SC_NEVPT2">SC_NEVPT2</option>
-                              <option value="FIC_NEVPT2">FIC_NEVPT2</option>
-                              <option value="CASPT2">CASPT2</option>
-                            </select>
-                            <label for="active_pt">Solver</label>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        class="row border rounded-border"
-                        id="conv_thresh_box"
-                      >
-                        <label for="conv_thresh_box" class="form-label"
-                          >Thresholds</label
-                        >
-                        <div class="col mb-3">
-                          <div class="form-floating">
-                            <input class="form-control" id="energy_threshold" />
-                            <label for="energy_threshold">Energy</label>
-                          </div>
-                        </div>
-                        <div class="col mb-3">
-                          <div class="form-floating">
-                            <input
-                              class="form-control"
-                              id="gradient_threshold"
-                            />
-                            <label for="gradient_threshold">Gradient</label>
+                            <label for="initial_guess">Initial Guess</label>
                           </div>
                         </div>
                       </div>
@@ -508,6 +509,9 @@
         </div>
       </div>
     </footer>
+
+    <!-- NOTE:  Needed for accordian -->
+    <script src="./assets/bootstrap-5.3.5/js/bootstrap.min.js"></script>
 
     <!-- JavaScript to update the text area -->
     <script type="module" src="./main.js"></script>
