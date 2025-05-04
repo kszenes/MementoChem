@@ -276,5 +276,6 @@ mycc.direct = true` : "");
     this._disableElem("freq_full");
     this._enableElem("stability_full");
     this._enableElem("mp2_natorb_full");
+    this._enableElem("xyz_file_full");
   }
 }

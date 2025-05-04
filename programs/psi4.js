@@ -24,8 +24,8 @@ export default class Psi4Program extends BaseProgram {
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
     // TODO: Implement useFile
     if (useFile) {
-      const fname = this.document.getElementById("xyz_file_name").value;
-      return `  Coord = ${fname}\n  Basis = ${basisSet}`;
+      // const fname = this.document.getElementById("xyz_file_name").value;
+      // return `  Coord = ${fname}\n  Basis = ${basisSet}`;
     } else {
       const coords = this.document.getElementById("xyz_geom").value
         .split('\n')
@@ -173,10 +173,13 @@ ${inner}
       "CASPT2": "CASPT2"
     })
 
+    // TODO: elements also need to be disabled too!
+    // The user won't be able to toggle them otherwise
     // Toggle Elements
     this._enableElem("stability_full");
     this._enableElem("guessmix_full");
     this._enableElem("freq_full");
     this._disableElem("mp2_natorb_full");
+    this._disableElem("xyz_file_full");
   }
 }

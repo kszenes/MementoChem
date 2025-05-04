@@ -13,7 +13,18 @@ const programs = {
 // DOM Helper Functions
 function hideElement(id) {
   const element = document.getElementById(id);
-  if (element) element.classList.add('d-none');
+  if (element) {
+    // Find all child checkboxes within the element
+    const checkboxes = element.querySelectorAll('input[type="checkbox"]');
+
+    // Uncheck all child checkboxes
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+
+    // Apply d-none class to hide the entire element
+    element.classList.add('d-none');
+  }
 }
 
 function showElement(id) {

@@ -54,7 +54,17 @@ export default class BaseProgram {
   }
   _disableElem(id) {
     const element = this.document.getElementById(id);
+    const container = this.document.getElementById(id);
     if (element) {
+      // Find all child checkboxes within the element
+      const checkboxes = element.querySelectorAll('input[type="checkbox"]');
+
+      // Uncheck all child checkboxes
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+
+      // Apply d-none class to hide the entire element
       element.classList.add('d-none');
     }
   }
