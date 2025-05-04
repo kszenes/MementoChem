@@ -5,7 +5,7 @@ export default class OrcaProgram extends BaseProgram {
     super(document);
     this.commentStr = "#";
     this.templates = {
-      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}
+      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
@@ -17,7 +17,7 @@ export default class OrcaProgram extends BaseProgram {
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-      MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{DIRECT_BLOCK}}{{NATORB_BLOCK}}
+      MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SCF_BLOCK}}{{NATORB_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
@@ -174,14 +174,12 @@ end`
 
     let template = this.getTemplate(calcMethod);
 
-    const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
-    if (isSCF) {
-      const scfBlock = this.buildSCFStr();
-      template = template.replace("{{SCF_BLOCK}}", scfBlock);
-    }
+    const scfBlock = this.buildSCFStr();
+    template = template.replace("{{SCF_BLOCK}}", scfBlock);
 
+    const isCAS = calcMethod.includes("CAS");
     if (doDirect) {
-      if (!isSCF) {
+      if (isCAS) {
         template = template.replace("{{DIRECT_BLOCK}}", `
 
 %scf

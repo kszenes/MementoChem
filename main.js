@@ -43,8 +43,6 @@ function toggleElementVisibility(id, isVisible) {
 function updateScfTypeOptions() {
   const calcMethod = document.getElementById('calc_param').value;
 
-  if (calcMethod !== 'HF' && calcMethod !== 'DFT') return;
-
   const scfTypeSelect = document.getElementById('scf_type');
   scfTypeSelect.innerHTML = '';
 
@@ -80,20 +78,19 @@ function updateUI() {
   const scfType = document.getElementById('scf_type').value;
 
   // Hide all options first
-  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options'].forEach(hideElement);
+  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'scf-type-container'].forEach(hideElement);
 
-  // TODO: Do not hide scfTypeContainer
-  // Show/hide SCF type based on method
   const scfTypeContainer = document.getElementById('scf-type-container');
-  if (calcMethod === 'HF' || calcMethod === 'DFT') {
+  // Show/hide SCF type based on method
+  if (!calcMethod.includes("CAS")) {
     scfTypeContainer.classList.remove('d-none');
+  }
+  if (calcMethod === 'HF' || calcMethod === 'DFT') {
 
     // Show stability checkbox only for UHF/UKS
     const showUnrestricted = (calcMethod === 'HF' && scfType === 'UHF') ||
       (calcMethod === 'DFT' && scfType === 'UKS');
     toggleElementVisibility('unrestricted-options', showUnrestricted);
-  } else {
-    scfTypeContainer.classList.add('d-none');
   }
 
   // Show relevant options based on method
