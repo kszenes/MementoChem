@@ -76,6 +76,7 @@ function updateScfTypeOptions() {
 function updateUI() {
   const calcMethod = document.getElementById('calc_param').value;
   const scfType = document.getElementById('scf_type').value;
+  const selectedProgram = document.getElementById('qc_program').value;
 
   // Hide all options first
   ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'scf-type-container', "accordian_advanced_opts"].forEach(hideElement);
@@ -92,7 +93,9 @@ function updateUI() {
       (calcMethod === 'DFT' && scfType === 'UKS');
     toggleElementVisibility('unrestricted-options', showUnrestricted);
 
-    showElement("accordian_advanced_opts");
+    if (selectedProgram != "OpenMolcas") {
+      showElement("accordian_advanced_opts");
+    }
   }
 
   // Show relevant options based on method

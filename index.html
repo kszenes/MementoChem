@@ -130,7 +130,7 @@
                     autocomplete="off"
                   />
                   <label
-                    class="btn btn-outline-secondary"
+                    class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
                     for="freq_toggle"
                     title="Enable frequency calculation"
                     >Freq</label
@@ -348,8 +348,8 @@
                     data-bs-parent="#accordionFlushExample"
                   >
                     <div class="accordion-body m-0 pb-2">
-                      <div class="row">
-                        <div class="col" id="accordian_advanced_opts">
+                      <div class="row align-items-center">
+                        <div class="col">
                           <input
                             type="checkbox"
                             class="btn-check"
@@ -357,15 +357,18 @@
                             autocomplete="off"
                           />
                           <label
-                            class="btn btn-outline-secondary"
+                            class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
                             for="tight_conv"
                             title="Use tight convergence criteria"
                             >Tight Conv</label
                           >
                         </div>
                         <div class="col">
-                          <div class="form-floating">
-                            <select id="solver_method" class="form-select">
+                          <div class="form-floating h-100">
+                            <select
+                              id="solver_method"
+                              class="form-select h-100"
+                            >
                               <option value="DIIS">DIIS</option>
                               <option value="SOSCF">SOSCF</option>
                             </select>
@@ -373,9 +376,12 @@
                           </div>
                         </div>
                         <div class="col">
-                          <div class="form-floating">
-                            <select id="initial_guess" class="form-select">
-                              <option value="SAD">Sad</option>
+                          <div class="form-floating h-100">
+                            <select
+                              id="initial_guess"
+                              class="form-select h-100"
+                            >
+                              <option value="SAD">SAD (default)</option>
                               <option value="Core">HCore</option>
                             </select>
                             <label for="initial_guess">Initial Guess</label>
@@ -430,7 +436,7 @@
                     autocomplete="off"
                   />
                   <label
-                    class="btn btn-outline-secondary"
+                    class="btn btn-outline-secondary btn btn-outline-secondary d-flex align-items-center justify-content-center"
                     for="file_toggle"
                     title="Use XYZ file as input instead of raw geometry"
                     >XYZ File</label
