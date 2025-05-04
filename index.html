@@ -65,17 +65,24 @@
       padding-top: 1.25rem; /* Adjust padding as necessary */
     }
     .rounded-border {
-      border-radius: 10px;
+      border-radius: 5px;
     }
     .form-floating label {
       padding-left: 0.55rem; /* Adjust left padding if necessary */
+    }
+    /* Method specific options */
+    .separator {
+      border: none;
+      height: 1px;
+      background: #444;
+      margin: 1rem 0;
     }
   </style>
   <body>
     <div class="container-fluid border bg-light">
       <div class="row">
         <!-- Left Column: Form Inputs -->
-        <div class="col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="p-3 mt-3">
             <h3>General</h3>
             <form id="selectionForm">
@@ -188,6 +195,7 @@
               </div>
 
               <!-- Method-specific options -->
+              <hr class="separator" />
 
               <div class="row">
                 <div id="dft-options" class="d-none col-auto mb-3">
@@ -251,11 +259,11 @@
               </div>
               <div id="casscf-options" class="row ps-2 mb-3 d-none">
                 <div class="col-8">
-                  <div class="row border rounded-border" id="active_space">
+                  <div class="row border rounded-border p-0" id="active_space">
                     <label for="active_space" class="form-label"
                       >Active Space</label
                     >
-                    <div class="col mb-3">
+                    <div class="col p-1">
                       <div class="form-floating">
                         <input
                           type="number"
@@ -267,7 +275,7 @@
                         <label for="active_electrons"># Elec</label>
                       </div>
                     </div>
-                    <div class="col mb-3">
+                    <div class="col p-1">
                       <div class="form-floating">
                         <input
                           type="number"
@@ -279,7 +287,7 @@
                         <label for="active_orbitals"># Orbs</label>
                       </div>
                     </div>
-                    <div class="col mb-3">
+                    <div class="col p-1">
                       <div class="form-floating">
                         <input
                           type="number"
@@ -293,7 +301,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-4 mb-3">
+                <div class="col-4 mb-3 mt-3">
                   <div class="form-floating">
                     <select id="active_pt" class="form-select">
                       <option value=""></option>
@@ -466,7 +474,7 @@
         </div>
 
         <!-- Right Column: Display Area -->
-        <div class="col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="p-3 mt-3">
             <h3>Generated Input File</h3>
             <div class="code-container position-relative">
