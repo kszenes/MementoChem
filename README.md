@@ -23,8 +23,6 @@ It has currently support (with varying degrees) for
 - [ ] Add frozen core
 - [ ] Add explicit correlation
 - [ ] Add counterpoise correction
-- [ ] Add support for second-order solvers
-- [ ] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
 - [-] Add other chemistry programs:
@@ -46,6 +44,8 @@ It has currently support (with varying degrees) for
 - [x] Finish MP2 (add natural orbital option)
 - [x] Add stability analysis for unrestricted calculations
 - [x] Add MRPT2
+- [x] Add support for second-order solvers
+- [x] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
 
 ## Credit
 
