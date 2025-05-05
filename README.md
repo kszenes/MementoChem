@@ -30,6 +30,7 @@ It has currently support (with varying degrees) for
   - [-] OpenMolcas: Missing geometry optimization and frequency calculation
   - [-] Psi4
 - [ ] Add input validation (e.g., multiplicity makes sense)
+- [ ] Add fcisolver to CAS calculations
 
 #### DONE
 
