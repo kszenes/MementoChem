@@ -9,7 +9,8 @@ export default class Psi4Program extends BaseProgram {
 
 {{SET_BLOCK}}
 
-{{COMP_BLOCK}}`,
+{{COMP_BLOCK}}
+{{OUT_BLOCK}}`,
       CAS: `{{MOLECULE_STRUCTURE}}
   {{RI}}
 
@@ -123,7 +124,7 @@ ${inner}
         break;
     }
 
-    let ret = `${compStr}("${inner}")`;
+    let ret = `e = ${compStr}("${inner}")`;
 
     ret += includeFreq ? `\nfrequency("${inner}")` : "";
     return ret;
@@ -141,6 +142,7 @@ ${inner}
     return template;
   }
   generateInputFile() {
+    const calcType = this.document.getElementById('calc_type').value;
     const calcMethod = this.document.getElementById('calc_param').value;
 
     let template = this.getTemplate(calcMethod);
@@ -159,6 +161,15 @@ ${inner}
 
     const compBlock = this.buildCompStr();
     template = template.replaceAll("{{COMP_BLOCK}}", compBlock);
+
+    let simSuffix = "";
+    const calcName = calcMethod === "CCSD_T" ? "CCSD(T)" : calcMethod;
+    if (calcType === "OPT") {
+      simSuffix = "_eq";
+    } else if (calcType === "OPTTS") {
+      simSuffix = "_ts";
+    }
+    template = template.replace("{{OUT_BLOCK}}", `print("E${simSuffix}(${calcName}) =", e) `);
 
     // Add header
     template = this.getHeader() + template;
