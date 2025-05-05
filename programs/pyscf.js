@@ -14,7 +14,7 @@ export default class PySCFProgram extends BaseProgram {
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 `,
-      MP2: `from pyscf import gto, scf, mp
+      MP2: `from pyscf import gto, scf, mp{{DF_IMPORT}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 my_mp = {{MP2_LINE}}
@@ -161,10 +161,18 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
     if (calcMethod === "MP2") {
       template = this.templates.MP2;
       const natorb = this.document.getElementById('natorb_toggle').checked;
+      const isSinglet = this.document.getElementById('multiplicity').value === "1";
       if (doRI) {
-        template = template.replaceAll("{{MP2_LINE}}", "mp.dfmp2_native.DFRMP2(mol)")
+        if (isSinglet) {
+          template = template.replaceAll("{{DF_IMPORT}}", "\nfrom pyscf.mp import dfmp2_native")
+          template = template.replaceAll("{{MP2_LINE}}", "dfmp2_native.DFRMP2(mf)")
+        } else {
+          template = template.replaceAll("{{DF_IMPORT}}", "\nfrom pyscf.mp import dfump2_native")
+          template = template.replaceAll("{{MP2_LINE}}", "dfump2_native.DFUMP2(mf)")
+        }
       } else {
-        template = template.replaceAll("{{MP2_LINE}}", "mp.MP2(mol)")
+        template = template.replaceAll("{{DF_IMPORT}}", "");
+        template = template.replaceAll("{{MP2_LINE}}", "mp.MP2(mf)")
       }
 
       // Natural Orbitals
