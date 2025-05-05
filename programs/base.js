@@ -54,7 +54,6 @@ export default class BaseProgram {
   }
   _disableElem(id) {
     const element = this.document.getElementById(id);
-    const container = this.document.getElementById(id);
     if (element) {
       // Find all child checkboxes within the element
       const checkboxes = element.querySelectorAll('input[type="checkbox"]');
