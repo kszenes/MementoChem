@@ -92,6 +92,7 @@ ${inner}
   }
 
   buildCompStr() {
+    const calcType = this.document.getElementById('calc_type').value;
     const calcMethod = this.document.getElementById('calc_param').value;
     const simMethod = this.document.getElementById('calc_type').value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
@@ -100,19 +101,21 @@ ${inner}
     let inner = "";
     switch (calcMethod) {
       case 'HF':
-        inner = "scf";
+        inner = '"scf"';
         break;
       case 'DFT':
-        inner = `${dftFunctional.toLowerCase()}`;
+        inner = `"${dftFunctional.toLowerCase()}"`;
         break;
       case "CCSD_T":
-        inner = "ccsd(t)";
+        inner = '"ccsd(t)"';
         break;
       default:
-        inner = `${calcMethod.toLowerCase()}`;
+        inner = `"${calcMethod.toLowerCase()}"`;
     }
 
     let compStr = "";
+
+    let prefix = "";
 
     switch (simMethod) {
       case 'SP':
@@ -124,45 +127,25 @@ ${inner}
         break;
     }
 
-    let ret = `e = ${compStr}("${inner}")`;
+    if (simMethod.includes("OPT") || includeFreq) {
+      prefix = `E, wfn = `
+      inner += ", return_wfn=True"
+    } else {
+      prefix = `E = `
+    }
 
-    ret += includeFreq ? `\nfrequency("${inner}")` : "";
+    let ret = `${prefix}${compStr}(${inner})`;
+
+    ret += includeFreq ? `\n${prefix}frequency(${inner})` : "";
     return ret;
   }
 
-  getTemplate(calcMethod) {
-    let template;
-
-    if (calcMethod.startsWith("CAS")) {
-      template = this.templates.CAS;
-    } else {
-      template = this.templates[calcMethod] || this.templates.DEFAULT;
-    }
-
-    return template;
-  }
-  generateInputFile() {
-    const calcType = this.document.getElementById('calc_type').value;
+  buildOutStr() {
     const calcMethod = this.document.getElementById('calc_param').value;
+    const calcType = this.document.getElementById('calc_type').value;
     const scfType = this.document.getElementById("scf_type").value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
-
-    let template = this.getTemplate(calcMethod);
-
-    const doRI = this.document.getElementById("ri_toggle").checked;
-    template = template.replaceAll("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
-
-    const geomBlock = this.buildCoordsStr();
-    template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
-
-    const setBlock = this.buildSetStr();
-    template = template.replaceAll("{{SET_BLOCK}}", setBlock);
-
-    const scfBlock = this.buildSCFStr();
-    template = template.replaceAll("{{SCF_BLOCK}}", scfBlock);
-
-    const compBlock = this.buildCompStr();
-    template = template.replaceAll("{{COMP_BLOCK}}", compBlock);
+    const includeFreq = this.document.getElementById('freq_toggle').checked;
 
     let calcName = "";
     if (calcMethod === "HF" && scfType != "Auto") {
@@ -182,7 +165,48 @@ ${inner}
       simSuffix = "_ts";
     }
 
-    template = template.replace("{{OUT_BLOCK}}", `print("E${simSuffix}(${calcName}) =", e) `);
+    let ret = "\n# --- Output ---\n" + `print("E${simSuffix}(${calcName}) =", E)`
+    if (calcType.startsWith("OPT")) {
+      ret += '\nprint("Optimized Geometry")\nprint(np.asarray(wfn.molecule().create_psi4_string_from_molecule()))'
+    }
+    if (includeFreq) {
+      ret += '\nprint("Frequencies")\nprint(np.asarray(wfn.frequencies()))';
+    }
+    return ret;
+  }
+
+  getTemplate(calcMethod) {
+    let template;
+
+    if (calcMethod.startsWith("CAS")) {
+      template = this.templates.CAS;
+    } else {
+      template = this.templates[calcMethod] || this.templates.DEFAULT;
+    }
+
+    return template;
+  }
+  generateInputFile() {
+    const calcMethod = this.document.getElementById('calc_param').value;
+
+    let template = this.getTemplate(calcMethod);
+
+    const doRI = this.document.getElementById("ri_toggle").checked;
+    template = template.replaceAll("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
+
+    const geomBlock = this.buildCoordsStr();
+    template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
+
+    const setBlock = this.buildSetStr();
+    template = template.replaceAll("{{SET_BLOCK}}", setBlock);
+
+    const scfBlock = this.buildSCFStr();
+    template = template.replaceAll("{{SCF_BLOCK}}", scfBlock);
+
+    const compBlock = this.buildCompStr();
+    template = template.replaceAll("{{COMP_BLOCK}}", compBlock);
+
+    template = template.replace("{{OUT_BLOCK}}", this.buildOutStr());
 
     // Add header
     template = this.getHeader() + template;
