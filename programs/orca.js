@@ -5,7 +5,7 @@ export default class OrcaProgram extends BaseProgram {
     super(document);
     this.commentStr = "#";
     this.templates = {
-      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}
+      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
