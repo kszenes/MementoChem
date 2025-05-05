@@ -110,7 +110,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     // Tight conv
     if (doTightConv) {
       const [etol, gtol] = this.getTightConvCriteria();
-      scfTemplate = scfTemplate.replaceAll("{{TOL}}", `mf.conv_tol = ${etol}        # energy tolerance
+      scfTemplate = scfTemplate.replaceAll("{{TOL}}", `mf.conv_tol = ${etol}   # energy tolerance
 mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
     } else {
       scfTemplate = scfTemplate.replaceAll("{{TOL}}", "");

@@ -26,14 +26,14 @@ It has currently support (with varying degrees) for
 - [ ] Add PES scan
 - [ ] Add other geometry specification methods besides xyz
 - [-] Add other chemistry programs:
-  - [-] PySCF: Missing geometry optimization and frequency calculation
+  - [-] PySCF: Missing frequency calculation
   - [-] OpenMolcas: Missing geometry optimization and frequency calculation
-  - [-] Psi4
 - [ ] Add input validation (e.g., multiplicity makes sense)
 - [ ] Add fcisolver to CAS calculations
 
 #### DONE
 
+- [x] Psi4
 - [x] Add syntax highlighting
 - [x] Add CASCI (no orbital rotations)
 - [x] Add UHF guess mix

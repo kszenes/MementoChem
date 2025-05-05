@@ -112,8 +112,9 @@ ${coords}
         template = template.replaceAll("{{ORB_ROT}}", "");
       } else if (calcMethod === "CASCI") {
         template = template.replaceAll("{{ORB_ROT}}", `
-!MORead NoIter
-%MoInp "your-orbitals.gbw"`);
+! NoIter   # CASCI: no orbital rotation
+! MORead   
+% MoInp "your-orbitals.gbw"`);
       }
 
       // RI approx
@@ -150,7 +151,7 @@ ${coords}
     const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
     if (isUnrestriced && mixGuess) {
-      template = template.replaceAll("{{MIX_GUESS}}", " GuessMix");
+      template = template.replaceAll("{{MIX_GUESS}}", "\n! GuessMix   # break alpha beta spin symmetry");
     } else {
       template = template.replaceAll("{{MIX_GUESS}}", "");
     };
@@ -204,7 +205,7 @@ end`);
       .replaceAll('{{MULTIPLICITY}}', multiplicity)
       .replaceAll('{{MOLECULE_STRUCTURE}}', moleculeStructure)
       .replaceAll('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
-      .replaceAll("{{SOSCF}}", doSOSCF ? " SOSCF": "");
+      .replaceAll("{{SOSCF}}", doSOSCF ? "\n! SOSCF   # second order solver": "");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
