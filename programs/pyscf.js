@@ -162,13 +162,14 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       template = this.templates.MP2;
       const natorb = this.document.getElementById('natorb_toggle').checked;
       const isSinglet = this.document.getElementById('multiplicity').value === "1";
+      const scfType = this.document.getElementById("scf_type").value;
       if (doRI) {
-        if (isSinglet) {
-          template = template.replaceAll("{{DF_IMPORT}}", "\nfrom pyscf.mp import dfmp2_native")
-          template = template.replaceAll("{{MP2_LINE}}", "dfmp2_native.DFRMP2(mf)")
-        } else {
+        if ((!isSinglet && scfType === "Auto") || scfType === "UHF") {
           template = template.replaceAll("{{DF_IMPORT}}", "\nfrom pyscf.mp import dfump2_native")
           template = template.replaceAll("{{MP2_LINE}}", "dfump2_native.DFUMP2(mf)")
+        } else {
+          template = template.replaceAll("{{DF_IMPORT}}", "\nfrom pyscf.mp import dfmp2_native")
+          template = template.replaceAll("{{MP2_LINE}}", "dfmp2_native.DFRMP2(mf)")
         }
       } else {
         template = template.replaceAll("{{DF_IMPORT}}", "");
