@@ -93,28 +93,28 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 
     if (scfType === "Auto") {
       if (calcMethod === "HF") {
-        scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", "HF");
+        scfTemplate = scfTemplate.replaceAll("{{SCF_TYPE}}", "HF");
       } else if (calcMethod === "DFT") {
-        scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", "KS");
+        scfTemplate = scfTemplate.replaceAll("{{SCF_TYPE}}", "KS");
       }
     } else {
-      scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", scfType);
+      scfTemplate = scfTemplate.replaceAll("{{SCF_TYPE}}", scfType);
     }
 
     if (calcMethod != "HF" || calcMethod != "DFT") {
-      scfTemplate = scfTemplate.replace("{{SCF_TYPE}}", "HF");
+      scfTemplate = scfTemplate.replaceAll("{{SCF_TYPE}}", "HF");
     }
 
     // Initial guess
-    scfTemplate = scfTemplate.replace("{{GUESS}}", (initialGuess != "default") ? `mf.init_guess = "${initialGuess}"\n` : "");
+    scfTemplate = scfTemplate.replaceAll("{{GUESS}}", (initialGuess != "default") ? `mf.init_guess = "${initialGuess}"\n` : "");
     
     // Tight conv
     if (doTightConv) {
       const [etol, gtol] = this.getTightConvCriteria();
-      scfTemplate = scfTemplate.replace("{{TOL}}", `mf.conv_tol = ${etol}        # energy tolerance
+      scfTemplate = scfTemplate.replaceAll("{{TOL}}", `mf.conv_tol = ${etol}        # energy tolerance
 mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
     } else {
-      scfTemplate = scfTemplate.replace("{{TOL}}", "");
+      scfTemplate = scfTemplate.replaceAll("{{TOL}}", "");
     }
 
     const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
@@ -123,15 +123,15 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
     if (isUnrestriced) {
       // TODO: Mix Guess
       if (mixGuess) {
-        scfTemplate = scfTemplate.replace("{{MIX_GUESS}}", " GUESSMIX");
+        scfTemplate = scfTemplate.replaceAll("{{MIX_GUESS}}", " GUESSMIX");
 
       } else {
-        scfTemplate = scfTemplate.replace("{{MIX_GUESS}}", "");
+        scfTemplate = scfTemplate.replaceAll("{{MIX_GUESS}}", "");
       }
 
       // Stability analysis
       if (doStab) {
-        scfTemplate = scfTemplate.replace("{{STAB_FUNC}}", `def stable_opt_internal(mf):
+        scfTemplate = scfTemplate.replaceAll("{{STAB_FUNC}}", `def stable_opt_internal(mf):
     mo1, _, stable, _ = mf.stability(return_status=True)
     cyc = 0
     while (not stable and cyc < 10):
@@ -140,12 +140,12 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
         mo1, _, stable, _ = mf.stability(return_status=True)
         cyc += 1
     return mf\n\n`);
-        scfTemplate = scfTemplate.replace("{{STAB_RUN}}", "\nstable_opt_internal(mf)");
+        scfTemplate = scfTemplate.replaceAll("{{STAB_RUN}}", "\nstable_opt_internal(mf)");
       } else {
-        scfTemplate = scfTemplate.replace("{{STAB_FUNC}}", "").replace("{{STAB_RUN}}", "");
+        scfTemplate = scfTemplate.replaceAll("{{STAB_FUNC}}", "").replaceAll("{{STAB_RUN}}", "");
       }
     } else {
-      scfTemplate = scfTemplate.replace("{{STAB_FUNC}}", "").replace("{{STAB_RUN}}", "");
+      scfTemplate = scfTemplate.replaceAll("{{STAB_FUNC}}", "").replaceAll("{{STAB_RUN}}", "");
     }
 
     // TODO:
@@ -162,24 +162,24 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       template = this.templates.MP2;
       const natorb = this.document.getElementById('natorb_toggle').checked;
       if (doRI) {
-        template = template.replace("{{MP2_LINE}}", "mp.dfmp2_native.DFRMP2(mol)")
+        template = template.replaceAll("{{MP2_LINE}}", "mp.dfmp2_native.DFRMP2(mol)")
       } else {
-        template = template.replace("{{MP2_LINE}}", "mp.MP2(mol)")
+        template = template.replaceAll("{{MP2_LINE}}", "mp.MP2(mol)")
       }
 
       // Natural Orbitals
-      template = template.replace("{{NATORB_BLOCK}}", natorb ? "\nnatocc, natorb = my_mp.make_natorbs()" : "");
+      template = template.replaceAll("{{NATORB_BLOCK}}", natorb ? "\nnatocc, natorb = my_mp.make_natorbs()" : "");
     } else if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
 
-      template = template.replace("{{ORB_ROT}}", calcMethod);
+      template = template.replaceAll("{{ORB_ROT}}", calcMethod);
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
       let ptStr = ptMethod ? "\n\nmrpt.NEVPT(mc).kernel()" : "";
       let ptImport = ptMethod ? ", mrpt" : "";
 
-      template = template.replace("{{PT_STRING}}", ptStr).replace("{{PT_IMPORT}}", ptImport);
+      template = template.replaceAll("{{PT_STRING}}", ptStr).replaceAll("{{PT_IMPORT}}", ptImport);
     } else if (calcMethod === "HF") {
       template = this.templates.HF;
     } else {
@@ -206,20 +206,20 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
     let template = this.getTemplate(calcMethod);
 
     const scfBlock = this.buildSCFStr();
-    template = template.replace("{{SCF_BLOCK}}", scfBlock);
+    template = template.replaceAll("{{SCF_BLOCK}}", scfBlock);
 
     // TODO
     //     if (doDirect) {
     //       const isSCF = (calcMethod === "HF") || (calcMethod === "DFT");
     //       if (!isSCF) {
-    //         template = template.replace("{{DIRECT_BLOCK}}", `
+    //         template = template.replaceAll("{{DIRECT_BLOCK}}", `
     //
     // %scf
     //   SCFMode Direct
     // end`);
     //       }
     //     } else {
-    //       template = template.replace("{{DIRECT_BLOCK}}", "");
+    //       template = template.replaceAll("{{DIRECT_BLOCK}}", "");
     //     }
 
     // TODO:
@@ -227,30 +227,30 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
 
     // Common replacements
     template = template
-      .replace('{{CALC_TYPE}}', calculationType)
-      .replace('{{BASIS_SET}}', basisSet)
-      .replace('{{CHARGE}}', charge)
+      .replaceAll('{{CALC_TYPE}}', calculationType)
+      .replaceAll('{{BASIS_SET}}', basisSet)
+      .replaceAll('{{CHARGE}}', charge)
       .replaceAll('{{MULTIPLICITY}}', multiplicity)
-      .replace('{{MOLECULE_STRUCTURE}}', moleculeStructure)
-      .replace('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
+      .replaceAll('{{MOLECULE_STRUCTURE}}', moleculeStructure)
+      .replaceAll('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
       .replaceAll("{{DENSITY_FIT}}", doRI ? ".density_fit()" : "")
-      .replace("{{SOSCF}}", doSOSCF ? ".newton()": "");
+      .replaceAll("{{SOSCF}}", doSOSCF ? ".newton()": "");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
       // TODO: Add support for functional
       const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
-      template = template.replace('{{DFT_FUNCTIONAL}}', dftFunctional);
+      template = template.replaceAll('{{DFT_FUNCTIONAL}}', dftFunctional);
     } else if (calcMethod.startsWith("CAS")) {
       const activeElectrons = this.document.getElementById('active_electrons')?.value || '6';
       const activeOrbitals = this.document.getElementById('active_orbitals')?.value || '6';
       const activeNroots = this.document.getElementById('active_nroots')?.value || '1';
       template = template
-        .replace('{{ACTIVE_ELECTRONS}}', activeElectrons)
-        .replace('{{ACTIVE_ORBITALS}}', activeOrbitals)
-        .replace('{{ACTIVE_NROOTS}}', activeNroots);
+        .replaceAll('{{ACTIVE_ELECTRONS}}', activeElectrons)
+        .replaceAll('{{ACTIVE_ORBITALS}}', activeOrbitals)
+        .replaceAll('{{ACTIVE_NROOTS}}', activeNroots);
     } else if (calcMethod.startsWith("CC")) {
-      template = template.replace("{{DIRECT_BLOCK}}", doDirect ? `
+      template = template.replaceAll("{{DIRECT_BLOCK}}", doDirect ? `
 mycc.direct = true` : "");
     }
 
@@ -302,5 +302,6 @@ mycc.direct = true` : "");
     this._enableElem("stability_full");
     this._enableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");
+    this._enableElem("dist_unit_full");
   }
 }

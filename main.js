@@ -142,7 +142,7 @@ async function loadTextData(url, elementId, defaultValue) {
 
     data.forEach(item => {
       const option = document.createElement('option');
-      option.value = item.name.replace(/\s+/g, '');
+      option.value = item.name.replaceAll(/\s+/g, '');
       option.textContent = item.name;
       option.title = item.description;
       selectElement.appendChild(option);

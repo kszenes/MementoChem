@@ -79,7 +79,7 @@ export default class MolcasProgram extends BaseProgram {
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
 
     let template = "&SEWARD{{DIRECT}}";
-    template = template.replace("{{DIRECT}}", doDirect ? "\n  Direct" : "");
+    template = template.replaceAll("{{DIRECT}}", doDirect ? "\n  Direct" : "");
     return template;
   }
 
@@ -93,12 +93,12 @@ export default class MolcasProgram extends BaseProgram {
 
     let template = `&SCF{{CHARGE_LINE}}{{MULTIPLICITY}}{{DFT_FUNCTIONAL}}{{UNRESTRICTED}}{{MIX_GUESS}}`;
 
-    template = template.replace("{{CHARGE_LINE}}", parseInt(charge) != 0 ? `\n  Charge = ${charge}` : "");
-    template = template.replace("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin = ${multiplicity}` : "");
+    template = template.replaceAll("{{CHARGE_LINE}}", parseInt(charge) != 0 ? `\n  Charge = ${charge}` : "");
+    template = template.replaceAll("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin = ${multiplicity}` : "");
 
-    template = template.replace("{{DFT_FUNCTIONAL}}", (calcMethod === "DFT") ? `\n  KSDFT = ${dftFunctional}` : "");
-    template = template.replace("{{UNRESTRICTED}}", scfType.startsWith("U") ? "\n  UHF" : "");
-    template = template.replace("{{MIX_GUESS}}", (scfType.startsWith("U") && mixGuess ) ? "\n  * Adds noise to orbitals (can be used for sym breaking)\n  Scramble 0.2 * max noise of arcsin(0.2)" : "");
+    template = template.replaceAll("{{DFT_FUNCTIONAL}}", (calcMethod === "DFT") ? `\n  KSDFT = ${dftFunctional}` : "");
+    template = template.replaceAll("{{UNRESTRICTED}}", scfType.startsWith("U") ? "\n  UHF" : "");
+    template = template.replaceAll("{{MIX_GUESS}}", (scfType.startsWith("U") && mixGuess ) ? "\n  * Adds noise to orbitals (can be used for sym breaking)\n  Scramble 0.2 * max noise of arcsin(0.2)" : "");
 
 
     return template;
@@ -124,11 +124,11 @@ export default class MolcasProgram extends BaseProgram {
 
 
     template = template
-      .replace("{{ORBROT}}", doOrbRot ? "" : "\n  CIOnly   * CASCI: No Orbital Rotation")
-      .replace("{{CHARGE_LINE}}", charge)
-      .replace('{{NELEC}}', activeElectrons)
-      .replace('{{RAS}}', activeOrbitals)
-      .replace('{{ROOTS}}', rootStr);
+      .replaceAll("{{ORBROT}}", doOrbRot ? "" : "\n  CIOnly   * CASCI: No Orbital Rotation")
+      .replaceAll("{{CHARGE_LINE}}", charge)
+      .replaceAll('{{NELEC}}', activeElectrons)
+      .replaceAll('{{RAS}}', activeOrbitals)
+      .replaceAll('{{ROOTS}}', rootStr);
 
     const ptMethod = this.document.getElementById('active_pt').value;
     let ptStr = ""
@@ -139,7 +139,7 @@ export default class MolcasProgram extends BaseProgram {
       ptStr += "  Shift = 0.0   * Real Shift"
     }
 
-    template = template.replace("{{PT}}", ptStr);
+    template = template.replaceAll("{{PT}}", ptStr);
 
     return template;
 
@@ -151,7 +151,7 @@ export default class MolcasProgram extends BaseProgram {
     if (calcMethod === "MP2") {
       template = this.templates.MP2;
 
-      template = template.replace("{{MP2}}", "&MBPT2");
+      template = template.replaceAll("{{MP2}}", "&MBPT2");
     } else if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
     } else if (calcMethod === "HF") {
@@ -170,17 +170,17 @@ export default class MolcasProgram extends BaseProgram {
     let template = this.getTemplate(calcMethod);
 
     const doRI = this.document.getElementById("ri_toggle").checked;
-    template = template.replace("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
+    template = template.replaceAll("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
 
 
     const geomBlock = this.buildCoordsStr();
-    template = template.replace("{{MOLECULE_STRUCTURE}}", geomBlock);
+    template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
 
     const sewardBlock = this.buildSewardStr();
-    template = template.replace("{{SEWARD}}", sewardBlock);
+    template = template.replaceAll("{{SEWARD}}", sewardBlock);
 
     const scfBlock = this.buildSCFStr();
-    template = template.replace("{{SCF_BLOCK}}", scfBlock);
+    template = template.replaceAll("{{SCF_BLOCK}}", scfBlock);
 
 
     // TODO:
@@ -189,7 +189,7 @@ export default class MolcasProgram extends BaseProgram {
     // Method-specific replacements
     if (calcMethod.startsWith("CAS")) {
       const casBlock = this.buildCASStr();
-      template = template.replace("{{CAS}}", casBlock);
+      template = template.replaceAll("{{CAS}}", casBlock);
     }
 
     // Add header
@@ -225,5 +225,6 @@ export default class MolcasProgram extends BaseProgram {
     this._disableElem("freq_full");
     this._disableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");
+    this._disableElem("dist_unit_full");
   }
 }

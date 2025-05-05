@@ -146,19 +146,19 @@ ${inner}
     let template = this.getTemplate(calcMethod);
 
     const doRI = this.document.getElementById("ri_toggle").checked;
-    template = template.replace("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
+    template = template.replaceAll("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
 
     const geomBlock = this.buildCoordsStr();
-    template = template.replace("{{MOLECULE_STRUCTURE}}", geomBlock);
+    template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
 
     const setBlock = this.buildSetStr();
-    template = template.replace("{{SET_BLOCK}}", setBlock);
+    template = template.replaceAll("{{SET_BLOCK}}", setBlock);
 
     const scfBlock = this.buildSCFStr();
-    template = template.replace("{{SCF_BLOCK}}", scfBlock);
+    template = template.replaceAll("{{SCF_BLOCK}}", scfBlock);
 
     const compBlock = this.buildCompStr();
-    template = template.replace("{{COMP_BLOCK}}", compBlock);
+    template = template.replaceAll("{{COMP_BLOCK}}", compBlock);
 
     // Add header
     template = this.getHeader() + template;
@@ -207,5 +207,6 @@ ${inner}
     this._enableElem("freq_full");
     this._disableElem("mp2_natorb_full");
     this._disableElem("xyz_file_full");
+    this._enableElem("dist_unit_full");
   }
 }
