@@ -5,43 +5,42 @@ export default class PySCFProgram extends BaseProgram {
     super(document);
     this.commentStr = "#";
     this.templates = {
-      HF: `from pyscf import gto, scf
+      HF: `from pyscf import gto, scf{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
-{{SCF_BLOCK}}
+{{SCF_BLOCK}}{{OPT_BLOCK}}
 `,
       // TODO: Add exchange correlation functional
       DFT: `from pyscf import gto, scf
 {{MOLECULE_STRUCTURE}}
-{{SCF_BLOCK}}
+{{SCF_BLOCK}}{{OPT_BLOCK}}
 `,
-      MP2: `from pyscf import gto, scf, mp{{DF_IMPORT}}
+      MP2: `from pyscf import gto, scf, mp{{DF_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-my_mp = {{MP2_LINE}}
-e = my_mp.kernel(){{NATORB_BLOCK}}
+mymp = {{MP2_LINE}}
+e = mymp.kernel(){{NATORB_BLOCK}}{{OPT_BLOCK}}
 `,
-      CAS: `from pyscf import gto, scf, mcscf{{PT_IMPORT}}
+      CAS: `from pyscf import gto, scf, mcscf{{PT_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}){{DENSITY_FIT}}
 mc.fcisolver.nroots = {{ACTIVE_NROOTS}}
-mc.kernel(){{PT_STRING}}
+mc.kernel(){{PT_STRING}}{{OPT_BLOCK}}
 `,
-      CCSD: `from pyscf import gto, scf, cc
+      CCSD: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
 mycc.kernel()
-e_tot = mycc.e_tot`,
+e_tot = mycc.e_tot{{OPT_BLOCK}}`,
 
-      CCSD_T: `from pyscf import gto, scf, cc
+      CCSD_T: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
 mycc.kernel()
 e_triples = mycc.ccsd_t()
-e_tot = mycc.e_tot + e_triples
-`
+e_tot = mycc.e_tot + e_triples{{OBT_BLOCK}}`,
     }
   }
 
@@ -177,7 +176,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       }
 
       // Natural Orbitals
-      template = template.replaceAll("{{NATORB_BLOCK}}", natorb ? "\nnatocc, natorb = my_mp.make_natorbs()" : "");
+      template = template.replaceAll("{{NATORB_BLOCK}}", natorb ? "\nnatocc, natorb = mymp.make_natorbs()" : "");
     } else if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
 
@@ -263,6 +262,30 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
 mycc.direct = true` : "");
     }
 
+    if (calcType === "OPT" || calcType === "OPTTS") {
+      template = template.replaceAll("{{OPT_IMPORTS}}", "\n# Requires external library `geomeTRIC`, install using `pip`\nfrom pyscf.geomopt.geometric_solver import optimize");
+      const suffix = calcType === "OPT" ? "eq" : "ts";
+      let methodName = "";
+      if (calcMethod === "HF" || calcMethod === "DFT") {
+        methodName = "mf";
+      } else if (calcMethod === "MP2") {
+        methodName = "mymp";
+      } else if (calcMethod.includes("CC")) {
+        methodName = "mycc";
+      } else if (calcMethod.includes("CAS")) {
+        methodName = "mc";
+      }
+      let optTemplate =  `\nmol_${suffix} = ${methodName}.Gradients().optimizer(solver='geomeTRIC').kernel()\nprint(mol_${suffix}.tostring())`;
+      if (calcType === "OPTTS") {
+        optTemplate = "\nparams = {'transition': True}" + optTemplate;
+        optTemplate = optTemplate.replace("kernel()", "kernel(params)");
+      }
+      template = template.replaceAll("{{OPT_BLOCK}}", optTemplate);
+    } else {
+      template = template.replaceAll("{{OPT_IMPORTS}}", "");
+      template = template.replaceAll("{{OPT_BLOCK}}", "");
+    }
+
     template = this.getHeader() + template;
 
     // Update output
@@ -298,6 +321,8 @@ mycc.direct = true` : "");
     // })
     this._updateSelection("calc_type", {
       "Energy": "SP",
+      "Geometry Opt": "OPT",
+      "Transition State Opt": "OPTTS"
     }
     );
     this._updateSelection("active_pt", {
