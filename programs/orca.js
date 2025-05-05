@@ -38,14 +38,13 @@ end
     const charge = this.document.getElementById("charge").value;
     const multiplicity = this.document.getElementById("multiplicity").value;
     const useFile = this.document.getElementById("file_toggle").checked;
-    const doTightConv = this.document.getElementById("tight_conv").checked;
 
     if (useFile) {
       const fname = this.document.getElementById("xyz_file_name").value;
       return `* xyzfile ${charge} ${multiplicity} ${fname}`
     } else {
       const coords = this.document.getElementById("xyz_geom").value
-      return `* xyz ${charge} ${multiplicity}
+      return `* xyz ${charge} ${multiplicity} # charge & multiplicity
 ${coords}
 *`
     }

@@ -11,6 +11,7 @@ export default class Psi4Program extends BaseProgram {
 
 {{COMP_BLOCK}}
 {{OUT_BLOCK}}`,
+  // TODO: Implement CASSCF by adding `symmetry c1` in molecule block
       CAS: `{{MOLECULE_STRUCTURE}}
   {{RI}}
 
@@ -22,6 +23,9 @@ export default class Psi4Program extends BaseProgram {
     const charge = parseInt(this.document.getElementById("charge").value);
     const multiplicity = parseInt(this.document.getElementById("multiplicity").value);
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
+    const calcMethod = this.document.getElementById('calc_param').value;
+    const mixGuess = this.document.getElementById('guessmix_toggle').checked;
+
     // TODO: Implement useFile
     if (useFile) {
       // const fname = this.document.getElementById("xyz_file_name").value;
@@ -31,13 +35,20 @@ export default class Psi4Program extends BaseProgram {
         .split('\n')
         .map(line => '  ' + line) // Add 2 spaces to each line
         .join('\n');
-      const non_default = (charge != 0) || (multiplicity != 1);
-      const charge_spin = non_default ? `\n  ${charge} ${multiplicity}` : "";
-      const units = useBohr ? "\n  units bohr" : "";
 
-      return `molecule {${charge_spin}${units}
-${coords}
-}`;
+      let template = "molecule {\n";
+      const non_default = (charge != 0) || (multiplicity != 1);
+      template += non_default ? `  ${charge} ${multiplicity} # charge & multiplicity\n` : "";
+      template += useBohr ? "  units bohr\n" : "";
+
+      const requiresC1 = calcMethod.includes("CAS") || mixGuess;
+      if (requiresC1) {
+        template += "  symmetry c1   # options do not support symmetry\n"
+      }
+
+      template += `${coords}\n}`;
+        
+      return template;
     }
   }
 
@@ -68,7 +79,9 @@ ${coords}
 
 
     if (isUnrestriced) {
+      // TODO: Symmetry needs to be disabled for mixGuess to be valid
       inner += mixGuess ? "\nguess_mix true   # break alpha beta spin symmetry" : "";
+
       inner += doStab ? "\nstability_analysis follow   # restart if unstable" : "";
 
     }
