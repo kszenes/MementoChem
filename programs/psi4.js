@@ -144,6 +144,8 @@ ${inner}
   generateInputFile() {
     const calcType = this.document.getElementById('calc_type').value;
     const calcMethod = this.document.getElementById('calc_param').value;
+    const scfType = this.document.getElementById("scf_type").value;
+    const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
 
     let template = this.getTemplate(calcMethod);
 
@@ -162,13 +164,24 @@ ${inner}
     const compBlock = this.buildCompStr();
     template = template.replaceAll("{{COMP_BLOCK}}", compBlock);
 
+    let calcName = "";
+    if (calcMethod === "HF" && scfType != "Auto") {
+      calcName = scfType;
+    } else if (calcMethod === "DFT" && scfType != "Auto") {
+      calcName = dftFunctional;
+    } else if (calcMethod === "CCSD_T") {
+      calcName = "CCSD(T)";
+    } else {
+      calcName = calcMethod;
+    }
+
     let simSuffix = "";
-    const calcName = calcMethod === "CCSD_T" ? "CCSD(T)" : calcMethod;
     if (calcType === "OPT") {
       simSuffix = "_eq";
     } else if (calcType === "OPTTS") {
       simSuffix = "_ts";
     }
+
     template = template.replace("{{OUT_BLOCK}}", `print("E${simSuffix}(${calcName}) =", e) `);
 
     // Add header
