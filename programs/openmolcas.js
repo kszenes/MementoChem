@@ -5,59 +5,11 @@ export default class MolcasProgram extends BaseProgram {
     super(document);
     this.commentStr = "*";
     this.templates = {
-      HF: `&GATEWAY
+      DEFAULT: `&GATEWAY
 {{MOLECULE_STRUCTURE}}
   {{RI}}
 
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}`,
-      DFT: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}`,
-      MP2: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}
-
-{{MP2}}`,
-      CAS: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}
-
-{{CAS}}`,
-      CCSD: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}`,
-
-      CCSD_T: `&GATEWAY
-{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-* Integral Computation
-{{SEWARD}}
-
-{{SCF_BLOCK}}`
+`,
     }
   }
   buildCoordsStr() {
@@ -78,8 +30,9 @@ export default class MolcasProgram extends BaseProgram {
   buildSewardStr() {
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
 
-    let template = "&SEWARD{{DIRECT}}";
-    template = template.replaceAll("{{DIRECT}}", doDirect ? "\n  Direct" : "");
+    let template = "* Integral Computation\n&SEWARD\n"
+    template += doDirect ? "  Direct\n" : "";
+
     return template;
   }
 
@@ -91,7 +44,7 @@ export default class MolcasProgram extends BaseProgram {
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
 
-    let template = `&SCF{{CHARGE_LINE}}{{MULTIPLICITY}}{{DFT_FUNCTIONAL}}{{UNRESTRICTED}}{{MIX_GUESS}}`;
+    let template = `&SCF{{CHARGE_LINE}}{{MULTIPLICITY}}{{DFT_FUNCTIONAL}}{{UNRESTRICTED}}{{MIX_GUESS}}\n`;
 
     template = template.replaceAll("{{CHARGE_LINE}}", parseInt(charge) != 0 ? `\n  Charge = ${charge}` : "");
     template = template.replaceAll("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin = ${multiplicity}` : "");
@@ -133,7 +86,7 @@ export default class MolcasProgram extends BaseProgram {
     const ptMethod = this.document.getElementById('active_pt').value;
     let ptStr = ""
     if (ptMethod) {
-      ptStr = "\n\n&CASPT2\n";
+      ptStr = "\n&CASPT2\n";
       ptStr += "  IPEA  = 0.0\n";
       ptStr += "  Imag  = 0.0   * Imaginary Shift\n"
       ptStr += "  Shift = 0.0   * Real Shift"
@@ -145,29 +98,28 @@ export default class MolcasProgram extends BaseProgram {
 
   }
 
-  getTemplate(calcMethod) {
-    let template;
+  buildCompStr() {
+    const sewardBlock = this.buildSewardStr();
+    const scfBlock = this.buildSCFStr();
+    const calcMethod = this.document.getElementById('calc_param').value;
+
+    let template = "";
+
+    template += sewardBlock + scfBlock;
 
     if (calcMethod === "MP2") {
-      template = this.templates.MP2;
-
-      template = template.replaceAll("{{MP2}}", "&MBPT2");
+      template += "&MBPT2";
     } else if (calcMethod.startsWith("CAS")) {
-      template = this.templates.CAS;
-    } else if (calcMethod === "HF") {
-      template = this.templates.HF;
-    } else {
-      template = this.templates[calcMethod] || this.templates.DEFAULT;
+      const casBlock = this.buildCASStr();
+      template += casBlock;
     }
-
     return template;
   }
-  generateInputFile() {
-    const calcType = this.document.getElementById('calc_type').value;
-    const calcMethod = this.document.getElementById('calc_param').value;
-    const includeFreq = this.document.getElementById('freq_toggle').checked;
 
-    let template = this.getTemplate(calcMethod);
+  generateInputFile() {
+    const calcMethod = this.document.getElementById('calc_param').value;
+
+    let template = this.templates.DEFAULT;
 
     const doRI = this.document.getElementById("ri_toggle").checked;
     template = template.replaceAll("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
@@ -176,21 +128,8 @@ export default class MolcasProgram extends BaseProgram {
     const geomBlock = this.buildCoordsStr();
     template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
 
-    const sewardBlock = this.buildSewardStr();
-    template = template.replaceAll("{{SEWARD}}", sewardBlock);
-
-    const scfBlock = this.buildSCFStr();
-    template = template.replaceAll("{{SCF_BLOCK}}", scfBlock);
-
-
-    // TODO:
-    let calculationType = includeFreq ? `${calcType} FREQ` : calcType;
-
-    // Method-specific replacements
-    if (calcMethod.startsWith("CAS")) {
-      const casBlock = this.buildCASStr();
-      template = template.replaceAll("{{CAS}}", casBlock);
-    }
+    const compBlock = this.buildCompStr();
+    template += compBlock;
 
     // Add header
     template = this.getHeader() + template;
@@ -212,6 +151,7 @@ export default class MolcasProgram extends BaseProgram {
     });
     this._updateSelection("calc_type", {
       "Energy": "SP",
+      "Geometry Opt": "OPT",
     });
     this._updateSelection("active_pt", {
       "": "",
