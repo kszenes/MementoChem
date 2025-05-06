@@ -41,6 +41,8 @@ export default class Psi4Program extends BaseProgram {
       template += non_default ? `  ${charge} ${multiplicity} # charge & multiplicity\n` : "";
       template += useBohr ? "  units bohr\n" : "";
 
+      // TODO: For CASSCF, we need to convert #active to #doubly occupied
+      // Also use `mcscf` or (`casscf`) for CASSCF and some `detci` for CASCI
       const requiresC1 = calcMethod.includes("CAS") || mixGuess;
       if (requiresC1) {
         template += "  symmetry c1   # options do not support symmetry\n"
@@ -227,9 +229,12 @@ ${inner}
     // Update output
     const outputTextArea = this.document.getElementById('output_text');
     if (outputTextArea) {
-      outputTextArea.innerHTML = this.formatCodeWithComments(template, this.commentStr);
+      const highlightedCode = hljs.highlight(
+        `${template}`,
+        { language: 'python' }
+      ).value
+      outputTextArea.innerHTML = highlightedCode;
     }
-
   }
   updateCapabilities() {
     this._updateSelection("calc_param", {
