@@ -7,14 +7,13 @@ export default class MolcasProgram extends BaseProgram {
     this.templates = {
       DEFAULT: `&GATEWAY
 {{MOLECULE_STRUCTURE}}
-  {{RI}}
-
 `,
     }
   }
   buildCoordsStr() {
     const useFile = this.document.getElementById("file_toggle").checked;
     const basisSet = this.document.getElementById("basis_param").value;
+    const calcMethod = this.document.getElementById('calc_param').value;
     if (useFile) {
       const fname = this.document.getElementById("xyz_file_name").value;
       return `  Coord = ${fname}\n  Basis = ${basisSet}`;
@@ -30,7 +29,7 @@ export default class MolcasProgram extends BaseProgram {
   buildSewardStr() {
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
 
-    let template = "* Integral Computation\n&SEWARD\n"
+    let template = "&SEWARD   * Integral Computation\n"
     template += doDirect ? "  Direct\n" : "";
 
     return template;
@@ -51,7 +50,7 @@ export default class MolcasProgram extends BaseProgram {
 
     template = template.replaceAll("{{DFT_FUNCTIONAL}}", (calcMethod === "DFT") ? `\n  KSDFT = ${dftFunctional}` : "");
     template = template.replaceAll("{{UNRESTRICTED}}", scfType.startsWith("U") ? "\n  UHF" : "");
-    template = template.replaceAll("{{MIX_GUESS}}", (scfType.startsWith("U") && mixGuess ) ? "\n  * Adds noise to orbitals (can be used for sym breaking)\n  Scramble 0.2 * max noise of arcsin(0.2)" : "");
+    template = template.replaceAll("{{MIX_GUESS}}", (scfType.startsWith("U") && mixGuess) ? "\n  * Adds noise to orbitals (can be used for sym breaking)\n  Scramble 0.2   * max noise of arcsin(0.2)" : "");
 
 
     return template;
@@ -117,19 +116,37 @@ export default class MolcasProgram extends BaseProgram {
   }
 
   generateInputFile() {
+    const symMethod = this.document.getElementById('calc_type').value;
     const calcMethod = this.document.getElementById('calc_param').value;
 
     let template = this.templates.DEFAULT;
 
-    const doRI = this.document.getElementById("ri_toggle").checked;
-    template = template.replaceAll("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
 
 
     const geomBlock = this.buildCoordsStr();
     template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
 
+    const doRI = this.document.getElementById("ri_toggle").checked;
+    template += doRI ? "  RICD   * RI Enabled\n" : "  NOCD   * RI Disabled\n";
+    if (calcMethod.startsWith("CAS")) {
+      template += "  * Point Group Symmetry Disabled for CAS\n  Group = C1\n"
+    }
+
+    if (symMethod.startsWith("OPT")) {
+      template += "\n>>> DO WHILE\n"
+    }
+
+    template += "\n";
+
+
     const compBlock = this.buildCompStr();
     template += compBlock;
+
+    if (symMethod.startsWith("OPT")) {
+      template += "&SLAPAF   * Geometry Optimization\n"
+      template += "\n>>> END DO\n"
+    }
+
 
     // Add header
     template = this.getHeader() + template;
