@@ -160,7 +160,10 @@ export default class MolcasProgram extends BaseProgram {
     // Update output
     const outputTextArea = this.document.getElementById('output_text');
     if (outputTextArea) {
-      outputTextArea.innerHTML = this.formatCodeWithComments(template, this.commentStr);
+      const highlightedCode = hljs.highlight(
+        `${template}`, {language: "molcas"}
+      ).value
+      outputTextArea.innerHTML = highlightedCode;
     }
 
   }
