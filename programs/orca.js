@@ -58,7 +58,7 @@ ${coords}
     const initialGuess = this.document.getElementById("initial_guess").value;
 
     if (scfType === "Auto" && (!doDirect && !doTightConv && (initialGuess === "Default"))) {
-        return "";
+      return "";
     }
 
 
@@ -204,7 +204,7 @@ end`);
       .replaceAll('{{MULTIPLICITY}}', multiplicity)
       .replaceAll('{{MOLECULE_STRUCTURE}}', moleculeStructure)
       .replaceAll('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
-      .replaceAll("{{SOSCF}}", doSOSCF ? "\n! SOSCF   # second order solver": "");
+      .replaceAll("{{SOSCF}}", doSOSCF ? "\n! SOSCF   # second order solver" : "");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
@@ -226,7 +226,11 @@ end`);
     // Update output
     const outputTextArea = this.document.getElementById('output_text');
     if (outputTextArea) {
-      outputTextArea.innerHTML = this.formatCodeWithComments(template, this.commentStr);
+      const highlightedCode = hljs.highlight(
+        `${template}`,
+        { language: 'python' }
+      ).value
+      outputTextArea.innerHTML = highlightedCode;
     }
   }
   updateCapabilities() {
