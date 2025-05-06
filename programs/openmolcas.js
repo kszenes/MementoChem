@@ -143,7 +143,13 @@ export default class MolcasProgram extends BaseProgram {
     template += compBlock;
 
     if (symMethod.startsWith("OPT")) {
-      template += "&SLAPAF   * Geometry Optimization\n"
+      template += "&SLAPAF"
+      if (symMethod === "OPTTS") {
+        template += "\n  TS   * Transition State Optimization\n"
+      } else {
+        template += "   * Geometry Optimization\n"
+
+      }
       template += "\n>>> END DO\n"
     }
 
@@ -169,6 +175,7 @@ export default class MolcasProgram extends BaseProgram {
     this._updateSelection("calc_type", {
       "Energy": "SP",
       "Geometry Opt": "OPT",
+      "Transition State Opt": "OPTTS"
     });
     this._updateSelection("active_pt", {
       "": "",
