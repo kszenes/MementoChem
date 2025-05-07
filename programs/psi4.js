@@ -231,7 +231,7 @@ ${inner}
     if (outputTextArea) {
       const highlightedCode = hljs.highlight(
         `${template}`,
-        { language: 'python' }
+        { language: 'psi4' }
       ).value
       outputTextArea.innerHTML = highlightedCode;
     }

@@ -99,7 +99,7 @@ ${coords}
 
 %mp2
   NatOrbs true
-%end`);
+end`);
       }
       else {
         template = template.replaceAll("{{NATORB_BLOCK}}", "");
@@ -228,7 +228,7 @@ end`);
     if (outputTextArea) {
       const highlightedCode = hljs.highlight(
         `${template}`,
-        { language: 'python' }
+        { language: 'orca' }
       ).value
       outputTextArea.innerHTML = highlightedCode;
     }

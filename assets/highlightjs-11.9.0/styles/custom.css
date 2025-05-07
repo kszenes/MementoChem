@@ -10,7 +10,10 @@ code.hljs {
   background: #fff;
   color: #000;
 }
-.hljs-comment,
+.hljs-comment  {
+  font-style: italic;
+  color: green;
+}
 .hljs-quote,
 .hljs-variable {
   font-style: italic;
@@ -49,7 +52,8 @@ code.hljs {
 .hljs-bullet,
 .hljs-link,
 .hljs-symbol {
-  color: #00b0e8;
+  color: #00f;
+  font-weight: bold;
 }
 .hljs-emphasis {
   font-style: italic;
