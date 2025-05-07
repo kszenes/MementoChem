@@ -40,7 +40,7 @@ e_tot = mycc.e_tot{{OPT_BLOCK}}`,
 mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
 mycc.kernel()
 e_triples = mycc.ccsd_t()
-e_tot = mycc.e_tot + e_triples{{OBT_BLOCK}}`,
+e_tot = mycc.e_tot + e_triples{{OPT_BLOCK}}`,
     }
   }
 
@@ -88,7 +88,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     const initialGuess = this.document.getElementById("initial_guess").value;
     const doTightConv = this.document.getElementById("tight_conv").checked;
 
-    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{SOSCF}}{{DENSITY_FIT}}\n{{GUESS}}{{TOL}}mf.kernel(){{STAB_RUN}}";
+    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{DENSITY_FIT}}{{SOSCF}}\n{{GUESS}}{{TOL}}mf.kernel(){{STAB_RUN}}";
 
     if (scfType === "Auto") {
       if (calcMethod === "HF") {
