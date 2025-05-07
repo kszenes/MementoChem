@@ -27,9 +27,10 @@ It has currently support (with varying degrees) for
 - [ ] Add other geometry specification methods besides xyz
 - [-] Add other chemistry programs:
   - [-] PySCF: Missing frequency calculation
-  - [-] OpenMolcas: Missing geometry optimization and frequency calculation
+  - [-] OpenMolcas: Missing frequency calculation
 - [ ] Add input validation (e.g., multiplicity makes sense)
 - [ ] Add fcisolver to CAS calculations
+- [ ] Add dark mode
 
 #### DONE
 
