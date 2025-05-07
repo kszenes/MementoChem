@@ -6,7 +6,7 @@
       const n = e.regex,
             a = /[\p{XID_Start}_]\p{XID_Continue}*/u,  // Matches identifiers (e.g., Charge, RAS2)
             s = ["&GATEWAY", "&SEWARD", "&SCF", "&RASSCF", "&CASPT2"],  // Block titles
-            literals = ["Basis", "Group", "Nactel", "RAS2", "CIRoots", "Charge", "Spin", "IPEA", "Imag", "Shift", "KSDFT", "Scramble"],
+            literals = ["Basis", "Group", "Nactel", "RAS2", "CIRoots", "Charge", "Spin", "IPEA", "Imag", "Shift", "KSDFT", "Scramble", "Coord"],
             args = ["RICD", "NOCD", "UHF", "Direct", "CIOnly"];
 
       return {
