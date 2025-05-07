@@ -131,6 +131,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       // Stability analysis
       if (doStab) {
         scfTemplate = scfTemplate.replaceAll("{{STAB_FUNC}}", `def stable_opt_internal(mf):
+    """Restarts UHF until a stable extramum is reached"""
     mo1, _, stable, _ = mf.stability(return_status=True)
     cyc = 0
     while (not stable and cyc < 10):
