@@ -5,7 +5,7 @@
 
 ## Description
 
-This repo hosts the source for the website www.mementochem.com, which provides an interface for conveniently and quickly generating short input files for common quantum chemistry programs.
+This repository hosts the source for the website www.mementochem.com, which provides an interface for conveniently and quickly generating short input files for common quantum chemistry programs.
 `MementoChem` is not meant to contain an exhaustive set of options but serves more as a template generator for common calculations.
 These can subsequently be adapted by the use their liking.
 
@@ -58,5 +58,5 @@ The functionality of `MementoChem` is being actively developed, see below.
 
 ## Acknowledgments
 
-- List of basis sets are taken from [Basis Set Exchange](https://github.com/MolSSI-BSE/basis_set_exchange)
-- List of DFT functionals are adapted from the [ORCA manual](https://www.faccts.de/docs/orca/6.0/manual/contents/detailed/model.html#choice-of-functional)
+- List of basis sets have been taken from [Basis Set Exchange](https://github.com/MolSSI-BSE/basis_set_exchange)
+- List of DFT functionals have been adapted from the [ORCA manual](https://www.faccts.de/docs/orca/6.0/manual/contents/detailed/model.html#choice-of-functional)
