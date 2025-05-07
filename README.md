@@ -1,3 +1,9 @@
+<p align="left">
+  <img width="200px" alt="MementoChem Logo" src="https://github.com/user-attachments/assets/7d676b63-e865-4063-99a3-f427b4085b25" />
+</p>
+
+## Demo
+
 <p align="center">
   <img width="800" alt="MementoChem Demo" src="https://github.com/user-attachments/assets/8e689366-127e-4e6d-8501-0b60e5ae25c6" />
 </p>
