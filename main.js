@@ -77,6 +77,7 @@ function updateUI() {
   const calcMethod = document.getElementById('calc_param').value;
   const scfType = document.getElementById('scf_type').value;
   const selectedProgram = document.getElementById('qc_program').value;
+  const doRI = document.getElementById('ri_toggle').checked;
 
   // Hide all options first
   ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'scf-type-container', "accordian_advanced_opts"].forEach(hideElement);
@@ -110,6 +111,10 @@ function updateUI() {
       showElement('casscf-options');
       break;
     case 'MP2':
+      if ((selectedProgram === "PySCF" && !doRI)) {
+        // `make_natorbs` in pyscf not implemented for non-DF MP2
+        break;
+      }
       showElement('mp2-options');
       break;
   }
@@ -229,6 +234,11 @@ function initializeForm() {
       updateUI();
     });
   }
+
+  // Needed to update natorbs when RI is toggled
+  document.getElementById('ri_toggle').addEventListener("change", () => {
+    updateUI();
+  });
 
   formElements.forEach(id => {
     const element = document.getElementById(id);

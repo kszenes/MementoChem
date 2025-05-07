@@ -65,9 +65,9 @@
           beginKeywords: "if",
           relevance: 0
         }, b, p, e.HASH_COMMENT_MODE, {
-          match: [/\bdef/, /\s+/, a], scope: {
-            1: "keyword", 3: "title.function"
-          }, contains: [m]
+            match: [/\bdef/, /\s+/, a], scope: {
+              1: "keyword", 3: "title.function"
+            }, contains: [m]
           }, {
             variants: [{
               match: [/\bclass/, /\s+/, a, /\s*/, /\(\s*/, a, /\s*\)/]
@@ -79,5 +79,5 @@
       }
     }
   })()
-  ; hljs.registerLanguage("psi4", e)
+    ; hljs.registerLanguage("psi4", e)
 })();

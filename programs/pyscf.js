@@ -64,7 +64,7 @@ e_tot = mycc.e_tot + e_triples{{OPT_BLOCK}}`,
     }
 
     if (units.toLowerCase() === "bohr") {
-      args_string += `, units="bohr"`;
+      args_string += `, unit="bohr"`;
     }
 
 
@@ -259,7 +259,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
         .replaceAll('{{ACTIVE_NROOTS}}', activeNroots);
     } else if (calcMethod.startsWith("CC")) {
       template = template.replaceAll("{{DIRECT_BLOCK}}", doDirect ? `
-mycc.direct = true` : "");
+mycc.direct = True` : "");
     }
 
     if (calcType === "OPT" || calcType === "OPTTS") {
@@ -293,7 +293,7 @@ mycc.direct = true` : "");
     if (outputTextArea) {
       const highlightedCode = hljs.highlight(
         `${template}`,
-        { language: 'python' }
+        { language: 'pyscf' }
       ).value
       outputTextArea.innerHTML = highlightedCode;
     }
