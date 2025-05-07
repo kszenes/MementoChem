@@ -5,17 +5,17 @@
 
 ## Description
 
-This repository hosts the source for the website www.mementochem.com, which provides an interface for conveniently and quickly generating short input files for common quantum chemistry programs.
+This repository hosts the source for the website www.mementochem.com, which provides an interface for conveniently and **quickly generating input files for common quantum chemistry programs**.
 `MementoChem` is not meant to contain an exhaustive set of options but serves more as a template generator for common calculations.
 These can subsequently be adapted by the use their liking.
 
 ## Features
 
-`MementoChem` can generate inputs for single point, structure or transition state optimization and harmonic frequency calculations.
-It supports most of the common electronic structure methods such as single-reference schemes (e.g., MP2 and CC) as well as multi-reference routines (e.g., CASSCF, CASPT2 and NEVPT2).
-It also provides toggles for common options for configuring calculations such as density-fitting and integral-direct schemes.
-In addition, certain calculation types come with advanced configuration which allow the user to request a different solver (e.g., second-order solvers) or tighten the convergence threshold --- keywords that I always seem to forget.
-Finally, `MementoChem` supports common workflows such as generating MP2 natural orbitals or checking the stability of an unrestricted solution.
+`MementoChem` can generate inputs for **single point**, **structure** or **transition state optimization** and **harmonic frequency** calculations.
+It supports most of the common electronic structure methods such as **single-reference schemes** (e.g., MP2 and CC) as well as **multi-reference routines** (e.g., CASSCF, CASPT2 and NEVPT2).
+It also provides toggles for common options for configuring calculations such as **density-fitting** and **integral-direct** schemes.
+In addition, certain calculation types come with **advanced configuration** which allow the user to request a different solver (e.g., second-order solvers) or tighten the convergence threshold --- keywords that I always seem to forget.
+Finally, `MementoChem` supports common **workflows** such as **generating MP2 natural orbitals** or **checking the stability of an unrestricted solution**.
 
 Currently, it supports a subset of the features from the following programs
 - Orca
