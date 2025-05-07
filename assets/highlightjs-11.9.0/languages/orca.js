@@ -5,8 +5,9 @@
     return e => {
       const n = e.regex,
         a = /[\p{XID_Start}_]\p{XID_Continue}*/u,  // Matches identifiers (e.g., Charge, RAS2)
-        s = ["&scf", "end", "%mp2"];  // Block titles
-
+        s = ["&scf", "end", "%mp2", "PTSettings", ],  // Block titles
+        literals = ["HFType", "SCFMode", "STABPerform", "STABRestartUHFifUnstable", "NatOrbs", "nel", "norb", "mult", "nroots", "TolE", "TolG", "Guess", "TrafoStep", "PTMethod", "CASPT2_ishift", "CASPT2_rshift", "CASPT2_IPEAshift"],
+        args = ["RHF", "UHF", "ROHF", "RKS", "UKS", "ROKS", "true", "Direct", "HCore", "Hueckel", "RI", "FIC_NEVPT2", "SC_NEVPT2", "FIC_CASPT2"];
       return {
         name: "orca",
         case_insensitive: true, // language is case-insensitive
@@ -54,6 +55,8 @@
         // Define keywords (block titles)
         keywords: {
           keyword: s.join(" "),  // Join block titles into a single string
+          built_in: literals.join(" "),  // Add literals with the "literal" classification
+          number: args.join(" ")
         }
       };
     };
@@ -62,4 +65,3 @@
   // Register the custom 'mementoChem' language with Highlight.js
   hljs.registerLanguage("orca", e);
 })();
-

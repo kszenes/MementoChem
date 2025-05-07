@@ -5,7 +5,9 @@
     return e => {
       const n = e.regex,
             a = /[\p{XID_Start}_]\p{XID_Continue}*/u,  // Matches identifiers (e.g., Charge, RAS2)
-            s = ["&GATEWAY", "&SEWARD", "&SCF", "&RASSCF", "&CASPT2"];  // Block titles
+            s = ["&GATEWAY", "&SEWARD", "&SCF", "&RASSCF", "&CASPT2"],  // Block titles
+            literals = ["Basis", "Group", "Nactel", "RAS2", "CIRoots", "Charge", "Spin", "IPEA", "Imag", "Shift", "KSDFT", "Scramble"],
+            args = ["RICD", "NOCD", "UHF", "Direct", "CIOnly"];
 
       return {
         name: "molcas",
@@ -40,6 +42,8 @@
         // Define keywords (block titles)
         keywords: {
           keyword: s.join(" "),  // Join block titles into a single string
+          built_in: literals.join(" "),
+          number: args.join(" ")
         }
       };
     };
