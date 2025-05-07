@@ -107,7 +107,7 @@ export default class MolcasProgram extends BaseProgram {
     template += sewardBlock + scfBlock;
 
     if (calcMethod === "MP2") {
-      template += "&MBPT2";
+      template += "&MBPT2\n";
     } else if (calcMethod.startsWith("CAS")) {
       const casBlock = this.buildCASStr();
       template += casBlock;
