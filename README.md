@@ -42,6 +42,7 @@ The functionality of `MementoChem` is being actively developed, see below.
 - [ ] Add input validation (e.g., multiplicity is consistent)
 - [ ] Add fcisolver to CAS calculations
 - [ ] Add dark mode
+- [ ] Add PySCF MCSCF natural orbitals
 
 ### DONE
 
