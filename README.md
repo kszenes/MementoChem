@@ -1,7 +1,6 @@
 <p align="center">
-  <img width="800" alt="Screenshot 2025-05-07 at 10 14 48" src="https://github.com/user-attachments/assets/31277548-6dfd-4ba6-ad5f-1951f6aee83c" />
+  <img width="800" alt="MementoChem Demo" src="https://github.com/user-attachments/assets/8e689366-127e-4e6d-8501-0b60e5ae25c6" />
 </p>
-
 
 
 ## Description
