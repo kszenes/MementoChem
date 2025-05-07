@@ -24,7 +24,7 @@ code.hljs {
 .hljs-name,
 .hljs-selector-tag,
 .hljs-tag {
-  color: #8a2be2
+  color: #0055B8;
 }
 .hljs-addition,
 .hljs-attribute,
@@ -52,7 +52,7 @@ code.hljs {
 .hljs-bullet,
 .hljs-link,
 .hljs-symbol {
-  color: #00f;
+  color: #8a2be2;
   font-weight: bold;
 }
 .hljs-emphasis {
