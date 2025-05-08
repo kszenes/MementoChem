@@ -1,4 +1,4 @@
-<p align="left">
+<p align="center">
   <img width="300px" alt="MementoChem Logo" src="https://github.com/user-attachments/assets/024a5d37-a5f7-48a9-9b26-a3155b4a3f80" />
 </p>
 
