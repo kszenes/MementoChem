@@ -1,5 +1,5 @@
 <p align="left">
-  <img width="200px" alt="MementoChem Logo" src="https://github.com/user-attachments/assets/7d676b63-e865-4063-99a3-f427b4085b25" />
+  <img width="300px" alt="MementoChem Logo" src="https://github.com/user-attachments/assets/024a5d37-a5f7-48a9-9b26-a3155b4a3f80" />
 </p>
 
 ## Demo
