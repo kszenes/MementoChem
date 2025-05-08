@@ -27,20 +27,12 @@ mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}){{DENSITY_F
 mc.fcisolver.nroots = {{ACTIVE_NROOTS}}
 mc.kernel(){{PT_STRING}}{{OPT_BLOCK}}
 `,
-      CCSD: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
+      CC: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
-mycc.kernel()
-e_tot = mycc.e_tot{{OPT_BLOCK}}`,
-
-      CCSD_T: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
-{{MOLECULE_STRUCTURE}}
-{{SCF_BLOCK}}
-mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
-mycc.kernel()
-e_triples = mycc.ccsd_t()
-e_tot = mycc.e_tot + e_triples{{OPT_BLOCK}}`,
+mycc.kernel(){{TRIPLES_COMPUTE}}
+e_tot = mycc.e_tot{{TRIPLES_ENERGY}}{{OPT_BLOCK}}`,
     }
   }
 
@@ -106,7 +98,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
 
     // Initial guess
     scfTemplate = scfTemplate.replaceAll("{{GUESS}}", (initialGuess != "default") ? `mf.init_guess = "${initialGuess}"\n` : "");
-    
+
     // Tight conv
     if (doTightConv) {
       const [etol, gtol] = this.getTightConvCriteria();
@@ -180,8 +172,9 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       template = template.replaceAll("{{NATORB_BLOCK}}", natorb ? "\nnatocc, natorb = mymp.make_natorbs()" : "");
     } else if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
+      const doOrbRot = !this.document.getElementById("casci_toggle").checked;
 
-      template = template.replaceAll("{{ORB_ROT}}", calcMethod);
+      template = template.replaceAll("{{ORB_ROT}}", doOrbRot ? "CASSCF" : "CASCI");
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
@@ -191,6 +184,11 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       template = template.replaceAll("{{PT_STRING}}", ptStr).replaceAll("{{PT_IMPORT}}", ptImport);
     } else if (calcMethod === "HF") {
       template = this.templates.HF;
+    } else if (calcMethod === "CC") {
+      template = this.templates.CC;
+      const doTriples = this.document.getElementById('cc_excitation').value == "SD_T";
+      template = template.replace("{{TRIPLES_COMPUTE}}", doTriples ? "\ne_triples = mycc.ccsd_t()" : "");
+      template = template.replace("{{TRIPLES_ENERGY}}", doTriples ? " + e_triples" : "");
     } else {
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
@@ -243,7 +241,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       .replaceAll('{{MOLECULE_STRUCTURE}}', moleculeStructure)
       .replaceAll('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
       .replaceAll("{{DENSITY_FIT}}", doRI ? ".density_fit()" : "")
-      .replaceAll("{{SOSCF}}", doSOSCF ? ".newton()": "");
+      .replaceAll("{{SOSCF}}", doSOSCF ? ".newton()" : "");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
@@ -276,7 +274,7 @@ mycc.direct = True` : "");
       } else if (calcMethod.includes("CAS")) {
         methodName = "mc";
       }
-      let optTemplate =  `\nmol_${suffix} = ${methodName}.Gradients().optimizer(solver='geomeTRIC').kernel()\nprint(mol_${suffix}.tostring())`;
+      let optTemplate = `\nmol_${suffix} = ${methodName}.Gradients().optimizer(solver='geomeTRIC').kernel()\nprint(mol_${suffix}.tostring())`;
       if (calcType === "OPTTS") {
         optTemplate = "\nparams = {'transition': True}" + optTemplate;
         optTemplate = optTemplate.replace("kernel()", "kernel(params)");
@@ -305,11 +303,9 @@ mycc.direct = True` : "");
     this._updateSelection("calc_param", {
       "HF": "HF",
       "DFT": "DFT",
-      "CASSCF (+MRPT)": "CASSCF",
-      "CASCI (+MRPT)": "CASCI",
       "MP2": "MP2",
-      "CCSD": "CCSD",
-      "CCSD(T)": "CCSD_T"
+      "CC": "CC",
+      "CAS (+MRPT)": "CAS",
     });
     this._updateSelection("initial_guess", {
       "SAD (default)": "default",
@@ -326,6 +322,10 @@ mycc.direct = True` : "");
       "Transition State Opt": "OPTTS"
     }
     );
+    this._updateSelection("cc_excitation", {
+      "SD": "SD",
+      "SD(T)": "SD_T",
+    });
     this._updateSelection("active_pt", {
       "": "",
       "SC_NEVPT2": "SC_NECPT2"

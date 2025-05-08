@@ -13,7 +13,6 @@ export default class MolcasProgram extends BaseProgram {
   buildCoordsStr() {
     const useFile = this.document.getElementById("file_toggle").checked;
     const basisSet = this.document.getElementById("basis_param").value;
-    const calcMethod = this.document.getElementById('calc_param').value;
     if (useFile) {
       const fname = this.document.getElementById("xyz_file_name").value;
       return `  Coord = ${fname}\n  Basis = ${basisSet}`;
@@ -61,7 +60,7 @@ export default class MolcasProgram extends BaseProgram {
     const activeOrbitals = this.document.getElementById('active_orbitals')?.value || '6';
     const activeNroots = this.document.getElementById('active_nroots')?.value || '1';
     const charge = this.document.getElementById("charge").value;
-    const doOrbRot = this.document.getElementById("calc_param").value === "CASSCF";
+    const doOrbRot = !this.document.getElementById("casci_toggle").checked;
 
     const rootStr = `${activeNroots} ${activeNroots} 1`
 
@@ -121,8 +120,6 @@ export default class MolcasProgram extends BaseProgram {
 
     let template = this.templates.DEFAULT;
 
-
-
     const geomBlock = this.buildCoordsStr();
     template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
 
@@ -161,7 +158,7 @@ export default class MolcasProgram extends BaseProgram {
     const outputTextArea = this.document.getElementById('output_text');
     if (outputTextArea) {
       const highlightedCode = hljs.highlight(
-        `${template}`, {language: "molcas"}
+        `${template}`, { language: "molcas" }
       ).value
       outputTextArea.innerHTML = highlightedCode;
     }
@@ -171,9 +168,8 @@ export default class MolcasProgram extends BaseProgram {
     this._updateSelection("calc_param", {
       "HF": "HF",
       "DFT": "DFT",
-      "CASSCF (+MRPT)": "CASSCF",
-      "CASCI (+MRPT)": "CASCI",
       "MP2": "MP2",
+      "CAS (+MRPT)": "CAS",
     });
     this._updateSelection("calc_type", {
       "Energy": "SP",

@@ -11,7 +11,7 @@ export default class Psi4Program extends BaseProgram {
 
 {{COMP_BLOCK}}
 {{OUT_BLOCK}}`,
-  // TODO: Implement CASSCF by adding `symmetry c1` in molecule block
+      // TODO: Implement CASSCF by adding `symmetry c1` in molecule block
       CAS: `{{MOLECULE_STRUCTURE}}
   {{RI}}
 
@@ -49,7 +49,7 @@ export default class Psi4Program extends BaseProgram {
       }
 
       template += `${coords}\n}`;
-        
+
       return template;
     }
   }
@@ -107,25 +107,21 @@ ${inner}
   }
 
   buildCompStr() {
-    const calcType = this.document.getElementById('calc_type').value;
     const calcMethod = this.document.getElementById('calc_param').value;
     const simMethod = this.document.getElementById('calc_type').value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
     const includeFreq = this.document.getElementById('freq_toggle').checked;
 
     let inner = "";
-    switch (calcMethod) {
-      case 'HF':
-        inner = '"scf"';
-        break;
-      case 'DFT':
-        inner = `"${dftFunctional.toLowerCase()}"`;
-        break;
-      case "CCSD_T":
-        inner = '"ccsd(t)"';
-        break;
-      default:
-        inner = `"${calcMethod.toLowerCase()}"`;
+    if (calcMethod === "HF") {
+      inner = '"scf"';
+    } else if (calcMethod === "DFT") {
+      inner = `"${dftFunctional.toLowerCase()}"`;
+    } else if (calcMethod === "CC") {
+      const doTriples = this.document.getElementById('cc_excitation').value == "SD_T";
+      inner = doTriples ? '"ccsd(t)"' : '"ccsd"';
+    } else {
+      inner = `"${calcMethod.toLowerCase()}"`;
     }
 
     let compStr = "";
@@ -241,8 +237,7 @@ ${inner}
       "HF": "HF",
       "DFT": "DFT",
       "MP2": "MP2",
-      "CCSD": "CCSD",
-      "CCSD(T)": "CCSD_T",
+      "CC": "CC",
     });
     // TODO: Add more guesses
     this._updateSelection("initial_guess", {
@@ -259,6 +254,10 @@ ${inner}
       "Energy": "SP",
       "Geometry Opt": "OPT",
       "Transition State Opt": "OPTTS"
+    });
+    this._updateSelection("cc_excitation", {
+      "SD": "SD",
+      "SD(T)": "SD_T",
     });
     this._updateSelection("active_pt", {
       "": "",

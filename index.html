@@ -271,6 +271,48 @@
                   </div>
                 </div>
               </div>
+              <div id="ci-options" class="d-none col mb-3">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-floating h-100">
+                      <select id="ci_excitation" class="form-select h-100">
+                        <option value="SD">SD</option>
+                        <option value="FCI">FCI</option>
+                      </select>
+                      <label for="ci_excitation">Excitation Rank</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="cc-options" class="d-none col mb-3">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-floating h-100">
+                      <select id="cc_excitation" class="form-select h-100">
+                        <option value="SD">SD</option>
+                        <option value="SD_T">SD(T)</option>
+                        <option value="SDT">SDT</option>
+                      </select>
+                      <label for="cc_excitation">Excitation Rank</label>
+                    </div>
+                  </div>
+                  <div class="col d-none" id="cc_loc_corr_full">
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="cc_loc_corr_toggle"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                      for="cc_loc_corr_toggle"
+                      ,
+                      title="Local correlations method"
+                      >DLPNO</label
+                    >
+                  </div>
+                </div>
+              </div>
               <div id="casscf-options" class="row ps-2 mb-3 d-none">
                 <div class="col-8">
                   <div class="row border rounded-border p-0" id="active_space">
@@ -315,15 +357,34 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-4 mb-3 mt-3">
-                  <div class="form-floating">
-                    <select id="active_pt" class="form-select">
-                      <option value=""></option>
-                      <option value="SC_NEVPT2">SC_NEVPT2</option>
-                      <option value="FIC_NEVPT2">FIC_NEVPT2</option>
-                      <option value="CASPT2">CASPT2</option>
-                    </select>
-                    <label for="active_pt">MRPT</label>
+                <div class="col-4 mb-3">
+                  <div class="row">
+                    <div class="col mb-1" id="casci_full">
+                      <input
+                        type="checkbox"
+                        class="btn-check"
+                        id="casci_toggle"
+                        autocomplete="off"
+                      />
+                      <label
+                        class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                        for="casci_toggle"
+                        title="Do not do orbital rotations"
+                        style="font-size: x-small"
+                        >CASCI</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-floating">
+                      <select id="active_pt" class="form-select">
+                        <option value=""></option>
+                        <option value="SC_NEVPT2">SC_NEVPT2</option>
+                        <option value="FIC_NEVPT2">FIC_NEVPT2</option>
+                        <option value="CASPT2">CASPT2</option>
+                      </select>
+                      <label for="active_pt">MRPT</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -460,7 +521,9 @@
                         rows="6"
                       ></textarea>
                     </div>
-                    <div class="col-4 d-flex align-items-center justify-content-center">
+                    <div
+                      class="col-4 d-flex align-items-center justify-content-center"
+                    >
                       <img
                         src="./assets/mementochem-logo.png"
                         alt="MementoChem Logo"

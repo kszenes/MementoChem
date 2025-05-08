@@ -88,8 +88,9 @@ ${coords}
     const doRI = this.document.getElementById('ri_toggle').checked;
 
     if (calcMethod.includes("CC")) {
-      calcMethod = calcMethod.replaceAll("_T", "(T)");
-      template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${calcMethod}` : `${calcMethod}`);
+      const excRank = this.document.getElementById('cc_excitation').value.replace("_T", "(T)");
+      const locCorrStr = this.document.getElementById('cc_loc_corr_toggle').checked ? "DLPNO-" : "";
+      template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${locCorrStr}CC${excRank}` : `${locCorrStr}CC${excRank}`);
     } else if (calcMethod === "MP2") {
       template = this.templates.MP2;
       const natorb = this.document.getElementById('natorb_toggle').checked;
@@ -106,10 +107,10 @@ end`);
       }
     } else if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
-
-      if (calcMethod === "CASSCF") {
+      const doOrbRot = !this.document.getElementById('casci_toggle').checked;
+      if (doOrbRot) {
         template = template.replaceAll("{{ORB_ROT}}", "");
-      } else if (calcMethod === "CASCI") {
+      } else {
         template = template.replaceAll("{{ORB_ROT}}", `
 ! NoIter   # CASCI: no orbital rotation
 ! MORead   
@@ -238,14 +239,9 @@ end`);
     this._updateSelection("calc_param", {
       "HF": "HF",
       "DFT": "DFT",
-      "CASSCF (+MRPT)": "CASSCF",
-      "CASCI (+MRPT)": "CASCI",
       "MP2": "MP2",
-      "CCSD": "CCSD",
-      "CCSD(T)": "CCSD_T",
-      "CCSDT": "CCSDT",
-      "DLPNO-CCSD": "DLPNO-CCSD",
-      "DLPNO-CCSD(T)": "DLPNO-CCSD_T",
+      "CC": "CC",
+      "CAS (+MRPT)": "CAS",
     });
     this._updateSelection("initial_guess", {
       "SAD (default)": "Default",
@@ -258,6 +254,16 @@ end`);
       "Transition State Opt": "OPTTS"
     }
     );
+    this._updateSelection("ci_excitation", {
+      "S": "S",
+      "SD": "SD",
+      "Full": "Full"
+    });
+    this._updateSelection("cc_excitation", {
+      "SD": "SD",
+      "SD(T)": "SD_T",
+      "SDT": "SDT",
+    });
     this._updateSelection("active_pt", {
       "": "",
       "SC_NEVPT2": "SC_NEVPT2",

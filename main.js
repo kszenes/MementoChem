@@ -80,7 +80,8 @@ function updateUI() {
   const doRI = document.getElementById('ri_toggle').checked;
 
   // Hide all options first
-  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options', 'scf-type-container', "accordian_advanced_opts"].forEach(hideElement);
+  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
+    'scf-type-container', "accordian_advanced_opts", "ci-cc-options"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
   // Show/hide SCF type based on method
@@ -100,23 +101,19 @@ function updateUI() {
   }
 
   // Show relevant options based on method
-  switch (calcMethod) {
-    case 'DFT':
-      showElement('dft-options');
-      break;
-    case 'CASSCF':
-      showElement('casscf-options');
-      break;
-    case 'CASCI':
-      showElement('casscf-options');
-      break;
-    case 'MP2':
-      if ((selectedProgram === "PySCF" && !doRI)) {
-        // `make_natorbs` in pyscf not implemented for non-DF MP2
-        break;
-      }
+  if (calcMethod === "DFT") {
+    showElement('dft-options');
+  } else if (calcMethod === "MP2") {
+    if (!(selectedProgram === "PySCF" && !doRI)) {
+      // `make_natorbs` in pyscf not implemented for non-DF MP2
       showElement('mp2-options');
-      break;
+    }
+  } else if (calcMethod.startsWith("CI")) {
+    showElement('ci-options');
+  } else if (calcMethod.startsWith("CC")) {
+    showElement("cc-options");
+  } else if (calcMethod.startsWith("CAS")) {
+    showElement("casscf-options");
   }
 
   getCurrentProgram().generateInputFile();
@@ -222,7 +219,8 @@ function initializeForm() {
     'active_electrons', 'active_orbitals', 'active_nroots',
     'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
-    "tight_conv", "solver_method", "initial_guess", "accordian_advanced_opts"
+    "tight_conv", "solver_method", "initial_guess", "accordian_advanced_opts",
+    "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle"
   ];
 
   // Special case for calc_param
