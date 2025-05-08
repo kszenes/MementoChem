@@ -49,6 +49,7 @@ The functionality of `MementoChem` is being actively developed, see below.
 - [ ] Add fcisolver to CAS calculations
 - [ ] Add dark mode
 - [ ] Add PySCF MCSCF natural orbitals
+- [ ] Make sure to print spin contamination for unrestricted methods
 
 ### DONE
 
