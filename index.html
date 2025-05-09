@@ -173,7 +173,10 @@
                     <label for="scf_type">SCF Type</label>
                   </div>
                 </div>
-                <div class="col" id="freq_full">
+
+                <div class="col-auto"
+                  style="display: flex; flex-direction: column">
+                <div class="col pb-1" id="ri_full">
                   <input
                     type="checkbox"
                     class="btn-check"
@@ -181,28 +184,14 @@
                     autocomplete="off"
                   />
                   <label
-                    class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                    class="btn btn-outline-secondary"
                     for="ri_toggle"
                     title="Enable resolution of identity approx (density fitting)"
+                    style="font-size: x-small"
                     >RI / DF</label
                   >
                 </div>
-                <!-- <div class="col"> -->
-                <!-- <div class="pb-1"> -->
-                <!--   <input -->
-                <!--     type="checkbox" -->
-                <!--     class="btn-check" -->
-                <!--     id="ri_toggle" -->
-                <!--     autocomplete="off" -->
-                <!--   /> -->
-                <!--   <label -->
-                <!--     class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center" -->
-                <!--     for="ri_toggle" -->
-                <!--     title="Enable resolution of identity approx (density fitting)" -->
-                <!--     >RI / DF</label -->
-                <!--   > -->
-                <!-- </div> -->
-                <div class="d-none">
+                <div class="direct_full">
                   <input
                     type="checkbox"
                     class="btn-check"
@@ -217,7 +206,7 @@
                     >Direct</label
                   >
                 </div>
-                <!-- </div> -->
+                </div>
               </div>
 
               <!-- Method-specific options -->
