@@ -13,9 +13,7 @@ export default class Psi4Program extends BaseProgram {
 {{OUT_BLOCK}}`,
       // TODO: Implement CASSCF by adding `symmetry c1` in molecule block
       CAS: `{{MOLECULE_STRUCTURE}}
-  {{RI}}
-
-{{SCF_BLOCK}}`
+  {{RI}}`
     }
   }
   buildCoordsStr() {
@@ -54,11 +52,6 @@ export default class Psi4Program extends BaseProgram {
     }
   }
 
-  buildSCFStr() {
-    let template = `set reference {{scf_type}}`;
-    return template;
-  }
-
   buildSetStr() {
     const simMethod = this.document.getElementById('calc_type').value;
     const scfType = this.document.getElementById("scf_type").value;
@@ -72,7 +65,8 @@ export default class Psi4Program extends BaseProgram {
     const initialGuess = this.document.getElementById("initial_guess").value;
     const doTightConv = this.document.getElementById("tight_conv").checked;
 
-    let inner = `basis ${basisSet.toLowerCase()}\nreference ${scfType.toLowerCase()}`
+    let inner = `basis ${basisSet.toLowerCase()}`;
+    inner += scfType != "Auto" ? `\nreference ${scfType.toLowerCase()}` : "";
 
     if (initialGuess != "default") {
       inner += `\nguess ${initialGuess}   # initial guess`
@@ -217,9 +211,6 @@ ${inner}
 
     const setBlock = this.buildSetStr();
     template = template.replaceAll("{{SET_BLOCK}}", setBlock);
-
-    const scfBlock = this.buildSCFStr();
-    template = template.replaceAll("{{SCF_BLOCK}}", scfBlock);
 
     const compBlock = this.buildCompStr();
     template = template.replaceAll("{{COMP_BLOCK}}", compBlock);

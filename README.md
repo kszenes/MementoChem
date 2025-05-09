@@ -49,12 +49,11 @@ The functionality of `MementoChem` is being actively developed, see below.
 - [ ] Add input validation (e.g., multiplicity is consistent)
 - [ ] Add fcisolver to CAS calculations
 - [ ] Add dark mode
-- [ ] Add PySCF MCSCF natural orbitals
-- [ ] Make sure to print spin contamination for unrestricted methods
-- [ ] Add outorb for CASSCF
+- [ ] Psi4: Print spin contamination for unrestricted methods
 
 ### DONE
 
+- [x] Add outorb for CASSCF
 - [x] Psi4
 - [x] Add syntax highlighting
 - [x] Add CASCI (no orbital rotations)

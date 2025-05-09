@@ -52,7 +52,7 @@ function updateScfTypeOptions() {
     options = calcMethod === "DFT" ? ["RKS", "UKS"] : ["RHF", "UHF"];
   } else if (program === "Psi4") {
     // NOTE: no ROKS in Psi4
-    options = calcMethod === "DFT" ? ["RKS", "UKS"] : ["RHF", "UHF", "ROHF"];
+    options = calcMethod === "DFT" ? ["Auto", "RKS", "UKS"] : ["Auto", "RHF", "UHF", "ROHF"];
   } else {
     options = calcMethod === 'DFT' ?
       ['Auto', 'RKS', 'UKS', 'ROKS'] :
