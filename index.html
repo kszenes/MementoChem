@@ -174,38 +174,40 @@
                   </div>
                 </div>
 
-                <div class="col-auto"
-                  style="display: flex; flex-direction: column">
-                <div class="col pb-1" id="ri_full">
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    id="ri_toggle"
-                    autocomplete="off"
-                  />
-                  <label
-                    class="btn btn-outline-secondary"
-                    for="ri_toggle"
-                    title="Enable resolution of identity approx (density fitting)"
-                    style="font-size: x-small"
-                    >RI / DF</label
-                  >
-                </div>
-                <div class="direct_full">
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    id="integral_direct_toggle"
-                    autocomplete="off"
-                  />
-                  <label
-                    class="btn btn-outline-secondary"
-                    for="integral_direct_toggle"
-                    title="Enable integral direct algorithm (avoids storing integrals)"
-                    style="font-size: x-small"
-                    >Direct</label
-                  >
-                </div>
+                <div
+                  class="col-auto"
+                  style="display: flex; flex-direction: column"
+                >
+                  <div class="col pb-1" id="ri_full">
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="ri_toggle"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-secondary"
+                      for="ri_toggle"
+                      title="Enable resolution of identity approx (density fitting)"
+                      style="font-size: x-small"
+                      >RI / DF</label
+                    >
+                  </div>
+                  <div class="direct_full">
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="integral_direct_toggle"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-secondary"
+                      for="integral_direct_toggle"
+                      title="Enable integral direct algorithm (avoids storing integrals)"
+                      style="font-size: x-small"
+                      >Direct</label
+                    >
+                  </div>
                 </div>
               </div>
 
@@ -344,80 +346,82 @@
                   </div>
                 </div>
 
-                <div id="casscf-options" class="row ps-2 mb-3 d-none">
-                  <div class="col-8">
-                    <div
-                      class="row border rounded-border p-0"
-                      id="active_space"
-                    >
-                      <div class="col-12 d-flex justify-content-center">
-                        <label>Active Space</label>
-                      </div>
-                      <div class="col p-1">
-                        <div class="form-floating">
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="active_electrons"
-                            value="6"
-                            min="0"
-                          />
-                          <label for="active_electrons"># Elec</label>
+                <div id="casscf-options" class="col d-none">
+                  <div class="row ps-3">
+                    <div class="col-8">
+                      <div
+                        class="row border rounded-border"
+                        id="active_space"
+                      >
+                        <div class="col-12 d-flex justify-content-center">
+                          <label>Active Space</label>
                         </div>
-                      </div>
-                      <div class="col p-1">
-                        <div class="form-floating">
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="active_orbitals"
-                            value="6"
-                            min="0"
-                          />
-                          <label for="active_orbitals"># Orbs</label>
+                        <div class="col p-1">
+                          <div class="form-floating">
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="active_electrons"
+                              value="6"
+                              min="0"
+                            />
+                            <label for="active_electrons"># Elec</label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="col p-1">
-                        <div class="form-floating">
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="active_nroots"
-                            value="1"
-                            min="0"
-                          />
-                          <label for="active_nroots"># Roots</label>
+                        <div class="col p-1">
+                          <div class="form-floating">
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="active_orbitals"
+                              value="6"
+                              min="0"
+                            />
+                            <label for="active_orbitals"># Orbs</label>
+                          </div>
+                        </div>
+                        <div class="col p-1">
+                          <div class="form-floating">
+                            <input
+                              type="number"
+                              class="form-control"
+                              id="active_nroots"
+                              value="1"
+                              min="0"
+                            />
+                            <label for="active_nroots"># Roots</label>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-4 mb-3">
-                    <div class="row">
-                      <div class="col mb-1" id="casci_full">
-                        <input
-                          type="checkbox"
-                          class="btn-check"
-                          id="casci_toggle"
-                          autocomplete="off"
-                        />
-                        <label
-                          class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
-                          for="casci_toggle"
-                          title="Do not do orbital rotations"
-                          style="font-size: x-small"
-                          >CASCI</label
-                        >
+                    <div class="col-4 mb-3">
+                      <div class="row">
+                        <div class="col mb-1" id="casci_full">
+                          <input
+                            type="checkbox"
+                            class="btn-check"
+                            id="casci_toggle"
+                            autocomplete="off"
+                          />
+                          <label
+                            class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                            for="casci_toggle"
+                            title="Do not do orbital rotations"
+                            style="font-size: x-small"
+                            >CASCI</label
+                          >
+                        </div>
                       </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-floating">
-                        <select id="active_pt" class="form-select">
-                          <option value=""></option>
-                          <option value="SC_NEVPT2">SC_NEVPT2</option>
-                          <option value="FIC_NEVPT2">FIC_NEVPT2</option>
-                          <option value="CASPT2">CASPT2</option>
-                        </select>
-                        <label for="active_pt">MRPT</label>
+                      <div class="col">
+                        <div class="form-floating">
+                          <select id="active_pt" class="form-select">
+                            <option value=""></option>
+                            <option value="SC_NEVPT2">SC_NEVPT2</option>
+                            <option value="FIC_NEVPT2">FIC_NEVPT2</option>
+                            <option value="CASPT2">CASPT2</option>
+                          </select>
+                          <label for="active_pt">MRPT</label>
+                        </div>
                       </div>
                     </div>
                   </div>
