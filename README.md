@@ -50,6 +50,7 @@ The functionality of `MementoChem` is being actively developed, see below.
 - [ ] Add dark mode
 - [ ] Add PySCF MCSCF natural orbitals
 - [ ] Make sure to print spin contamination for unrestricted methods
+- [ ] Add outorb for CASSCF
 
 ### DONE
 
