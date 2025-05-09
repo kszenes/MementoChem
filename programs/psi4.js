@@ -65,6 +65,7 @@ export default class Psi4Program extends BaseProgram {
     const basisSet = this.document.getElementById("basis_param").value;
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
+    const doRI = this.document.getElementById("ri_toggle").checked;
     const isUnrestriced = this.document.getElementById("scf_type").value.startsWith("U");
     const doStab = this.document.getElementById('stability_toggle').checked;
     const doSOSCF = this.document.getElementById("solver_method").value === "SOSCF";
@@ -94,7 +95,13 @@ export default class Psi4Program extends BaseProgram {
       inner += `\nd_convergence ${gtol}   # orbital gradient criteria`;
     }
 
-    inner += doDirect ? "\nscf_type direct   # integral direct method" : "";
+    if (doDirect && doRI) {
+      inner += "\nscf_type dfdirj + cosx   # integral direct + RI"
+    } else if (doDirect) {
+      inner += "\nscf_type direct   # integral direct"
+    } else if (doRI) {
+      inner += "\nscf_type df   # density fitted integrals"
+    }
     inner += simMethod == "OPTTS" ? "\nopt_type ts   # transition state opt" : "";
 
     inner = inner.split('\n')
