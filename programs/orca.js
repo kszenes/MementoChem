@@ -35,7 +35,7 @@ end
   nel     {{ACTIVE_ELECTRONS}}
   norb    {{ACTIVE_ORBITALS}}
   mult    {{MULTIPLICITY}}
-  nroots  {{ACTIVE_NROOTS}}{{RI_BLOCK}}{{PT_STRING}}
+  nroots  {{ACTIVE_NROOTS}}{{OUTORB}}{{RI_BLOCK}}{{PT_STRING}}
 end
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
@@ -136,8 +136,12 @@ end`);
 % MoInp "your-orbitals.gbw"`);
       }
 
+      // Outorb
+      const canonicalOrbs = this.document.getElementById("active_outorb").value === "CanonOrbs";
+      template = template.replaceAll("{{OUTORB}}", canonicalOrbs ? "\n  ActOrbs CanonOrbs": "" );
+
       // RI approx
-      template = template.replaceAll("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI" : "");
+      template = template.replaceAll("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI   # density-fitted integrals" : "");
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
@@ -282,6 +286,10 @@ end`);
       "SD": "SD",
       "SD(T)": "SD_T",
       "SDT": "SDT",
+    });
+    this._updateSelection("active_outorb", {
+      "Natural (Default)": "Default",
+      "Canonical": "CanonOrbs",
     });
     this._updateSelection("active_pt", {
       "": "",

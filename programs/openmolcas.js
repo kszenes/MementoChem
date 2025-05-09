@@ -190,5 +190,6 @@ export default class MolcasProgram extends BaseProgram {
     this._disableElem("dist_unit_full");
     this._disableElem("freeze_core_full");
     this._enableElem("xyz_file_full");
+
   }
 }

@@ -346,82 +346,87 @@
                   </div>
                 </div>
 
-                <div id="casscf-options" class="col d-none">
-                  <div class="row ps-3">
-                    <div class="col-8">
-                      <div
-                        class="row border rounded-border"
-                        id="active_space"
-                      >
-                        <div class="col-12 d-flex justify-content-center">
-                          <label>Active Space</label>
+                <div id="casscf-options" class="col align-self-end d-none">
+                  <div class="border rounded-border" id="active_space">
+                    <div class="col-12 d-flex justify-content-center">
+                      <label>Active Space</label>
+                    </div>
+                    <div class="row m-3 mt-0 mb-1">
+                      <div class="col p-1">
+                        <div class="form-floating">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="active_electrons"
+                            value="6"
+                            min="0"
+                          />
+                          <label for="active_electrons"># Elec</label>
                         </div>
-                        <div class="col p-1">
-                          <div class="form-floating">
-                            <input
-                              type="number"
-                              class="form-control"
-                              id="active_electrons"
-                              value="6"
-                              min="0"
-                            />
-                            <label for="active_electrons"># Elec</label>
-                          </div>
+                      </div>
+                      <div class="col p-1">
+                        <div class="form-floating">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="active_orbitals"
+                            value="6"
+                            min="0"
+                          />
+                          <label for="active_orbitals"># Orbs</label>
                         </div>
-                        <div class="col p-1">
-                          <div class="form-floating">
-                            <input
-                              type="number"
-                              class="form-control"
-                              id="active_orbitals"
-                              value="6"
-                              min="0"
-                            />
-                            <label for="active_orbitals"># Orbs</label>
-                          </div>
-                        </div>
-                        <div class="col p-1">
-                          <div class="form-floating">
-                            <input
-                              type="number"
-                              class="form-control"
-                              id="active_nroots"
-                              value="1"
-                              min="0"
-                            />
-                            <label for="active_nroots"># Roots</label>
-                          </div>
+                      </div>
+                      <div class="col p-1">
+                        <div class="form-floating">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="active_nroots"
+                            value="1"
+                            min="0"
+                          />
+                          <label for="active_nroots"># Roots</label>
                         </div>
                       </div>
                     </div>
-                    <div class="col-4 mb-3">
-                      <div class="row">
-                        <div class="col mb-1" id="casci_full">
-                          <input
-                            type="checkbox"
-                            class="btn-check"
-                            id="casci_toggle"
-                            autocomplete="off"
-                          />
-                          <label
-                            class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
-                            for="casci_toggle"
-                            title="Do not do orbital rotations"
-                            style="font-size: x-small"
-                            >CASCI</label
-                          >
-                        </div>
+                  </div>
+
+                  <div class="row mb-3 mt-3">
+                    <div class="col mb" id="casci_full">
+                      <input
+                        type="checkbox"
+                        class="btn-check"
+                        id="casci_toggle"
+                        autocomplete="off"
+                      />
+                      <label
+                        class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                        for="casci_toggle"
+                        title="Do not do orbital rotations"
+                        >CASCI</label
+                      >
+                    </div>
+
+                    <div class="col">
+                      <div class="form-floating">
+                        <select id="active_outorb" class="form-select">
+                          <option value=""></option>
+                          <option value="Canonical">Canonical</option>
+                          <option value="Natural">Natural</option>
+                        </select>
+                        <label for="active_outorb">Output Orbitals</label>
                       </div>
-                      <div class="col">
-                        <div class="form-floating">
-                          <select id="active_pt" class="form-select">
-                            <option value=""></option>
-                            <option value="SC_NEVPT2">SC_NEVPT2</option>
-                            <option value="FIC_NEVPT2">FIC_NEVPT2</option>
-                            <option value="CASPT2">CASPT2</option>
-                          </select>
-                          <label for="active_pt">MRPT</label>
-                        </div>
+                    </div>
+
+                    <div class="col">
+                      <div class="form-floating">
+                        <select id="active_pt" class="form-select">
+                          <option value=""></option>
+                          <option value="SC_NEVPT2">SC_NEVPT2</option>
+                          <option value="FIC_NEVPT2">FIC_NEVPT2</option>
+                          <option value="CASPT2">CASPT2</option>
+                        </select>
+                        <label for="active_pt">MRPT</label>
                       </div>
                     </div>
                   </div>

@@ -231,7 +231,7 @@ function initializeForm() {
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
     "tight_conv", "solver_method", "initial_guess", "accordian_advanced_opts",
     "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle",
-    "davidson_corr_toggle", "freeze_core_toggle"
+    "davidson_corr_toggle", "freeze_core_toggle", "active_outorb"
   ];
 
   // Special case for calc_param
