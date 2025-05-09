@@ -21,6 +21,14 @@ export default class OrcaProgram extends BaseProgram {
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
+      FCI: `! {{CALC_TYPE}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}
+
+%casscf
+  DoFCI   true{{RI_BLOCK}}
+end
+{{UNIT}}
+{{MOLECULE_STRUCTURE}}
+`,
       CAS: `! {{CALC_TYPE}} {{BASIS_SET}}{{DIRECT_BLOCK}}
 {{ORB_ROT}}
 %casscf
@@ -87,7 +95,18 @@ ${coords}
     let template;
     const doRI = this.document.getElementById('ri_toggle').checked;
 
-    if (calcMethod.includes("CC")) {
+    if (calcMethod === "HF") {
+      template = this.templates.HF;
+    } else if (calcMethod === "CI") {
+      const excRank = this.document.getElementById('ci_excitation').value.replace("_T", "(T)");
+      const doFull = excRank === "Full";
+      if (doFull) {
+        template = this.templates.FCI.replace("{{RI_BLOCK}}", doRI ? "\n  TrafStep RI": "");
+      } else {
+        const davidsonCorrection = this.document.getElementById("davidson_corr_toggle").checked ? "Q" : "";
+        template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${davidsonCorrection}CI${excRank}` : `${davidsonCorrection}CI${excRank}`);
+      }
+    } else if (calcMethod.includes("CC")) {
       const excRank = this.document.getElementById('cc_excitation').value.replace("_T", "(T)");
       const locCorrStr = this.document.getElementById('cc_loc_corr_toggle').checked ? "DLPNO-" : "";
       template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${locCorrStr}CC${excRank}` : `${locCorrStr}CC${excRank}`);
@@ -141,8 +160,6 @@ end`);
           break;
       }
       template = template.replaceAll("{{PT_STRING}}", ptStr);
-    } else if (calcMethod === "HF") {
-      template = this.templates.HF;
     } else {
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
@@ -241,6 +258,7 @@ end`);
       "DFT": "DFT",
       "MP2": "MP2",
       "CC": "CC",
+      "CI": "CI",
       "CAS (+MRPT)": "CAS",
     });
     this._updateSelection("initial_guess", {
@@ -255,11 +273,12 @@ end`);
     }
     );
     this._updateSelection("ci_excitation", {
-      "S": "S",
       "SD": "SD",
+      "SD(T)": "SD(T)",
       "Full": "Full"
     });
     this._updateSelection("cc_excitation", {
+      "D": "D",
       "SD": "SD",
       "SD(T)": "SD_T",
       "SDT": "SDT",

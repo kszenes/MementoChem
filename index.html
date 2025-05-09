@@ -1,4 +1,6 @@
 <!doctype html>
+<link rel="icon" href="./assets/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon" />
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -171,41 +173,51 @@
                     <label for="scf_type">SCF Type</label>
                   </div>
                 </div>
-                <div
-                  class="col-auto"
-                  style="display: flex; flex-direction: column"
-                >
-                  <div class="pb-1">
-                    <input
-                      type="checkbox"
-                      class="btn-check"
-                      id="ri_toggle"
-                      autocomplete="off"
-                    />
-                    <label
-                      class="btn btn-outline-secondary"
-                      for="ri_toggle"
-                      title="Enable resolution of identity approx (density fitting)"
-                      style="font-size: x-small"
-                      >RI / DF</label
-                    >
-                  </div>
-                  <div>
-                    <input
-                      type="checkbox"
-                      class="btn-check"
-                      id="integral_direct_toggle"
-                      autocomplete="off"
-                    />
-                    <label
-                      class="btn btn-outline-secondary"
-                      for="integral_direct_toggle"
-                      title="Enable integral direct algorithm (avoids storing integrals)"
-                      style="font-size: x-small"
-                      >Direct</label
-                    >
-                  </div>
+                <div class="col" id="freq_full">
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="ri_toggle"
+                    autocomplete="off"
+                  />
+                  <label
+                    class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                    for="ri_toggle"
+                    title="Enable resolution of identity approx (density fitting)"
+                    >RI / DF</label
+                  >
                 </div>
+                <!-- <div class="col"> -->
+                <!-- <div class="pb-1"> -->
+                <!--   <input -->
+                <!--     type="checkbox" -->
+                <!--     class="btn-check" -->
+                <!--     id="ri_toggle" -->
+                <!--     autocomplete="off" -->
+                <!--   /> -->
+                <!--   <label -->
+                <!--     class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center" -->
+                <!--     for="ri_toggle" -->
+                <!--     title="Enable resolution of identity approx (density fitting)" -->
+                <!--     >RI / DF</label -->
+                <!--   > -->
+                <!-- </div> -->
+                <div class="d-none">
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="integral_direct_toggle"
+                    autocomplete="off"
+                  />
+                  <label
+                    class="btn btn-outline-secondary"
+                    for="integral_direct_toggle"
+                    title="Enable integral direct algorithm (avoids storing integrals)"
+                    style="font-size: x-small"
+                    >Direct</label
+                  >
+                </div>
+                <!-- </div> -->
               </div>
 
               <!-- Method-specific options -->
@@ -281,6 +293,20 @@
                       </select>
                       <label for="ci_excitation">Excitation Rank</label>
                     </div>
+                  </div>
+                  <div class="col" id="davidson_corr_full">
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="davidson_corr_toggle"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                      for="davidson_corr_toggle"
+                      title="Enable Davidson correction"
+                      >Davidson Correction</label
+                    >
                   </div>
                 </div>
               </div>
@@ -403,7 +429,7 @@
                       aria-controls="flush-collapseOne"
                       style="border-radius: 5px"
                     >
-                      Advanced Options
+                      Advanced SCF Options
                     </button>
                   </h2>
                   <div
@@ -458,8 +484,8 @@
               </div>
 
               <h4>Molecule</h4>
-              <div class="row">
-                <div class="col mb-3">
+              <div class="row mb-3">
+                <div class="col">
                   <div class="form-floating">
                     <input
                       type="number"
@@ -470,7 +496,7 @@
                     <label for="charge">Charge</label>
                   </div>
                 </div>
-                <div class="col mb-3">
+                <div class="col">
                   <div class="form-floating">
                     <input
                       type="number"
@@ -482,7 +508,7 @@
                     <label for="multiplicity">Multiplicity</label>
                   </div>
                 </div>
-                <div class="col mb-3" id="dist_unit_full">
+                <div class="col" id="dist_unit_full">
                   <div class="form-floating">
                     <select id="dist_unit" class="form-select">
                       <option value="Angstrom">Angstrom</option>
@@ -499,7 +525,7 @@
                     autocomplete="off"
                   />
                   <label
-                    class="btn btn-outline-secondary d-flex align-items-center justify-content-center"
+                    class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
                     for="file_toggle"
                     title="Use XYZ file as input instead of raw geometry"
                     >XYZ File</label
@@ -521,19 +547,8 @@
                         rows="6"
                       ></textarea>
                     </div>
-                    <div
-                      class="col-4 d-flex align-items-center justify-content-center"
-                    >
-                      <img
-                        src="./assets/mementochem-logo.png"
-                        alt="MementoChem Logo"
-                        style="height: 150px"
-                      />
-                    </div>
-                  </div>
-                  <div class="row">
                     <div class="col d-none" id="xyz_file_field">
-                      <div class="input-group mt-3">
+                      <div class="input-group mt-3 ">
                         <span class="input-group-text" id="basic-addon1"
                           >XYZ File</span
                         >
@@ -544,6 +559,15 @@
                           value="geom.xyz"
                         />
                       </div>
+                    </div>
+                    <div
+                      class="col-4 d-flex align-items-center justify-content-center"
+                    >
+                      <img
+                        src="./assets/mementochem-logo.png"
+                        alt="MementoChem Logo"
+                        style="height: 150px"
+                      />
                     </div>
                   </div>
                 </div>

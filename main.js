@@ -81,13 +81,10 @@ function updateUI() {
 
   // Hide all options first
   ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
-    'scf-type-container', "accordian_advanced_opts", "ci-cc-options"].forEach(hideElement);
+    'scf-type-container', "accordian_advanced_opts", "ci-options", "cc-options", "davidson_corr_full"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
   // Show/hide SCF type based on method
-  if (!calcMethod.includes("CAS")) {
-    scfTypeContainer.classList.remove('d-none');
-  }
   if (calcMethod === 'HF' || calcMethod === 'DFT') {
 
     // Show stability checkbox only for UHF/UKS
@@ -95,6 +92,10 @@ function updateUI() {
       (calcMethod === 'DFT' && scfType === 'UKS');
     toggleElementVisibility('unrestricted-options', showUnrestricted);
 
+  }
+
+  if (!calcMethod.includes("CAS")) {
+    scfTypeContainer.classList.remove('d-none');
     if (selectedProgram != "OpenMolcas") {
       showElement("accordian_advanced_opts");
     }
@@ -110,6 +111,9 @@ function updateUI() {
     }
   } else if (calcMethod.startsWith("CI")) {
     showElement('ci-options');
+    if (document.getElementById('ci_excitation').value != "Full") {
+      showElement("davidson_corr_full");
+    }
   } else if (calcMethod.startsWith("CC")) {
     showElement("cc-options");
   } else if (calcMethod.startsWith("CAS")) {
@@ -220,7 +224,8 @@ function initializeForm() {
     'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
     "tight_conv", "solver_method", "initial_guess", "accordian_advanced_opts",
-    "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle"
+    "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle",
+    "davidson_corr_toggle"
   ];
 
   // Special case for calc_param
@@ -235,6 +240,10 @@ function initializeForm() {
 
   // Needed to update natorbs when RI is toggled
   document.getElementById('ri_toggle').addEventListener("change", () => {
+    updateUI();
+  });
+
+  document.getElementById("ci_excitation").addEventListener("change", () => {
     updateUI();
   });
 
