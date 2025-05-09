@@ -224,7 +224,95 @@
               <hr class="separator" />
 
               <div class="row">
-                <div id="dft-options" class="d-none col-auto mb-3">
+                <div id="mp2-options" class="col-auto mb-3 d-none">
+                  <div id="mp2_natorb_full">
+                    <input
+                      type="checkbox"
+                      class="btn-check"
+                      id="natorb_toggle"
+                      autocomplete="off"
+                    />
+                    <label
+                      class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                      for="natorb_toggle"
+                      >Natural Orbitals</label
+                    >
+                  </div>
+                </div>
+
+                <div id="ci-options" class="d-none col mb-3">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-floating h-100">
+                        <select id="ci_excitation" class="form-select h-100">
+                          <option value="SD">SD</option>
+                          <option value="FCI">FCI</option>
+                        </select>
+                        <label for="ci_excitation">Excitation Rank</label>
+                      </div>
+                    </div>
+                    <div class="col" id="davidson_corr_full">
+                      <input
+                        type="checkbox"
+                        class="btn-check"
+                        id="davidson_corr_toggle"
+                        autocomplete="off"
+                      />
+                      <label
+                        class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                        for="davidson_corr_toggle"
+                        title="Enable Davidson correction"
+                        >Davidson Correction</label
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div id="cc-options" class="d-none col mb-3">
+                  <div class="row">
+                    <div class="col">
+                      <div class="form-floating h-100">
+                        <select id="cc_excitation" class="form-select h-100">
+                          <option value="SD">SD</option>
+                          <option value="SD_T">SD(T)</option>
+                          <option value="SDT">SDT</option>
+                        </select>
+                        <label for="cc_excitation">Excitation Rank</label>
+                      </div>
+                    </div>
+                    <div class="col d-none" id="cc_loc_corr_full">
+                      <input
+                        type="checkbox"
+                        class="btn-check"
+                        id="cc_loc_corr_toggle"
+                        autocomplete="off"
+                      />
+                      <label
+                        class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                        for="cc_loc_corr_toggle"
+                        ,
+                        title="Local correlations method"
+                        >DLPNO</label
+                      >
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-auto mb-3 d-none" id="freeze_core_full">
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="freeze_core_toggle"
+                    autocomplete="off"
+                  />
+                  <label
+                    class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                    for="freeze_core_toggle"
+                    >Freeze Core</label
+                  >
+                </div>
+
+                <div id="dft-options" class="col-auto mb-3 d-none">
                   <div class="form-floating">
                     <select id="dft_functional" class="form-select"></select>
                     <label for="dft_functional">XC Functional</label>
@@ -266,150 +354,82 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div id="mp2-options" class="d-none col mb-3">
-                <div class="row">
-                  <div class="col" id="mp2_natorb_full">
-                    <input
-                      type="checkbox"
-                      class="btn-check"
-                      id="natorb_toggle"
-                      autocomplete="off"
-                    />
-                    <label class="btn btn-outline-secondary" for="natorb_toggle"
-                      >Natural Orbitals</label
+                <div id="casscf-options" class="row ps-2 mb-3 d-none">
+                  <div class="col-8">
+                    <div
+                      class="row border rounded-border p-0"
+                      id="active_space"
                     >
-                  </div>
-                </div>
-              </div>
-              <div id="ci-options" class="d-none col mb-3">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating h-100">
-                      <select id="ci_excitation" class="form-select h-100">
-                        <option value="SD">SD</option>
-                        <option value="FCI">FCI</option>
-                      </select>
-                      <label for="ci_excitation">Excitation Rank</label>
-                    </div>
-                  </div>
-                  <div class="col" id="davidson_corr_full">
-                    <input
-                      type="checkbox"
-                      class="btn-check"
-                      id="davidson_corr_toggle"
-                      autocomplete="off"
-                    />
-                    <label
-                      class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
-                      for="davidson_corr_toggle"
-                      title="Enable Davidson correction"
-                      >Davidson Correction</label
-                    >
-                  </div>
-                </div>
-              </div>
-              <div id="cc-options" class="d-none col mb-3">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-floating h-100">
-                      <select id="cc_excitation" class="form-select h-100">
-                        <option value="SD">SD</option>
-                        <option value="SD_T">SD(T)</option>
-                        <option value="SDT">SDT</option>
-                      </select>
-                      <label for="cc_excitation">Excitation Rank</label>
-                    </div>
-                  </div>
-                  <div class="col d-none" id="cc_loc_corr_full">
-                    <input
-                      type="checkbox"
-                      class="btn-check"
-                      id="cc_loc_corr_toggle"
-                      autocomplete="off"
-                    />
-                    <label
-                      class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
-                      for="cc_loc_corr_toggle"
-                      ,
-                      title="Local correlations method"
-                      >DLPNO</label
-                    >
-                  </div>
-                </div>
-              </div>
-              <div id="casscf-options" class="row ps-2 mb-3 d-none">
-                <div class="col-8">
-                  <div class="row border rounded-border p-0" id="active_space">
-                    <div class="col-12 d-flex justify-content-center">
-                      <label>Active Space</label>
-                    </div>
-                    <div class="col p-1">
-                      <div class="form-floating">
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="active_electrons"
-                          value="6"
-                          min="0"
-                        />
-                        <label for="active_electrons"># Elec</label>
+                      <div class="col-12 d-flex justify-content-center">
+                        <label>Active Space</label>
                       </div>
-                    </div>
-                    <div class="col p-1">
-                      <div class="form-floating">
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="active_orbitals"
-                          value="6"
-                          min="0"
-                        />
-                        <label for="active_orbitals"># Orbs</label>
+                      <div class="col p-1">
+                        <div class="form-floating">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="active_electrons"
+                            value="6"
+                            min="0"
+                          />
+                          <label for="active_electrons"># Elec</label>
+                        </div>
                       </div>
-                    </div>
-                    <div class="col p-1">
-                      <div class="form-floating">
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="active_nroots"
-                          value="1"
-                          min="0"
-                        />
-                        <label for="active_nroots"># Roots</label>
+                      <div class="col p-1">
+                        <div class="form-floating">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="active_orbitals"
+                            value="6"
+                            min="0"
+                          />
+                          <label for="active_orbitals"># Orbs</label>
+                        </div>
+                      </div>
+                      <div class="col p-1">
+                        <div class="form-floating">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="active_nroots"
+                            value="1"
+                            min="0"
+                          />
+                          <label for="active_nroots"># Roots</label>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-4 mb-3">
-                  <div class="row">
-                    <div class="col mb-1" id="casci_full">
-                      <input
-                        type="checkbox"
-                        class="btn-check"
-                        id="casci_toggle"
-                        autocomplete="off"
-                      />
-                      <label
-                        class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
-                        for="casci_toggle"
-                        title="Do not do orbital rotations"
-                        style="font-size: x-small"
-                        >CASCI</label
-                      >
+                  <div class="col-4 mb-3">
+                    <div class="row">
+                      <div class="col mb-1" id="casci_full">
+                        <input
+                          type="checkbox"
+                          class="btn-check"
+                          id="casci_toggle"
+                          autocomplete="off"
+                        />
+                        <label
+                          class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                          for="casci_toggle"
+                          title="Do not do orbital rotations"
+                          style="font-size: x-small"
+                          >CASCI</label
+                        >
+                      </div>
                     </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-floating">
-                      <select id="active_pt" class="form-select">
-                        <option value=""></option>
-                        <option value="SC_NEVPT2">SC_NEVPT2</option>
-                        <option value="FIC_NEVPT2">FIC_NEVPT2</option>
-                        <option value="CASPT2">CASPT2</option>
-                      </select>
-                      <label for="active_pt">MRPT</label>
+                    <div class="col">
+                      <div class="form-floating">
+                        <select id="active_pt" class="form-select">
+                          <option value=""></option>
+                          <option value="SC_NEVPT2">SC_NEVPT2</option>
+                          <option value="FIC_NEVPT2">FIC_NEVPT2</option>
+                          <option value="CASPT2">CASPT2</option>
+                        </select>
+                        <label for="active_pt">MRPT</label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -548,7 +568,7 @@
                       ></textarea>
                     </div>
                     <div class="col d-none" id="xyz_file_field">
-                      <div class="input-group mt-3 ">
+                      <div class="input-group mt-3">
                         <span class="input-group-text" id="basic-addon1"
                           >XYZ File</span
                         >

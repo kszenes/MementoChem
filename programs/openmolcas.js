@@ -187,7 +187,8 @@ export default class MolcasProgram extends BaseProgram {
     this._disableElem("stability_full");
     this._disableElem("freq_full");
     this._disableElem("mp2_natorb_full");
-    this._enableElem("xyz_file_full");
     this._disableElem("dist_unit_full");
+    this._disableElem("freeze_core_full");
+    this._enableElem("xyz_file_full");
   }
 }

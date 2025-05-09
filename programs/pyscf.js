@@ -334,6 +334,7 @@ mycc.direct = True` : "");
     // Toggle Elements
     this._disableElem("guessmix_full");
     this._disableElem("freq_full");
+    this._disableElem("freeze_core_full");
     this._enableElem("stability_full");
     this._enableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");

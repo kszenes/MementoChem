@@ -297,5 +297,6 @@ end`);
     this._enableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");
     this._enableElem("dist_unit_full");
+    // this._enableElem("freeze_core_full");
   }
 }

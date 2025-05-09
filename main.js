@@ -81,17 +81,18 @@ function updateUI() {
 
   // Hide all options first
   ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
-    'scf-type-container', "accordian_advanced_opts", "ci-options", "cc-options", "davidson_corr_full"].forEach(hideElement);
+    'scf-type-container', "accordian_advanced_opts", "ci-options", "cc-options",
+    "davidson_corr_full"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
+  // showElement("freeze_core_full");
   // Show/hide SCF type based on method
   if (calcMethod === 'HF' || calcMethod === 'DFT') {
-
+    // hideElement("freeze_core_full");
     // Show stability checkbox only for UHF/UKS
     const showUnrestricted = (calcMethod === 'HF' && scfType === 'UHF') ||
       (calcMethod === 'DFT' && scfType === 'UKS');
     toggleElementVisibility('unrestricted-options', showUnrestricted);
-
   }
 
   if (!calcMethod.includes("CAS")) {
@@ -121,6 +122,11 @@ function updateUI() {
   }
 
   getCurrentProgram().generateInputFile();
+}
+
+function calcModifiedAction() {
+  updateScfTypeOptions();
+  updateUI();
 }
 
 
@@ -225,7 +231,7 @@ function initializeForm() {
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
     "tight_conv", "solver_method", "initial_guess", "accordian_advanced_opts",
     "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle",
-    "davidson_corr_toggle"
+    "davidson_corr_toggle", "freeze_core_toggle"
   ];
 
   // Special case for calc_param
@@ -234,7 +240,7 @@ function initializeForm() {
     qcProgram.addEventListener('change', () => {
       updateScfTypeOptions();
       getCurrentProgram().updateCapabilities();
-      updateUI();
+      calcModifiedAction();
     });
   }
 
@@ -265,8 +271,7 @@ function initializeForm() {
   const calcParamElement = document.getElementById('calc_param');
   if (calcParamElement) {
     calcParamElement.addEventListener('change', function() {
-      updateScfTypeOptions();
-      updateUI();
+      calcModifiedAction();
     });
   }
 

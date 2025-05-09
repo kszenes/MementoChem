@@ -270,8 +270,9 @@ ${inner}
     this._enableElem("stability_full");
     this._enableElem("guessmix_full");
     this._enableElem("freq_full");
+    this._enableElem("dist_unit_full");
     this._disableElem("mp2_natorb_full");
     this._disableElem("xyz_file_full");
-    this._enableElem("dist_unit_full");
+    this._disableElem("freeze_core_full");
   }
 }
