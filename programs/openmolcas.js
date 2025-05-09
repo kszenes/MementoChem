@@ -61,6 +61,7 @@ export default class MolcasProgram extends BaseProgram {
     const activeNroots = this.document.getElementById('active_nroots')?.value || '1';
     const charge = this.document.getElementById("charge").value;
     const doOrbRot = !this.document.getElementById("casci_toggle").checked;
+    const canonicalOrbs = this.document.getElementById("active_outorb").value === "Canonical";
 
     const rootStr = `${activeNroots} ${activeNroots} 1`
 
@@ -68,7 +69,7 @@ export default class MolcasProgram extends BaseProgram {
   Nactel  = {{NELEC}}
   RAS2    = {{RAS}}
   CIRoots = {{ROOTS}}   * State-averaged with equal weight
-  Charge = {{CHARGE_LINE}}   * Automatically deduces #inactive{{PT}}
+  Charge = {{CHARGE_LINE}}   * Automatically deduces #inactive{{OUTORB}}{{PT}}
 `
 
     template = template
@@ -79,7 +80,9 @@ export default class MolcasProgram extends BaseProgram {
       .replaceAll("{{CHARGE_LINE}}", charge)
       .replaceAll('{{NELEC}}', activeElectrons)
       .replaceAll('{{RAS}}', activeOrbitals)
-      .replaceAll('{{ROOTS}}', rootStr);
+      .replaceAll('{{ROOTS}}', rootStr)
+      .replaceAll("{{OUTORB}}", canonicalOrbs ? "\n  OutOrb = Canonical" : "");
+    ;
 
     const ptMethod = this.document.getElementById('active_pt').value;
     let ptStr = ""
@@ -176,6 +179,10 @@ export default class MolcasProgram extends BaseProgram {
       "Geometry Opt": "OPT",
       "Transition State Opt": "OPTTS"
     });
+    this._updateSelection("active_outorb", {
+      "Natural (Default)": "Default",
+      "Canonical": "Canonical"
+    })
     this._updateSelection("active_pt", {
       "": "",
       "CASPT2": "CASPT2"
