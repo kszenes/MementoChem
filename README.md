@@ -39,6 +39,7 @@ The functionality of `MementoChem` is being actively developed, see below.
 
 ### TODO
 
+- [ ] Add CI methods
 - [ ] Add frozen core
 - [ ] Add explicit correlation
 - [ ] Add counterpoise correction
