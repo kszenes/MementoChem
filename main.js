@@ -106,10 +106,7 @@ function updateUI() {
   if (calcMethod === "DFT") {
     showElement('dft-options');
   } else if (calcMethod === "MP2") {
-    if (!(selectedProgram === "PySCF" && !doRI)) {
-      // `make_natorbs` in pyscf not implemented for non-DF MP2
-      showElement('mp2-options');
-    }
+    showElement('mp2-options');
   } else if (calcMethod.startsWith("CI")) {
     showElement('ci-options');
     if (document.getElementById('ci_excitation').value != "Full") {

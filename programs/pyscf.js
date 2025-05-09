@@ -14,7 +14,7 @@ export default class PySCFProgram extends BaseProgram {
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}{{OPT_BLOCK}}
 `,
-      MP2: `from pyscf import gto, scf, mp{{DF_IMPORT}}{{OPT_IMPORTS}}
+      MP2: `from pyscf import gto, scf, mp{{NATORB_IMPORT}}{{DF_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
 mymp = {{MP2_LINE}}
@@ -25,7 +25,7 @@ e = mymp.kernel(){{NATORB_BLOCK}}{{OPT_BLOCK}}
 {{SCF_BLOCK}}
 mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}){{DENSITY_FIT}}
 mc.fcisolver.nroots = {{ACTIVE_NROOTS}}
-mc.kernel(){{PT_STRING}}{{OPT_BLOCK}}
+mc.kernel(){{OUTORB}}{{PT_STRING}}{{OPT_BLOCK}}
 `,
       CC: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
@@ -169,12 +169,16 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       }
 
       // Natural Orbitals
-      template = template.replaceAll("{{NATORB_BLOCK}}", natorb ? "\nnatocc, natorb = mymp.make_natorbs()" : "");
+      template = template.replaceAll("{{NATORB_IMPORT}}", natorb ? ", mcscf" : "");
+      template = template.replaceAll("{{NATORB_BLOCK}}", natorb ? "\nnoons, natorbs = mcscf.addons.make_natural_orbitals(mymp)" : "");
     } else if (calcMethod.startsWith("CAS")) {
       template = this.templates.CAS;
-      const doOrbRot = !this.document.getElementById("casci_toggle").checked;
 
+      const doOrbRot = !this.document.getElementById("casci_toggle").checked;
       template = template.replaceAll("{{ORB_ROT}}", doOrbRot ? "CASSCF" : "CASCI");
+
+      const naturalOrbs = this.document.getElementById("active_outorb").value === "Natural"; 
+      template = template.replaceAll("{{OUTORB}}", naturalOrbs ? "\nnoons, natorbs = mcscf.addons.make_natural_orbitals(mc)": "");
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
@@ -326,6 +330,10 @@ mycc.direct = True` : "");
       "SD": "SD",
       "SD(T)": "SD_T",
     });
+    this._updateSelection("active_outorb", {
+      "Canonical (Default)": "Default",
+      "Natural": "Natural"
+    })
     this._updateSelection("active_pt", {
       "": "",
       "SC_NEVPT2": "SC_NECPT2"
