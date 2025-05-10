@@ -69,7 +69,7 @@ export default class MolcasProgram extends BaseProgram {
   Nactel  = {{NELEC}}
   RAS2    = {{RAS}}
   CIRoots = {{ROOTS}}   * State-averaged with equal weight
-  Charge = {{CHARGE_LINE}}   * Automatically deduces #inactive{{OUTORB}}{{PT}}
+  Charge  = {{CHARGE_LINE}}   * Automatically deduces #inactive{{OUTORB}}{{PT}}
 `
 
     template = template
@@ -81,7 +81,7 @@ export default class MolcasProgram extends BaseProgram {
       .replaceAll('{{NELEC}}', activeElectrons)
       .replaceAll('{{RAS}}', activeOrbitals)
       .replaceAll('{{ROOTS}}', rootStr)
-      .replaceAll("{{OUTORB}}", canonicalOrbs ? "\n  OutOrb = Canonical" : "");
+      .replaceAll("{{OUTORB}}", canonicalOrbs ? "\n  OutOrb  = Canonical" : "");
     ;
 
     const ptMethod = this.document.getElementById('active_pt').value;
