@@ -297,39 +297,45 @@ function initializeForm() {
 // Start the application
 document.addEventListener('DOMContentLoaded', initializeForm);
 
-// Toggle light dark mode
+// Toggle light dark mode based on system preference
 document.addEventListener("DOMContentLoaded", () => {
   const themeToggle = document.getElementById("theme-toggle");
   const themeIcon = document.getElementById("theme-icon");
   const themeText = document.getElementById("theme-text");
 
-  // Check for saved theme preference or use prefer-color-scheme
-  const savedTheme = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia(
-    "(prefers-color-scheme: dark)",
-  ).matches;
+  // Function to apply the system theme preference
+  const applySystemTheme = () => {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-  if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-    document.documentElement.setAttribute("data-theme", "dark");
-    themeIcon.classList.replace("bi-moon-fill", "bi-sun-fill");
-    themeText.textContent = "Light Mode";
-  }
-
-  // Toggle theme function
-  themeToggle.addEventListener("click", () => {
-    const currentTheme =
-      document.documentElement.getAttribute("data-theme");
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-
-    if (newTheme === "dark") {
+    if (prefersDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
       themeIcon.classList.replace("bi-moon-fill", "bi-sun-fill");
       themeText.textContent = "Light Mode";
     } else {
+      document.documentElement.setAttribute("data-theme", "light");
       themeIcon.classList.replace("bi-sun-fill", "bi-moon-fill");
       themeText.textContent = "Dark Mode";
+    }
+  };
+
+  // Apply the system theme on page load
+  applySystemTheme();
+
+  // Listen for changes to the system's color scheme preference
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", applySystemTheme);
+
+  // Optional: Remove theme toggle button functionality if you only want the system preference
+  themeToggle.addEventListener("click", () => {
+    // Toggle theme
+    const currentTheme = document.documentElement.getAttribute("data-theme");
+    if (currentTheme === "dark") {
+      document.documentElement.setAttribute("data-theme", "light");
+      themeIcon.classList.replace("bi-sun-fill", "bi-moon-fill");
+      themeText.textContent = "Dark Mode";
+    } else {
+      document.documentElement.setAttribute("data-theme", "dark");
+      themeIcon.classList.replace("bi-moon-fill", "bi-sun-fill");
+      themeText.textContent = "Light Mode";
     }
   });
 });
