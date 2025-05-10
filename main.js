@@ -109,7 +109,7 @@ function updateUI() {
     showElement('mp2-options');
   } else if (calcMethod.startsWith("CI")) {
     showElement('ci-options');
-    if (document.getElementById('ci_excitation').value != "Full") {
+    if (selectedProgram === "Orca" && document.getElementById('ci_excitation').value != "Full") {
       showElement("davidson_corr_full");
     }
   } else if (calcMethod.startsWith("CC")) {

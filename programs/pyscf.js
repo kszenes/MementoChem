@@ -33,6 +33,18 @@ mc.kernel(){{OUTORB}}{{PT_STRING}}{{OPT_BLOCK}}
 mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
 mycc.kernel(){{TRIPLES_COMPUTE}}
 e_tot = mycc.e_tot{{TRIPLES_ENERGY}}{{OPT_BLOCK}}`,
+      CI: `from pyscf import gto, scf, ci{{OPT_IMPORTS}}
+{{MOLECULE_STRUCTURE}}
+{{SCF_BLOCK}}
+myci = ci.CISD(mf){{DIRECT_BLOCK}}
+myci.kernel()
+e_tot = myci.e_tot{{OPT_BLOCK}}`,
+      FCI: `from pyscf import gto, scf, fci{{OPT_IMPORTS}}
+{{MOLECULE_STRUCTURE}}
+{{SCF_BLOCK}}
+myci = fci.FCI(mf){{DIRECT_BLOCK}}
+myci.kernel()
+e_tot = myci.e_tot{{OPT_BLOCK}}`,
     }
   }
 
@@ -193,6 +205,10 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       const doTriples = this.document.getElementById('cc_excitation').value == "SD_T";
       template = template.replace("{{TRIPLES_COMPUTE}}", doTriples ? "\ne_triples = mycc.ccsd_t()" : "");
       template = template.replace("{{TRIPLES_ENERGY}}", doTriples ? " + e_triples" : "");
+
+    } else if (calcMethod === "CI") {
+      const doFCI = this.document.getElementById("ci_excitation").value === "Full";
+      template = doFCI ? this.templates.FCI : this.templates.CI;
     } else {
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
@@ -260,7 +276,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
         .replaceAll('{{ACTIVE_ELECTRONS}}', activeElectrons)
         .replaceAll('{{ACTIVE_ORBITALS}}', activeOrbitals)
         .replaceAll('{{ACTIVE_NROOTS}}', activeNroots);
-    } else if (calcMethod.startsWith("CC")) {
+    } else if (calcMethod.startsWith("CC") || calcMethod.startsWith("CI")) {
       template = template.replaceAll("{{DIRECT_BLOCK}}", doDirect ? `
 mycc.direct = True` : "");
     }
@@ -275,6 +291,8 @@ mycc.direct = True` : "");
         methodName = "mymp";
       } else if (calcMethod.includes("CC")) {
         methodName = "mycc";
+      } else if (calcMethod.includes("CI")) {
+        methodName = "myci";
       } else if (calcMethod.includes("CAS")) {
         methodName = "mc";
       }
@@ -309,6 +327,7 @@ mycc.direct = True` : "");
       "DFT": "DFT",
       "MP2": "MP2",
       "CC": "CC",
+      "CI": "CI",
       "CAS (+MRPT)": "CAS",
     });
     this._updateSelection("initial_guess", {
@@ -326,6 +345,10 @@ mycc.direct = True` : "");
       "Transition State Opt": "OPTTS"
     }
     );
+    this._updateSelection("ci_excitation", {
+      "SD": "SD",
+      "Full": "Full",
+    });
     this._updateSelection("cc_excitation", {
       "SD": "SD",
       "SD(T)": "SD_T",
@@ -347,5 +370,6 @@ mycc.direct = True` : "");
     this._enableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");
     this._enableElem("dist_unit_full");
+    this._disableElem("davidson_corr_full");
   }
 }
