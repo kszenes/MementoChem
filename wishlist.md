@@ -12,11 +12,10 @@ The functionality of `MementoChem` is being actively developed, see below.
 - [ ] Frequency calculation for PySCF and OpenMolcas
 - [ ] Add input validation (e.g., multiplicity is consistent)
 - [ ] Add fcisolver to CAS calculations
-- [ ] Add dark mode
 - [ ] Psi4: Print spin contamination for unrestricted methods
 
 ### DONE
-
+- [x] Add dark mode
 - [x] Add CI methods
 - [x] Add outorb for CASSCF
 - [x] Psi4
