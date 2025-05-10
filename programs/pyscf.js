@@ -194,7 +194,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
-      let ptStr = ptMethod ? "\n\nmrpt.NEVPT(mc).kernel()" : "";
+      let ptStr = ptMethod ? "\nmrpt.NEVPT(mc).kernel()" : "";
       let ptImport = ptMethod ? ", mrpt" : "";
 
       template = template.replaceAll("{{PT_STRING}}", ptStr).replaceAll("{{PT_IMPORT}}", ptImport);
