@@ -121,6 +121,9 @@ ${inner}
     } else if (calcMethod === "CC") {
       const doTriples = this.document.getElementById('cc_excitation').value == "SD_T";
       inner = doTriples ? '"ccsd(t)"' : '"ccsd"';
+    } else if (calcMethod === "CI") {
+      const rank = this.document.getElementById('ci_excitation').value;
+      inner = rank === "Full" ? '"fci"' : `"ci${rank.toLowerCase()}"`;
     } else {
       inner = `"${calcMethod.toLowerCase()}"`;
     }
@@ -164,8 +167,12 @@ ${inner}
       calcName = scfType;
     } else if (calcMethod === "DFT" && scfType != "Auto") {
       calcName = dftFunctional;
-    } else if (calcMethod === "CCSD_T") {
-      calcName = "CCSD(T)";
+    } else if (calcMethod === "CC") {
+      const ccRank = this.document.getElementById("cc_excitation").value.replace("_T", "(T)");
+      calcName = `CC${ccRank}`;
+    } else if (calcMethod === "CI") {
+      const ciRank = this.document.getElementById("ci_excitation").value;
+      calcName = ciRank === "Full" ? "FCI" : `CI${ciRank}`;
     } else {
       calcName = calcMethod;
     }
@@ -236,6 +243,7 @@ ${inner}
       "DFT": "DFT",
       "MP2": "MP2",
       "CC": "CC",
+      "CI": "CI"
     });
     // TODO: Add more guesses
     this._updateSelection("initial_guess", {
@@ -252,6 +260,12 @@ ${inner}
       "Energy": "SP",
       "Geometry Opt": "OPT",
       "Transition State Opt": "OPTTS"
+    });
+    this._updateSelection("ci_excitation", {
+      "SD": "SD",
+      "SDT": "SDT",
+      "SDTQ": "SDTQ",
+      "Full": "Full"
     });
     this._updateSelection("cc_excitation", {
       "SD": "SD",
