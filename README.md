@@ -1,13 +1,17 @@
-<p align="center">
-  <img width="200px" alt="MementoChem Logo" src="https://github.com/user-attachments/assets/ce24bd6a-131c-4c8e-b575-71b4ec75cd9d" />
-</p>
-
-## Demo
+## MementoChem
 
 <p align="center">
-  <img width="700px" alt="MementoChem Demo" src="https://github.com/user-attachments/assets/8e689366-127e-4e6d-8501-0b60e5ae25c6" />
+  <table>
+    <tr>
+      <td align="center">
+        <img width="200px" alt="MementoChem Logo" src="https://github.com/user-attachments/assets/ce24bd6a-131c-4c8e-b575-71b4ec75cd9d" />
+      </td>
+      <td align="center">
+        <img width="700px" alt="MementoChem Demo" src="https://github.com/user-attachments/assets/66f84890-f757-43d5-a499-b78a63dc5eeb" />
+      </td>
+    </tr>
+  </table>
 </p>
-
 
 ## Description
 
@@ -32,6 +36,8 @@ Currently, it supports a subset of the features from the following programs (the
 - PySCF
 - OpenMolcas
 - Psi4
+
+If you enconter any issue or have a feature request, please let me know.
 
 ## Alternative Utilities
 
