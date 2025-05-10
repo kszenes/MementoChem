@@ -2,10 +2,10 @@
   <table>
     <tr>
       <td align="center">
-        <img width="200px" alt="MementoChem Logo" src="https://github.com/user-attachments/assets/ce24bd6a-131c-4c8e-b575-71b4ec75cd9d" />
+        <img width="200px" alt="MementoChem Logo" src="./assets/mementochem-logo.png" />
       </td>
       <td align="center">
-        <img width="700px" alt="MementoChem Demo" src="https://github.com/user-attachments/assets/66f84890-f757-43d5-a499-b78a63dc5eeb" />
+        <img width="700px" alt="MementoChem Demo" src="./assets/mementochem-demo.png" />
       </td>
     </tr>
   </table>
