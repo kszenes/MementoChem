@@ -13,63 +13,33 @@
 
 This repository hosts the source for the website www.mementochem.com, which provides an interface for conveniently and **quickly generating input files for common quantum chemistry programs**.
 `MementoChem` is not meant to contain an exhaustive set of options but serves more as a template generator for common calculations.
-These can subsequently be adapted by the use their liking.
+These can subsequently be adapted by the user their liking.
 
 ## Features
 
 `MementoChem` can generate inputs for **single point**, **structure** or **transition state optimization** and **harmonic frequency** calculations.
 
-It supports most of the common electronic structure methods such as **single-reference schemes** (e.g., MP2 and CC) as well as **multi-reference routines** (e.g., CASSCF, CASPT2 and NEVPT2).
+It supports most of the common electronic structure methods such as **single-** (e.g., MP2 and CC) and **multi-reference schemes** (e.g., CASSCF, CASPT2 and NEVPT2).
 
-It also provides toggles for common options for configuring calculations such as **density-fitting** and **integral-direct** schemes.
+It also provides buttons to toggle common options for configuring calculations such as enabling **density-fitting** and **integral-direct** schemes.
 
-In addition, certain calculation types come with **advanced configuration** options that allow the user to modify the solver (by using e.g., a second-order solvers) or tighten the convergence thresholds --- keywords that I always seem to forget.
+In addition, SCF calculations come with **advanced configuration** options that allow the user to modify the solver (by using e.g., a second-order solvers) or tighten the convergence thresholds --- keywords that I always seem to forget.
 
-Finally, `MementoChem` supports common **workflows** such as **generating MP2 natural orbitals** or **checking the stability of an unrestricted solution**.
+Finally, `MementoChem` supports common **workflows** such as **generating MP2/CASSCF natural orbitals** or **checking the stability of an unrestricted solution**.
 
-Currently, it supports a subset of the features from the following programs
+Currently, it supports a subset of the features from the following programs (these are the programs that I am most familiar with)
 - Orca
 - PySCF
 - OpenMolcas
 - Psi4
 
-## Roadmap
+## Alternative Utilities
 
-The functionality of `MementoChem` is being actively developed, see below.
-
-### TODO
-
-- [ ] Add frozen core
-- [ ] Add explicit correlation
-- [ ] Add counterpoise correction
-- [ ] Add PES scan
-- [ ] Add other geometry specification methods besides xyz
-- [ ] Frequency calculation for PySCF and OpenMolcas
-- [ ] Add input validation (e.g., multiplicity is consistent)
-- [ ] Add fcisolver to CAS calculations
-- [ ] Add dark mode
-- [ ] Psi4: Print spin contamination for unrestricted methods
-
-### DONE
-
-- [x] Add CI methods
-- [x] Add outorb for CASSCF
-- [x] Psi4
-- [x] Add syntax highlighting
-- [x] Add CASCI (no orbital rotations)
-- [x] Add UHF guess mix
-- [x] Add units for xyz
-- [x] Support loading from structure from a file
-- [x] Add support for integral direct methods
-- [x] Add resolution of identity / cholesky
-- [x] Add roots to CASSCF
-- [x] Finish MP2 (add natural orbital option)
-- [x] Add stability analysis for unrestricted calculations
-- [x] Add MRPT2
-- [x] Add support for second-order solvers
-- [x] Add advanced settings for SCF (e.g., initial guess, energy convergence criteria)
+While I haven't extensively used it myself, the [ccinput](https://github.com/cyllab/ccinput) project seems to provide a neat CLI utility for generating input scripts for quantum chemistry programs.
+However, it lacks support for multi-configurational calculations, which is my main focus.
 
 ## Acknowledgments
 
 - List of basis sets have been taken from [Basis Set Exchange](https://github.com/MolSSI-BSE/basis_set_exchange)
 - List of DFT functionals have been adapted from the [ORCA manual](https://www.faccts.de/docs/orca/6.0/manual/contents/detailed/model.html#choice-of-functional)
+- Logo was adapted from ChatGPT and benzene molecular orbital was generated using VMD with the help of Evangelista's [vmd_cube](https://github.com/fevangelista/vmd_cube) script.
