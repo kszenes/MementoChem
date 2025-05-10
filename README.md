@@ -1,5 +1,3 @@
-## MementoChem
-
 <p align="center">
   <table>
     <tr>
