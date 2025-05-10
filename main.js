@@ -296,3 +296,41 @@ function initializeForm() {
 
 // Start the application
 document.addEventListener('DOMContentLoaded', initializeForm);
+
+// Toggle light dark mode
+document.addEventListener("DOMContentLoaded", () => {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeIcon = document.getElementById("theme-icon");
+  const themeText = document.getElementById("theme-text");
+
+  // Check for saved theme preference or use prefer-color-scheme
+  const savedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia(
+    "(prefers-color-scheme: dark)",
+  ).matches;
+
+  if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    themeIcon.classList.replace("bi-moon-fill", "bi-sun-fill");
+    themeText.textContent = "Light Mode";
+  }
+
+  // Toggle theme function
+  themeToggle.addEventListener("click", () => {
+    const currentTheme =
+      document.documentElement.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+
+    if (newTheme === "dark") {
+      themeIcon.classList.replace("bi-moon-fill", "bi-sun-fill");
+      themeText.textContent = "Light Mode";
+    } else {
+      themeIcon.classList.replace("bi-sun-fill", "bi-moon-fill");
+      themeText.textContent = "Dark Mode";
+    }
+  });
+});
+

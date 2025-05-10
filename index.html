@@ -25,42 +25,138 @@
       rel="stylesheet"
       href="./assets/highlightjs-11.9.0/styles/custom/github_adapted.css"
     />
+    <!-- Add Bootstrap Icons CSS for the moon/sun icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <!-- Add theme toggle button in header -->
+    <div class="position-absolute top-0 end-0 m-3">
+      <button id="theme-toggle" class="btn btn-sm btn-outline-secondary">
+        <i id="theme-icon" class="bi bi-moon-fill"></i>
+        <span id="theme-text">Dark Mode</span>
+      </button>
+    </div>
   </head>
   <style>
     html,
-    .container-fluid {
-      min-height: calc(100vh - 20px); /* Adjust based on footer height */
-      padding-bottom: 20px; /* Adjust to the footer height */
-      border: 1px solid #f8f9fa; /* Light border */
+    :root {
+      --primary-color: #007bff;
+      --background-color: #f8f9fa;
+      --alert-bg: #cfe2ff;
+      --text-color: #333;
+      --input-bg: #fff;
+      --accordion-collapsed: #f0f0f0;
+      --accordion-active: #007bff;
+      --accordion-active-text: white;
+      --output-bg: #f1f1f1;
+      --output-border: #ccc;
+      --footer-bg: rgba(248, 249, 250, 0.9);
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --link-color: rgb(14, 110, 253);
     }
+    [data-theme="dark"] {
+      --primary-color: #0d6efd;
+      --background-color: #212529;
+      --alert-bg: #405580;
+      --text-color: #f8f9fa;
+      --input-bg: #343a40;
+      --accordion-collapsed: #343a40;
+      --accordion-active: #0d6efd;
+      --accordion-active-text: white;
+      --output-bg: #2b3035;
+      --output-border: #495057;
+      --footer-bg: rgba(33, 37, 41, 0.9);
+      --shadow-color: rgba(0, 0, 0, 0.3);
+      --link-color: rgb(129, 180, 255);
+    }
+    body {
+      background-color: var(--background-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+
+    .container-fluid.bg-light {
+      background-color: var(--background-color) !important;
+    }
+
+    .form-control,
+    .form-select,
+    .accordion-button,
+    .btn-outline-secondary {
+      background-color: var(--input-bg);
+      color: var(--text-color);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      background-color: var(--input-bg);
+      color: var(--text-color);
+    }
+
+    .form-floating label {
+      color: var(--text-color);
+    }
+    .accordion-body {
+      background-color: var(--input-bg);
+    }
+
+    .accordion-item {
+      background-color: transparent;
+      border-color: var(--output-border);
+    }
+
+    .accordion-button {
+      background-color: var(--accordion-collapsed);
+      color: var(--text-color);
+      border: 1px solid var(--output-border); /* Using your border color variable */
+    }
+
+    .accordion-button:not(.collapsed) {
+      background-color: var(--accordion-active);
+      color: var(--accordion-active-text);
+      box-shadow: inset 0 -1px 0 var(--output-border); /* Optional: matches Bootstrap's style */
+    }
+
+    .accordion-button:focus {
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* Or use your primary color */
+      border-color: var(--accordion-active);
+    }
+    #output_text {
+      background-color: var(--output-bg);
+      color: var(--text-color);
+      border-color: var(--output-border);
+      display: block; /* Make it a block-level element */
+      border: 1px solid #ccc; /* Add a subtle border */
+      padding: 10px; /* Add some padding for better spacing */
+      font-family:
+        Consolas, Monaco, monospace; /* Monospace font for code appearance */
+      border-radius: 5px; /* Rounded corners */
+      white-space: pre-wrap; /* Wrap long lines instead of breaking them */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for extra contrast */
+      overflow-x: auto; /* Allow horizontal scrolling if the content overflows */
+    }
+
     .fixed-footer {
+      background-color: var(--footer-bg);
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
       min-height: 20px;
-      background-color: rgba(
-        248,
-        249,
-        250,
-        0.9
-      ); /* Light background with some transparency */
       box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
       z-index: 1030; /* Same as Bootstrap's navbar, high enough to be above most elements */
       border-top: 1px solid #dee2e6; /* Subtle separator */
     }
-    #output_text {
-      display: block; /* Make it a block-level element */
-      padding: 10px; /* Add some padding for better spacing */
-      background-color: #f1f1f1; /* Light background to contrast with light-bg */
-      border: 1px solid #ccc; /* Add a subtle border */
-      border-radius: 5px; /* Rounded corners */
-      font-family:
-        Consolas, Monaco, monospace; /* Monospace font for code appearance */
-      color: #333; /* Dark text for contrast */
-      overflow-x: auto; /* Allow horizontal scrolling if the content overflows */
-      white-space: pre-wrap; /* Wrap long lines instead of breaking them */
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for extra contrast */
+    .alert-primary {
+      background-color: var(--alert-bg);
+      color: var(--text-color);
+    }
+
+    .container-fluid {
+      min-height: calc(100vh - 20px); /* Adjust based on footer height */
+      padding-bottom: 20px; /* Adjust to the footer height */
+      border: 1px solid #f8f9fa; /* Light border */
     }
     code .comment {
       color: #888; /* Grey color */
@@ -81,17 +177,6 @@
       height: 1px;
       background: #444;
       margin: 1rem 0;
-    }
-    /* Change the background color of the accordion buttons when collapsed */
-    .accordion-button {
-      background-color: #f0f0f0; /* Light grey background when collapsed */
-      border: 1px solid #ddd; /* Optional: add a border to define the edges */
-    }
-
-    /* Change the background color when the accordion is active (expanded) */
-    .accordion-button:not(.collapsed) {
-      background-color: #007bff; /* Blue background for active state */
-      color: white; /* Make the text white when active */
     }
   </style>
   <body>
@@ -451,7 +536,7 @@
                   <div
                     id="flush-collapseOne"
                     class="accordion-collapse collapse"
-                    data-bs-parent="#accordionFlushExample"
+                    data-bs-parent="#accordian_advanced_opts"
                   >
                     <div class="accordion-body m-0 pb-2">
                       <div class="row align-items-center">
@@ -607,7 +692,7 @@
           </div>
           <div class="p-3 mt-3">
             <div
-              class="alert alert-primary"
+              class="alert alert-primary mb-5"
               role="alert"
               style="
                 border-radius: 8px;
@@ -620,7 +705,7 @@
                 <a
                   href="https://github.com/kszenes/MementoChem/issues"
                   target="_blank"
-                  style="text-decoration: underline"
+                  style="text-decoration: underline; color: var(--link-color)"
                   >here</a
                 >
               </p>
