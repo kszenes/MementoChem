@@ -56,6 +56,7 @@
       --footer-bg: rgba(248, 249, 250, 0.9);
       --shadow-color: rgba(0, 0, 0, 0.1);
       --link-color: rgb(14, 110, 253);
+      --copyright: #6c757d;
     }
     [data-theme="dark"] {
       --primary-color: #0d6efd;
@@ -71,6 +72,7 @@
       --footer-bg: rgba(33, 37, 41, 0.9);
       --shadow-color: rgba(0, 0, 0, 0.3);
       --link-color: rgb(129, 180, 255);
+      --copyright: #adb5bd;
     }
     body {
       background-color: var(--background-color);
@@ -727,7 +729,7 @@
           </div>
           <div class="col text-end">
             <p class="mb-0">
-              <small class="text-muted"
+              <small style="color: var(--copyright)" 
                 >© 2025 | Created by Kalman Szenes</small
               >
             </p>
