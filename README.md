@@ -5,7 +5,6 @@
         <img width="200px" alt="MementoChem Logo" src="./assets/mementochem-logo.png" />
       </td>
       <td align="center">
-        <img width="700px" alt="MementoChem Demo" src="./assets/mementochem-demo.png" />
       </td>
     </tr>
   </table>
