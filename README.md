@@ -15,7 +15,7 @@
 
 This repository hosts the source for the website www.mementochem.com, which provides an interface for conveniently and **quickly generating input files for common quantum chemistry programs**.
 `MementoChem` is not meant to contain an exhaustive set of options but serves more as a template generator for common calculations.
-These can subsequently be adapted by the user their liking.
+These can subsequently be adapted by the user to their liking.
 
 ## Features
 
