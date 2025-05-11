@@ -13,6 +13,7 @@ export default class MolcasProgram extends BaseProgram {
   buildCoordsStr() {
     const useFile = this.document.getElementById("file_toggle").checked;
     const basisSet = this.document.getElementById("basis_param").value;
+    const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
     if (useFile) {
       const fname = this.document.getElementById("xyz_file_name").value;
       return `  Coord = ${fname}\n  Basis = ${basisSet}`;
@@ -22,7 +23,8 @@ export default class MolcasProgram extends BaseProgram {
         .map(line => '  ' + line) // Add 2 spaces to each line
         .join('\n');
       const natoms = coords.split("\n").length;
-      return `  Coord\n  ${natoms}\n\n${coords}\n\n  Basis = ${basisSet}`;
+      const unitStr = useBohr ? "  bohr" : "";
+      return `  Coord\n  ${natoms}\n${unitStr}\n${coords}\n\n  Basis = ${basisSet}`;
     }
   }
   buildSewardStr() {
@@ -194,7 +196,7 @@ export default class MolcasProgram extends BaseProgram {
     this._disableElem("stability_full");
     this._disableElem("freq_full");
     this._disableElem("mp2_natorb_full");
-    this._disableElem("dist_unit_full");
+    this._enableElem("dist_unit_full");
     this._disableElem("freeze_core_full");
     this._enableElem("xyz_file_full");
 

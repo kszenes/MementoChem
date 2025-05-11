@@ -7,7 +7,7 @@
             a = /[\p{XID_Start}_]\p{XID_Continue}*/u,  // Matches identifiers (e.g., Charge, RAS2)
             s = ["&GATEWAY", "&SEWARD", "&SCF", "&RASSCF", "&CASPT2"],  // Block titles
             literals = ["Basis", "Group", "Nactel", "RAS2", "CIRoots", "Charge", "Spin", "IPEA", "Imag", "Shift", "KSDFT", "Scramble", "Coord", "OutOrb"],
-            args = ["RICD", "NOCD", "UHF", "Direct", "CIOnly", "TS", "Canonical", "C1"];
+            args = ["RICD", "NOCD", "UHF", "Direct", "CIOnly", "TS", "Canonical", "C1", "bohr"];
 
       return {
         name: "molcas",
