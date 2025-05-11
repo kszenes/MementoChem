@@ -103,8 +103,8 @@ ${coords}
       if (doFull) {
         template = this.templates.FCI.replace("{{RI_BLOCK}}", doRI ? "\n  TrafStep RI": "");
       } else {
-        const davidsonCorrection = this.document.getElementById("davidson_corr_toggle").checked ? "Q" : "";
-        template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${davidsonCorrection}CI${excRank}` : `${davidsonCorrection}CI${excRank}`);
+        const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "Q" : "";
+        template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${quadraticCorrection}CI${excRank}` : `${quadraticCorrection}CI${excRank}`);
       }
     } else if (calcMethod.includes("CC")) {
       const excRank = this.document.getElementById('cc_excitation').value.replace("_T", "(T)");

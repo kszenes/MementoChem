@@ -82,7 +82,7 @@ function updateUI() {
   // Hide all options first
   ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
     'scf-type-container', "accordion_advanced_opts", "ci-options", "cc-options",
-    "davidson_corr_full"].forEach(hideElement);
+    "quadratic_corr_full"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
   // showElement("freeze_core_full");
@@ -109,8 +109,8 @@ function updateUI() {
     showElement('mp2-options');
   } else if (calcMethod.startsWith("CI")) {
     showElement('ci-options');
-    if (selectedProgram === "Orca" && document.getElementById('ci_excitation').value != "Full") {
-      showElement("davidson_corr_full");
+    if (["Orca", "Psi4"].includes(selectedProgram) && document.getElementById('ci_excitation').value != "Full") {
+      showElement("quadratic_corr_full");
     }
   } else if (calcMethod.startsWith("CC")) {
     showElement("cc-options");
@@ -228,7 +228,7 @@ function initializeForm() {
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
     "tight_conv", "solver_method", "initial_guess", "accordion_advanced_opts",
     "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle",
-    "davidson_corr_toggle", "freeze_core_toggle", "active_outorb"
+    "quadratic_corr_toggle", "freeze_core_toggle", "active_outorb"
   ];
 
   // Special case for calc_param

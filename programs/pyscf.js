@@ -370,6 +370,6 @@ mycc.direct = True` : "");
     this._enableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");
     this._enableElem("dist_unit_full");
-    this._disableElem("davidson_corr_full");
+    this._disableElem("quadratic_corr_full");
   }
 }
