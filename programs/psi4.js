@@ -123,7 +123,8 @@ ${inner}
       inner = doTriples ? '"ccsd(t)"' : '"ccsd"';
     } else if (calcMethod === "CI") {
       const rank = this.document.getElementById('ci_excitation').value;
-      inner = rank === "Full" ? '"fci"' : `"ci${rank.toLowerCase()}"`;
+      const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "q" : "";
+      inner = rank === "Full" ? '"fci"' : `"${quadraticCorrection}ci${rank.toLowerCase()}"`;
     } else {
       inner = `"${calcMethod.toLowerCase()}"`;
     }
@@ -173,7 +174,8 @@ ${inner}
       calcName = `CC${ccRank}`;
     } else if (calcMethod === "CI") {
       const ciRank = this.document.getElementById("ci_excitation").value;
-      calcName = ciRank === "Full" ? "FCI" : `CI${ciRank}`;
+      const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "Q" : "";
+      calcName = ciRank === "Full" ? "FCI" : `${quadraticCorrection}CI${ciRank}`;
     } else {
       calcName = calcMethod;
     }
