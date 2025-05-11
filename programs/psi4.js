@@ -186,7 +186,9 @@ ${inner}
 
     let ret = "\n# --- Output ---\n" + `print("E${simSuffix}(${calcName}) =", E)`
     if (calcType.startsWith("OPT")) {
-      ret += '\nprint("Optimized Geometry")\nprint(np.asarray(wfn.molecule().create_psi4_string_from_molecule()))'
+      ret += "\n";
+      ret += calcType === "OPT" ? 'print("Optimized Geometry")' : 'print("Transition State Geometry")';
+      ret += '\nprint(np.asarray(wfn.molecule().create_psi4_string_from_molecule()))'
     }
     if (includeFreq) {
       ret += '\nprint("Frequencies")\nprint(np.asarray(wfn.frequencies()))';
