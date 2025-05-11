@@ -40,14 +40,12 @@ export default class MolcasProgram extends BaseProgram {
     const scfType = this.document.getElementById("scf_type").value;
     const calcMethod = this.document.getElementById("calc_param").value;
     const charge = this.document.getElementById("charge").value;
-    const multiplicity = this.document.getElementById("multiplicity").value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
 
     let template = `&SCF{{CHARGE_LINE}}{{MULTIPLICITY}}{{DFT_FUNCTIONAL}}{{UNRESTRICTED}}{{MIX_GUESS}}\n`;
 
     template = template.replaceAll("{{CHARGE_LINE}}", parseInt(charge) != 0 ? `\n  Charge = ${charge}` : "");
-    template = template.replaceAll("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin = ${multiplicity}` : "");
 
     template = template.replaceAll("{{DFT_FUNCTIONAL}}", (calcMethod === "DFT") ? `\n  KSDFT = ${dftFunctional}` : "");
     template = template.replaceAll("{{UNRESTRICTED}}", scfType.startsWith("U") ? "\n  UHF" : "");
@@ -69,13 +67,10 @@ export default class MolcasProgram extends BaseProgram {
 
     let template = `&RASSCF{{ORBROT}}
   Nactel  = {{NELEC}}
-  RAS2    = {{RAS}}
+  RAS2    = {{RAS}}{{MULTIPLICITY}}
   CIRoots = {{ROOTS}}   * State-averaged with equal weight
   Charge  = {{CHARGE_LINE}}   * Automatically deduces #inactive{{OUTORB}}{{PT}}
 `
-
-    template = template
-
 
     template = template
       .replaceAll("{{ORBROT}}", doOrbRot ? "" : "\n  CIOnly   * CASCI: No Orbital Rotation")
@@ -143,6 +138,9 @@ export default class MolcasProgram extends BaseProgram {
 
     const compBlock = this.buildCompStr();
     template += compBlock;
+    const multiplicity = this.document.getElementById("multiplicity").value;
+    template = template.replaceAll("{{MULTIPLICITY}}", parseInt(multiplicity) != 1 ? `\n  Spin    = ${multiplicity}` : "");
+
 
     if (symMethod.startsWith("OPT")) {
       template += "&SLAPAF"
