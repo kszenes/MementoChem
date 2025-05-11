@@ -109,6 +109,9 @@ function updateUI() {
     showElement('dft-options');
   } else if (calcMethod === "MP2") {
     showElement('mp2-options');
+    if (selectedProgram === "PySCF" && doRI) {
+      hideElement("freeze_core_full");
+    }
   } else if (calcMethod.startsWith("CI")) {
     showElement('ci-options');
     const notFullCI = document.getElementById('ci_excitation').value != "Full";

@@ -17,26 +17,26 @@ export default class PySCFProgram extends BaseProgram {
       MP2: `from pyscf import gto, scf, mp{{NATORB_IMPORT}}{{DF_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mymp = {{MP2_LINE}}
+mymp = {{MP2_LINE}}{{FREEZE_CORE}}
 e = mymp.kernel(){{NATORB_BLOCK}}{{OPT_BLOCK}}
 `,
       CAS: `from pyscf import gto, scf, mcscf{{PT_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}){{DENSITY_FIT}}
+mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}{{FREEZE_CORE}}){{DENSITY_FIT}}
 mc.fcisolver.nroots = {{ACTIVE_NROOTS}}
 mc.kernel(){{OUTORB}}{{PT_STRING}}{{OPT_BLOCK}}
 `,
       CC: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mycc = cc.CCSD(mf){{DIRECT_BLOCK}}
+mycc = cc.CCSD(mf){{FREEZE_CORE}}{{DIRECT_BLOCK}}
 mycc.kernel(){{TRIPLES_COMPUTE}}
 e_tot = mycc.e_tot{{TRIPLES_ENERGY}}{{OPT_BLOCK}}`,
       CI: `from pyscf import gto, scf, ci{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-myci = ci.CISD(mf){{DIRECT_BLOCK}}
+myci = ci.CISD(mf){{FREEZE_CORE}}{{DIRECT_BLOCK}}
 myci.kernel()
 e_tot = myci.e_tot{{OPT_BLOCK}}`,
       FCI: `from pyscf import gto, scf, fci{{OPT_IMPORTS}}
@@ -161,6 +161,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
   getTemplate(calcMethod) {
     let template;
     const doRI = this.document.getElementById('ri_toggle').checked;
+    const freezeCore = this.document.getElementById("freeze_core_toggle").checked;
 
     if (calcMethod === "MP2") {
       template = this.templates.MP2;
@@ -198,6 +199,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       let ptImport = ptMethod ? ", mrpt" : "";
 
       template = template.replaceAll("{{PT_STRING}}", ptStr).replaceAll("{{PT_IMPORT}}", ptImport);
+      template = template.replaceAll("{{FREEZE_CORE}}", freezeCore ? ", frozen=True" : "");
     } else if (calcMethod === "HF") {
       template = this.templates.HF;
     } else if (calcMethod === "CC") {
@@ -209,9 +211,11 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
     } else if (calcMethod === "CI") {
       const doFCI = this.document.getElementById("ci_excitation").value === "Full";
       template = doFCI ? this.templates.FCI : this.templates.CI;
+    } else if (calcMethod.startsWith("CAS")) {
     } else {
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
+    template = template.replaceAll("{{FREEZE_CORE}}", freezeCore ? ".set_frozen()" : "");
 
     return template;
   }
@@ -365,7 +369,7 @@ mycc.direct = True` : "");
     // Toggle Elements
     this._disableElem("guessmix_full");
     this._disableElem("freq_full");
-    this._disableElem("freeze_core_full");
+    this._enableElem("freeze_core_full");
     this._enableElem("stability_full");
     this._enableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");
