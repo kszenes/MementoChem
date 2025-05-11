@@ -161,6 +161,7 @@ ${inner}
     const scfType = this.document.getElementById("scf_type").value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
     const includeFreq = this.document.getElementById('freq_toggle').checked;
+    const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
 
     let calcName = "";
     if (calcMethod === "HF" && scfType != "Auto") {
@@ -187,8 +188,16 @@ ${inner}
     let ret = "\n# --- Output ---\n" + `print("E${simSuffix}(${calcName}) =", E)`
     if (calcType.startsWith("OPT")) {
       ret += "\n";
-      ret += calcType === "OPT" ? 'print("Optimized Geometry")' : 'print("Transition State Geometry")';
-      ret += '\nprint(np.asarray(wfn.molecule().create_psi4_string_from_molecule()))'
+      ret += calcType === "OPT" ? 'print("-- Optimized Geometry --")' : 'print("-- Transition State --")';
+      ret += `
+def print_geom(mol):{{UNIT_FACTOR}}
+  geom = np.asarray(mol.geometry()){{UNIT_OP}}
+  print(mol.natom(), "\\n")
+  for i in range(mol.natom()):
+      print(mol.label(i), *geom[i,:])
+print_geom(wfn.molecule())`
+        .replace("{{UNIT_FACTOR}}", useBohr ? "\n  bohr2angstrom = 0.529177249" : "")
+        .replace("{{UNIT_OP}}", useBohr ? " * bohr2angstrom" : "");
     }
     if (includeFreq) {
       ret += '\nprint("Frequencies")\nprint(np.asarray(wfn.frequencies()))';
