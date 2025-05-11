@@ -87,7 +87,9 @@ function updateUI() {
     "quadratic_corr_full"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
-  showElement("freeze_core_full");
+  if (selectedProgram != "OpenMolcas") {
+    showElement("freeze_core_full");
+  }
   // Show/hide SCF type based on method
   if (calcMethod === 'HF' || calcMethod === 'DFT') {
     hideElement("freeze_core_full", false);
