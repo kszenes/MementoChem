@@ -4,7 +4,6 @@ The functionality of `MementoChem` is being actively developed, see below.
 
 ### TODO
 
-- [ ] Add frozen core
 - [ ] Add explicit correlation
 - [ ] Add counterpoise correction
 - [ ] Add PES scan
@@ -12,9 +11,11 @@ The functionality of `MementoChem` is being actively developed, see below.
 - [ ] Frequency calculation for PySCF and OpenMolcas
 - [ ] Add input validation (e.g., multiplicity is consistent)
 - [ ] Add fcisolver to CAS calculations
-- [ ] Psi4: Print spin contamination for unrestricted methods
+- [ ] Psi4: Print spin contamination for unrestricted methods (not sure if this is possible)
 
 ### DONE
+
+- [x] Add frozen core
 - [x] Add dark mode
 - [x] Add CI methods
 - [x] Add outorb for CASSCF
