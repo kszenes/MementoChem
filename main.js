@@ -81,7 +81,7 @@ function updateUI() {
 
   // Hide all options first
   ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
-    'scf-type-container', "accordian_advanced_opts", "ci-options", "cc-options",
+    'scf-type-container', "accordion_advanced_opts", "ci-options", "cc-options",
     "davidson_corr_full"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
@@ -98,7 +98,7 @@ function updateUI() {
   if (!calcMethod.includes("CAS")) {
     scfTypeContainer.classList.remove('d-none');
     if (selectedProgram != "OpenMolcas") {
-      showElement("accordian_advanced_opts");
+      showElement("accordion_advanced_opts");
     }
   }
 
@@ -226,7 +226,7 @@ function initializeForm() {
     'active_electrons', 'active_orbitals', 'active_nroots',
     'active_pt', 'natorb_toggle', 'stability_toggle', "ri_toggle", "dist_unit",
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
-    "tight_conv", "solver_method", "initial_guess", "accordian_advanced_opts",
+    "tight_conv", "solver_method", "initial_guess", "accordion_advanced_opts",
     "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle",
     "davidson_corr_toggle", "freeze_core_toggle", "active_outorb"
   ];
