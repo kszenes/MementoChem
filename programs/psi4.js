@@ -64,6 +64,7 @@ export default class Psi4Program extends BaseProgram {
     const doSOSCF = this.document.getElementById("solver_method").value === "SOSCF";
     const initialGuess = this.document.getElementById("initial_guess").value;
     const doTightConv = this.document.getElementById("tight_conv").checked;
+    const freezeCore = this.document.getElementById("freeze_core_toggle").checked;
 
     let inner = `basis ${basisSet.toLowerCase()}`;
     inner += scfType != "Auto" ? `\nreference ${scfType.toLowerCase()}` : "";
@@ -82,6 +83,8 @@ export default class Psi4Program extends BaseProgram {
       inner += doStab ? "\nstability_analysis follow   # restart if unstable" : "";
 
     }
+
+    inner += freezeCore ? "\nfreeze_core true" : "";
 
     if (doTightConv) {
       const [etol, gtol] = this.getTightConvCriteria();

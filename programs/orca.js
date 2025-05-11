@@ -101,7 +101,7 @@ ${coords}
       const excRank = this.document.getElementById('ci_excitation').value.replace("_T", "(T)");
       const doFull = excRank === "Full";
       if (doFull) {
-        template = this.templates.FCI.replace("{{RI_BLOCK}}", doRI ? "\n  TrafStep RI": "");
+        template = this.templates.FCI.replace("{{RI_BLOCK}}", doRI ? "\n  TrafStep RI" : "");
       } else {
         const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "Q" : "";
         template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${quadraticCorrection}CI${excRank}` : `${quadraticCorrection}CI${excRank}`);
@@ -138,7 +138,7 @@ end`);
 
       // Outorb
       const canonicalOrbs = this.document.getElementById("active_outorb").value === "CanonOrbs";
-      template = template.replaceAll("{{OUTORB}}", canonicalOrbs ? "\n  ActOrbs CanonOrbs": "" );
+      template = template.replaceAll("{{OUTORB}}", canonicalOrbs ? "\n  ActOrbs CanonOrbs" : "");
 
       // RI approx
       template = template.replaceAll("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI   # density-fitted integrals" : "");
@@ -308,7 +308,7 @@ end`);
     this._enableElem("mp2_natorb_full");
     this._enableElem("xyz_file_full");
     this._enableElem("dist_unit_full");
-    // this._enableElem("freeze_core_full");
-    
+    this._enableElem("freeze_core_full");
+
   }
 }

@@ -131,7 +131,7 @@ function updateUI() {
 function resetFormToDefaults() {
   // Reset checkboxes to unchecked
   const checkboxesToReset = [
-    'freq_toggle', 'ri_toggle', 'integral_direct_toggle', 'natorb_toggle',
+    'ri_toggle', 'integral_direct_toggle', 'natorb_toggle',
     'stability_toggle', 'guessmix_toggle', 'casci_toggle', 'cc_loc_corr_toggle',
     'quadratic_corr_toggle', 'freeze_core_toggle'
   ];
@@ -145,8 +145,7 @@ function resetFormToDefaults() {
 
   // Reset selectors to their first option
   const selectorsToReset = [
-    'calc_type', 'calc_param', 'basis_param', 'dft_functional',
-    'ci_excitation', 'cc_excitation', 'solver_method', 'initial_guess',
+    'calc_type', 'ci_excitation', 'cc_excitation', 'solver_method', 'initial_guess',
     'active_outorb', 'active_pt'
   ];
 
