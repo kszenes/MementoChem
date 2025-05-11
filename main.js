@@ -121,8 +121,43 @@ function updateUI() {
   getCurrentProgram().generateInputFile();
 }
 
+function resetFormToDefaults() {
+  // Reset checkboxes to unchecked
+  const checkboxesToReset = [
+    'freq_toggle', 'ri_toggle', 'integral_direct_toggle', 'natorb_toggle',
+    'stability_toggle', 'guessmix_toggle', 'casci_toggle', 'cc_loc_corr_toggle', 
+    'quadratic_corr_toggle', 'freeze_core_toggle'
+  ];
+  
+  checkboxesToReset.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.checked = false;
+    }
+  });
+  
+  // Reset selectors to their first option
+  const selectorsToReset = [
+    'calc_type', 'calc_param', 'basis_param', 'dft_functional', 
+    'ci_excitation', 'cc_excitation', 'solver_method', 'initial_guess',
+    'active_outorb', 'active_pt'
+  ];
+  
+  selectorsToReset.forEach(id => {
+    const element = document.getElementById(id);
+    if (element && element.options.length > 0) {
+      element.selectedIndex = 0;
+    }
+  });
+}
+
 function calcModifiedAction() {
   updateScfTypeOptions();
+  const calcType = document.getElementById("calc_param").value;
+  if (calcType === "MP2") {
+    // Enable density fitting by default for MP2
+    document.getElementById("ri_toggle").checked = true;
+  }
   updateUI();
 }
 
@@ -238,6 +273,7 @@ function initializeForm() {
       updateScfTypeOptions();
       getCurrentProgram().updateCapabilities();
       calcModifiedAction();
+      resetFormToDefaults();
     });
   }
 
