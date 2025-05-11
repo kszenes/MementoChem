@@ -5,7 +5,7 @@ export default class OrcaProgram extends BaseProgram {
     super(document);
     this.commentStr = "#";
     this.templates = {
-      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}
+      DEFAULT: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{FREEZE_CORE}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
@@ -17,7 +17,7 @@ export default class OrcaProgram extends BaseProgram {
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-      MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}{{NATORB_BLOCK}}
+      MP2: `! {{CALC_TYPE}} {{CALC_METHOD}} {{BASIS_SET}}{{FREEZE_CORE}}{{SOSCF}}{{MIX_GUESS}}{{SCF_BLOCK}}{{NATORB_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
@@ -29,7 +29,7 @@ end
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `,
-      CAS: `! {{CALC_TYPE}} {{BASIS_SET}}{{DIRECT_BLOCK}}
+      CAS: `! {{CALC_TYPE}} {{BASIS_SET}}{{FREEZE_CORE}}{{DIRECT_BLOCK}}
 {{ORB_ROT}}
 %casscf
   nel     {{ACTIVE_ELECTRONS}}
@@ -193,6 +193,7 @@ end`);
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
     const doSOSCF = this.document.getElementById("solver_method").value === "SOSCF";
+    const freezeCore = this.document.getElementById("freeze_core_toggle").checked;
 
     if (doRI) {
       basisSet += " " + basisSet + "/C";
@@ -226,7 +227,8 @@ end`);
       .replaceAll('{{MULTIPLICITY}}', multiplicity)
       .replaceAll('{{MOLECULE_STRUCTURE}}', moleculeStructure)
       .replaceAll('{{UNIT}}', useBohr ? "\n! Bohrs" : "")
-      .replaceAll("{{SOSCF}}", doSOSCF ? "\n! SOSCF   # second order solver" : "");
+      .replaceAll("{{SOSCF}}", doSOSCF ? "\n! SOSCF   # second order solver" : "")
+      .replaceAll("{{FREEZE_CORE}}", freezeCore ? "" : " nofrozencore");
 
     // Method-specific replacements
     if (calcMethod === 'DFT') {
@@ -298,6 +300,7 @@ end`);
       "CASPT2": "CASPT2"
     });
 
+
     // Toggle Elements
     this._enableElem("guessmix_full");
     this._enableElem("freq_full");
@@ -306,5 +309,6 @@ end`);
     this._enableElem("xyz_file_full");
     this._enableElem("dist_unit_full");
     // this._enableElem("freeze_core_full");
+    
   }
 }

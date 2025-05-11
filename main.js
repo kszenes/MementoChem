@@ -11,16 +11,18 @@ const programs = {
 };
 
 // DOM Helper Functions
-function hideElement(id) {
+function hideElement(id, uncheck = true) {
   const element = document.getElementById(id);
   if (element) {
-    // Find all child checkboxes within the element
-    const checkboxes = element.querySelectorAll('input[type="checkbox"]');
+    if (uncheck) {
+      // Find all child checkboxes within the element
+      const checkboxes = element.querySelectorAll('input[type="checkbox"]');
 
-    // Uncheck all child checkboxes
-    checkboxes.forEach(checkbox => {
-      checkbox.checked = false;
-    });
+      // Uncheck all child checkboxes
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = false;
+      });
+    }
 
     // Apply d-none class to hide the entire element
     element.classList.add('d-none');
@@ -85,10 +87,10 @@ function updateUI() {
     "quadratic_corr_full"].forEach(hideElement);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
-  // showElement("freeze_core_full");
+  showElement("freeze_core_full");
   // Show/hide SCF type based on method
   if (calcMethod === 'HF' || calcMethod === 'DFT') {
-    // hideElement("freeze_core_full");
+    hideElement("freeze_core_full", false);
     // Show stability checkbox only for UHF/UKS
     const showUnrestricted = (calcMethod === 'HF' && scfType === 'UHF') ||
       (calcMethod === 'DFT' && scfType === 'UKS');
@@ -109,8 +111,13 @@ function updateUI() {
     showElement('mp2-options');
   } else if (calcMethod.startsWith("CI")) {
     showElement('ci-options');
-    if (["Orca", "Psi4"].includes(selectedProgram) && document.getElementById('ci_excitation').value != "Full") {
-      showElement("quadratic_corr_full");
+    const notFullCI = document.getElementById('ci_excitation').value != "Full";
+    if (notFullCI) {
+      if (["Orca", "Psi4"].includes(selectedProgram)) {
+        showElement("quadratic_corr_full");
+      }
+    } else {
+      hideElement("freeze_core_full", false);
     }
   } else if (calcMethod.startsWith("CC")) {
     showElement("cc-options");
@@ -125,24 +132,24 @@ function resetFormToDefaults() {
   // Reset checkboxes to unchecked
   const checkboxesToReset = [
     'freq_toggle', 'ri_toggle', 'integral_direct_toggle', 'natorb_toggle',
-    'stability_toggle', 'guessmix_toggle', 'casci_toggle', 'cc_loc_corr_toggle', 
+    'stability_toggle', 'guessmix_toggle', 'casci_toggle', 'cc_loc_corr_toggle',
     'quadratic_corr_toggle', 'freeze_core_toggle'
   ];
-  
+
   checkboxesToReset.forEach(id => {
     const element = document.getElementById(id);
     if (element) {
       element.checked = false;
     }
   });
-  
+
   // Reset selectors to their first option
   const selectorsToReset = [
-    'calc_type', 'calc_param', 'basis_param', 'dft_functional', 
+    'calc_type', 'calc_param', 'basis_param', 'dft_functional',
     'ci_excitation', 'cc_excitation', 'solver_method', 'initial_guess',
     'active_outorb', 'active_pt'
   ];
-  
+
   selectorsToReset.forEach(id => {
     const element = document.getElementById(id);
     if (element && element.options.length > 0) {
@@ -153,7 +160,14 @@ function resetFormToDefaults() {
 
 function calcModifiedAction() {
   updateScfTypeOptions();
+  const selectedProgram = document.getElementById('qc_program').value;
   const calcType = document.getElementById("calc_param").value;
+  const notFullCI = document.getElementById('ci_excitation').value != "Full"
+
+  if (selectedProgram === "Orca" && notFullCI) {
+    document.getElementById("freeze_core_toggle").checked = true;
+  }
+
   if (calcType === "MP2") {
     // Enable density fitting by default for MP2
     document.getElementById("ri_toggle").checked = true;
