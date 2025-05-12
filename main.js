@@ -2,12 +2,14 @@ import OrcaProgram from "./programs/orca.js";
 import PySCFProgram from "./programs/pyscf.js";
 import MolcasProgram from "./programs/openmolcas.js";
 import Psi4Program from "./programs/psi4.js";
+import MRCCProgram from "./programs/mrcc.js";
 
 const programs = {
   Orca: new OrcaProgram(document),
   PySCF: new PySCFProgram(document),
   OpenMolcas: new MolcasProgram(document),
-  Psi4: new Psi4Program(document)
+  Psi4: new Psi4Program(document),
+  MRCC: new MRCCProgram(document)
 };
 
 // DOM Helper Functions
@@ -171,7 +173,7 @@ function calcModifiedAction() {
   const calcType = document.getElementById("calc_param").value;
   const notFullCI = document.getElementById('ci_excitation').value != "Full"
 
-  if (selectedProgram === "Orca" && notFullCI) {
+  if (["Orca", "MRCC"].includes(selectedProgram)  && notFullCI) {
     document.getElementById("freeze_core_toggle").checked = true;
   }
 
