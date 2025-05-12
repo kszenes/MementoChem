@@ -466,12 +466,15 @@
                   </div>
                 </div>
 
-                <div id="casscf-options" class="col align-self-end d-none">
-                  <div class="border rounded-border" id="active_space">
+                <div id="active-options" class="mb-3">
+                  <div
+                    class="border rounded-border align-self-end m"
+                    id="active_space"
+                  >
                     <div class="col-12 d-flex justify-content-center">
                       <label>Active Space</label>
                     </div>
-                    <div class="row m-3 mt-0 mb-1">
+                    <div class="row mt-0 mb-1 ps-4 pe-4">
                       <div class="col p-1">
                         <div class="form-floating">
                           <input
@@ -510,8 +513,24 @@
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div class="row mb-3 mt-3">
+                <div class="col-auto mb-3" id="freeze_core_full">
+                  <input
+                    type="checkbox"
+                    class="btn-check"
+                    id="freeze_core_toggle"
+                    autocomplete="off"
+                  />
+                  <label
+                    class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
+                    for="freeze_core_toggle"
+                    >Freeze Core</label
+                  >
+                </div>
+
+                <div id="casscf-options" class="col align-self-end d-none">
+                  <div class="row mb-3">
                     <div class="col mb" id="casci_full">
                       <input
                         type="checkbox"
@@ -549,19 +568,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-auto mb-3" id="freeze_core_full">
-                  <input
-                    type="checkbox"
-                    class="btn-check"
-                    id="freeze_core_toggle"
-                    autocomplete="off"
-                  />
-                  <label
-                    class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
-                    for="freeze_core_toggle"
-                    >Freeze Core</label
-                  >
                 </div>
               </div>
               <div

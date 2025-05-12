@@ -82,7 +82,7 @@ function updateUI() {
   const doRI = document.getElementById('ri_toggle').checked;
 
   // Hide all options first
-  ['dft-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
+  ['dft-options', 'active-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
     'scf-type-container', "accordion_advanced_opts", "ci-options", "cc-options",
     "quadratic_corr_full"].forEach(hideElement);
 
@@ -127,6 +127,7 @@ function updateUI() {
   } else if (calcMethod.startsWith("CC")) {
     showElement("cc-options");
   } else if (calcMethod.startsWith("CAS")) {
+    showElement("active-options");
     showElement("casscf-options");
   }
 
