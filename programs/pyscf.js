@@ -282,7 +282,7 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
         .replaceAll('{{ACTIVE_NROOTS}}', activeNroots);
     } else if (calcMethod.startsWith("CC") || calcMethod.startsWith("CI")) {
       template = template.replaceAll("{{DIRECT_BLOCK}}", doDirect ? `
-mycc.direct = True` : "");
+my${calcMethod.toLowerCase()}.direct = True` : "");
     }
 
     if (calcType === "OPT" || calcType === "OPTTS") {

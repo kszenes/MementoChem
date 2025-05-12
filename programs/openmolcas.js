@@ -126,7 +126,7 @@ export default class MolcasProgram extends BaseProgram {
     const doRI = this.document.getElementById("ri_toggle").checked;
     template += doRI ? "  RICD   * RI Enabled\n" : "  NOCD   * RI Disabled\n";
     if (calcMethod.startsWith("CAS")) {
-      template += "  * Point Group Symmetry Disabled for CAS\n  Group = C1\n"
+      template += "  * Point Group Symmetry Disabled for CAS\n  Group = NoSym\n"
     }
 
     if (symMethod.startsWith("OPT")) {
