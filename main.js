@@ -252,6 +252,121 @@ function copyToClipboard() {
   window.getSelection().removeAllRanges();
 }
 
+function buildFilename() {
+  const useGeomFile = document.getElementById("file_toggle").checked;
+  let molecule = "";
+
+  if (!useGeomFile) {
+    // Attempt to extract molecule name
+    const geomStr = document.getElementById("xyz_geom").value;
+
+    // Create molecule formula from geometry string
+    if (geomStr.trim()) {
+      // Split by lines and filter out empty lines
+      const lines = geomStr.split('\n').filter(line => line.trim());
+
+      // Extract element types (first word in each line)
+      const elements = lines.map(line => line.trim().split(/\s+/)[0])
+        .filter(el => el && !el.match(/^\d+$/)); // Filter out any numeric lines (like atom count)
+
+      // Count occurrences of each element
+      const elementCounts = elements.reduce((counts, element) => {
+        // Use uppercase element symbols for consistency
+        const normalizedElement = element.charAt(0).toUpperCase() + element.slice(1).toLowerCase();
+        counts[normalizedElement] = (counts[normalizedElement] || 0) + 1;
+        return counts;
+      }, {});
+
+      // Convert counts to a formula string
+      molecule = Object.entries(elementCounts)
+        .sort(([a], [b]) => a.localeCompare(b)) // Sort elements alphabetically
+        .map(([element, count]) => element + (count > 1 ? count : ''))
+        .join('');
+    }
+  }
+
+  const calcMethod = document.getElementById('calc_param').value;
+  const basisSet = document.getElementById('basis_param').value;
+  const scfType = document.getElementById("scf_type").value;
+
+  let methodName = "";
+  if (calcMethod === "HF") {
+    methodName = scfType === "Auto" ? "hf" : `${scfType}`;
+  } else if (calcMethod === "DFT") {
+    const dftFunctional = document.getElementById('dft_functional').value;
+    methodName = `${dftFunctional}`;
+    methodName += scfType != "Auto" ? `_${scfType}` : "";
+  } else if (calcMethod === "CC") {
+    const rank = document.getElementById('cc_excitation').value;
+    methodName = calcMethod + rank.replace(/_(.)/g, "($1)").toUpperCase()
+  } else if (calcMethod === "CI") {
+    const rank = document.getElementById('ci_excitation').value;
+    methodName = rank === "Full" ? "FCI" : calcMethod + rank.replace(/_(.)/g, "($1)").toUpperCase();
+  } else if (calcMethod.startsWith("CAS")) {
+    const doOrbRot = !document.getElementById('casci_toggle').checked;
+    const ptMethod = document.getElementById('active_pt').value;
+    if (ptMethod) {
+      methodName = ptMethod.split('_')[1] + "_";
+    } else {
+      methodName = doOrbRot ? "casscf_" : "casci_";
+    }
+    const activeElectrons = document.getElementById('active_electrons')?.value || '6';
+    const activeOrbitals = document.getElementById('active_orbitals')?.value || '6';
+    methodName += `${activeElectrons}_${activeOrbitals}`;
+  } else {
+    methodName = calcMethod;
+  }
+
+  const filename = `${molecule}_${methodName}_${basisSet}`.toLowerCase();
+  return filename;
+}
+
+// Download function
+function downloadInput() {
+  const outputText = document.getElementById('output_text');
+  if (!outputText) return;
+
+  const content = outputText.textContent;
+  if (!content) return;
+
+  // Determine the file extension based on the program
+  const selectedProgram = document.getElementById('qc_program').value;
+  let fileExtension = '.inp';
+
+  if (selectedProgram === 'PySCF') {
+    fileExtension = '.py';
+  }
+
+  // root name
+  const root = buildFilename();
+
+  // Create a blob from the text content
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+
+  // Create a temporary link to trigger the download
+  const downloadLink = document.createElement('a');
+  downloadLink.href = url;
+  downloadLink.download = `${root}${fileExtension}`;
+
+  // Append to the document, trigger click, and clean up
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+
+  // Release the object URL
+  URL.revokeObjectURL(url);
+
+  // Visual feedback
+  const downloadBtn = document.querySelector('.download-btn');
+  if (downloadBtn) {
+    downloadBtn.textContent = 'Downloaded!';
+    setTimeout(() => {
+      downloadBtn.textContent = 'Download';
+    }, 2000);
+  }
+}
+
 // TODO: Reimplement this, currently unused
 // JavaScript to dynamically adjust padding-bottom based on footer height
 function adjustPadding() {
@@ -344,10 +459,15 @@ function initializeForm() {
   document.getElementById('xyz_file_name').value = "geom.xyz";
   getCurrentProgram().generateInputFile();
 
-  // Set up copy button
+  // Set up copy and download buttons
   const copyBtn = document.querySelector('.copy-btn');
   if (copyBtn) {
     copyBtn.addEventListener('click', copyToClipboard);
+  }
+
+  const downloadBtn = document.querySelector('.download-btn');
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', downloadInput);
   }
 }
 
