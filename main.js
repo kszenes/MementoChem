@@ -283,7 +283,11 @@ function buildFilename() {
         .map(([element, count]) => element + (count > 1 ? count : ''))
         .join('');
     }
+  } else {
+    const xyzFilename = document.getElementById("xyz_file_name").value;
+    molecule = xyzFilename.split(".")[0];
   }
+
 
   const calcMethod = document.getElementById('calc_param').value;
   const basisSet = document.getElementById('basis_param').value;
