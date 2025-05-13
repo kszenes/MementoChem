@@ -363,7 +363,7 @@ my${calcMethod.toLowerCase()}.direct = True` : "");
     })
     this._updateSelection("active_pt", {
       "": "",
-      "SC_NEVPT2": "SC_NECPT2"
+      "SC_NEVPT2": "SC_NEVPT2"
     })
 
     // Toggle Elements
