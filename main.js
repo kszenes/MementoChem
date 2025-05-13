@@ -83,8 +83,10 @@ function updateUI() {
 
   // Hide all options first
   ['dft-options', 'active-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
-    'scf-type-container', "accordion_advanced_opts", "ci-options", "cc-options",
+    'scf-type-container', "ci-options", "cc-options",
     "quadratic_corr_full"].forEach(hideElement);
+
+  hideElement("accordion_advanced_opts", false);
 
   const scfTypeContainer = document.getElementById('scf-type-container');
   if (selectedProgram != "OpenMolcas") {
@@ -151,7 +153,7 @@ function resetFormToDefaults() {
 
   // Reset selectors to their first option
   const selectorsToReset = [
-    'calc_type', 'ci_excitation', 'cc_excitation', 'solver_method', 'initial_guess',
+    'calc_type', 'ci_excitation', 'cc_excitation',
     'active_outorb', 'active_pt'
   ];
 
