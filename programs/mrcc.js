@@ -10,6 +10,7 @@ export default class MRCCrogram extends BaseProgram {
 {{MOLECULE_STRUCTURE}}
 `,
     }
+    this.defaultRI = ["MP2", "CC2", "CIS", "CIS(T)"];
   }
   buildMolStr() {
     const useFile = this.document.getElementById("file_toggle").checked;
@@ -47,27 +48,29 @@ export default class MRCCrogram extends BaseProgram {
     const initialGuess = this.document.getElementById("initial_guess").value;
     const doTightConv = this.document.getElementById("tight_conv").checked;
     const freezeCore = this.document.getElementById("freeze_core_toggle").checked;
+    const calcMethod = this.document.getElementById('calc_param').value;
+    const doLocCorr = this.document.getElementById('local_corr_toggle').checked;
 
     let inner = "";
 
-    inner += scfType != "Auto" ? `scf_type=${scfType.toLowerCase()}\n` : "";
+    inner += scfType != "Auto" ? `\nscf_type=${scfType.toLowerCase()}` : "";
 
     if (initialGuess != "default") {
-      inner += `scfiguess=${initialGuess}   # initial guess\n`
+      inner += `\nscfiguess=${initialGuess}   # initial guess`
     }
 
-    inner += doSOSCF ? "qscf=on   # quadratic SCF solver\n" : "";
+    inner += doSOSCF ? "\nqscf=on   # quadratic SCF solver" : "";
 
+    inner += (!["HF", "DFT"].includes(calcMethod) && !freezeCore) ? "\ncore=corr   # disable frozen core approx" : "";
 
-    // TODO: Not supported
-    if (isUnrestriced) {
-      inner += mixGuess ? "\nguess_mix true   # break alpha beta spin symmetry" : "";
-
-      inner += doStab ? "\nstability_analysis follow   # restart if unstable" : "";
-
+    // RI approximation
+    if (this.defaultRI.includes(this.getFullMethodName()) && !doRI) {
+      inner += "\n# RI approx assumed for method, disable explicitly";
+      inner += "\ndfbasis_scf=none\ndfbasis_cor=none";
     }
 
-    inner += !freezeCore ? "\ncore=corr   # disable frozen core approx" : "";
+    // Local correlation
+    inner += doLocCorr ? "\nlocalcc=on   # linear scaling local correlation method" : "";
 
     if (doTightConv) {
       const [etol, gtol] = this.getTightConvCriteria();
@@ -76,16 +79,12 @@ export default class MRCCrogram extends BaseProgram {
       // inner += `\nd_convergence ${gtol}   # orbital gradient criteria`;
     }
 
-
-    return inner
+    return inner === "" ? "" : inner + "\n";
   }
 
-  buildCompStr() {
-    const simMethod = this.document.getElementById('calc_type').value;
+  getFullMethodName() {
     const calcMethod = this.document.getElementById('calc_param').value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
-    const includeFreq = this.document.getElementById('freq_toggle').checked;
-
     let methodName = "";
     if (calcMethod === "HF") {
       methodName = "SCF";
@@ -102,10 +101,17 @@ export default class MRCCrogram extends BaseProgram {
     }
 
     const doRI = this.document.getElementById("ri_toggle").checked;
-    const RIStr = doRI ? "RI-" : ""
-    methodName = RIStr + methodName; 
+    methodName = doRI ? `RI-${methodName}   # density-fitting enabled` : methodName;
+    return methodName;
+  }
 
-    let str = simMethod === "OPT" ? "gopt=full   # geometry optimization\n" : ""; 
+  buildCompStr() {
+    const simMethod = this.document.getElementById('calc_type').value;
+    const includeFreq = this.document.getElementById('freq_toggle').checked;
+
+    const methodName = this.getFullMethodName();
+
+    let str = simMethod === "OPT" ? "gopt=full   # geometry optimization\n" : "";
     str += includeFreq ? "freq=on\n" : "";
     str += `calc=${methodName}`;
     return str;
@@ -166,12 +172,15 @@ export default class MRCCrogram extends BaseProgram {
       "Geometry Opt": "OPT",
     });
     this._updateSelection("ci_excitation", {
+      "S": "S",
+      "S(D)": "S_D",
       "SD": "SD",
       "SDT": "SDT",
       "SDTQ": "SDTQ",
       "Full": "Full"
     });
     this._updateSelection("cc_excitation", {
+      "2": "2",
       "SD": "SD",
       "SD(T)": "SD_T",
       "SDT": "SDT",

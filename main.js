@@ -86,7 +86,7 @@ function updateUI() {
   // Hide all options first
   ['dft-options', 'active-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
     'scf-type-container', "ci-options", "cc-options",
-    "quadratic_corr_full"].forEach(hideElement);
+    "quadratic_corr_full", "local_corr_full"].forEach(hideElement);
 
   hideElement("accordion_advanced_opts", false);
 
@@ -135,6 +135,15 @@ function updateUI() {
     showElement("casscf-options");
   }
 
+  // local correlation logic
+  if (["Orca", "MRCC", "Psi4"].includes(selectedProgram)) {
+    const notFullCI = document.getElementById('ci_excitation').value != "Full";
+    // TODO: Maybe do this for CI as well
+    if (["MP2", "CC"].includes(calcMethod)) {
+      showElement("local_corr_full");
+    }
+  }
+
   getCurrentProgram().generateInputFile();
 }
 
@@ -171,13 +180,14 @@ function calcModifiedAction() {
   updateScfTypeOptions();
   const selectedProgram = document.getElementById('qc_program').value;
   const calcType = document.getElementById("calc_param").value;
-  const notFullCI = document.getElementById('ci_excitation').value != "Full"
+  const ciRank = document.getElementById('ci_excitation').value;
+  const ccRank = document.getElementById('cc_excitation').value;
 
-  if (["Orca", "MRCC"].includes(selectedProgram)  && notFullCI) {
+  if (["Orca", "MRCC"].includes(selectedProgram) && ciRank != "Full") {
     document.getElementById("freeze_core_toggle").checked = true;
   }
 
-  if (calcType === "MP2") {
+  if (calcType === "MP2" || (calcType === "CI" && ciRank === "S") || (calcType === "CC" && ccRank === "2")) {
     // Enable density fitting by default for MP2
     document.getElementById("ri_toggle").checked = true;
   }
@@ -405,7 +415,7 @@ function initializeForm() {
     "guessmix_toggle", "file_toggle", "xyz_file_name", "integral_direct_toggle",
     "tight_conv", "solver_method", "initial_guess", "accordion_advanced_opts",
     "ci_excitation", "cc_excitation", "cc_loc_corr_toggle", "casci_toggle",
-    "quadratic_corr_toggle", "freeze_core_toggle", "active_outorb"
+    "quadratic_corr_toggle", "freeze_core_toggle", "active_outorb", "local_corr_toggle"
   ];
 
   // Special case for calc_param
