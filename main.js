@@ -114,7 +114,10 @@ function updateUI() {
   if (calcMethod === "DFT") {
     showElement('dft-options');
   } else if (calcMethod === "MP2") {
-    showElement('mp2-options');
+    if (selectedProgram != "MRCC") {
+      // MRCC doesn't have mp2 specific options
+      showElement('mp2-options');
+    }
     if (selectedProgram === "PySCF" && doRI) {
       hideElement("freeze_core_full");
     }
