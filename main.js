@@ -136,7 +136,7 @@ function updateUI() {
   }
 
   // local correlation logic
-  if (["Orca", "MRCC", "Psi4"].includes(selectedProgram)) {
+  if (["Orca", "MRCC"].includes(selectedProgram)) {
     const notFullCI = document.getElementById('ci_excitation').value != "Full";
     // TODO: Maybe do this for CI as well
     if (["MP2", "CC"].includes(calcMethod)) {

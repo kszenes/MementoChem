@@ -283,13 +283,13 @@ end`);
       "SD": "SD",
       "SD(T)": "SD(T)",
       "Full": "Full"
-    });
+    }, "SD");
     this._updateSelection("cc_excitation", {
       "D": "D",
       "SD": "SD",
       "SD(T)": "SD_T",
       "SDT": "SDT",
-    });
+    }, "SD");
     this._updateSelection("active_outorb", {
       "Natural (Default)": "Default",
       "Canonical": "CanonOrbs",

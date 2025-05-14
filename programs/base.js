@@ -42,13 +42,16 @@ export default class BaseProgram {
       return line;
     }).join('\n');
   }
-  _updateSelection(id, opts) {
+  _updateSelection(id, opts, def=null) {
     const elem = this.document.getElementById(id);
     elem.innerHTML = ""
     Object.keys(opts).forEach(key => {
       const optionElement = document.createElement('option');
       optionElement.value = opts[key];
       optionElement.textContent = key;
+      if (def !== null && opts[key] === def) {
+        optionElement.selected = true;
+      }
       elem.appendChild(optionElement);
     });
   }

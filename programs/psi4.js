@@ -282,11 +282,11 @@ print_geom(wfn.molecule())`
       "SDT": "SDT",
       "SDTQ": "SDTQ",
       "Full": "Full"
-    });
+    }, "SD");
     this._updateSelection("cc_excitation", {
       "SD": "SD",
       "SD(T)": "SD_T",
-    });
+    }, "SD");
     this._updateSelection("active_pt", {
       "": "",
       "CASPT2": "CASPT2"

@@ -178,7 +178,7 @@ export default class MRCCrogram extends BaseProgram {
       "SDT": "SDT",
       "SDTQ": "SDTQ",
       "Full": "Full"
-    });
+    }, "SD");
     this._updateSelection("cc_excitation", {
       "2": "2",
       "SD": "SD",
@@ -187,7 +187,7 @@ export default class MRCCrogram extends BaseProgram {
       "SDT(Q)": "SDT_Q",
       "SDTQ": "SDTQ",
       "SDTQP": "SDTQP",
-    });
+    }, "SD");
     this._updateSelection("active_pt", {
       "": "",
       "CASPT2": "CASPT2"
