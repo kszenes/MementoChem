@@ -109,12 +109,12 @@ ${coords}
     } else if (calcMethod.includes("CC")) {
       const excRank = this.document.getElementById('cc_excitation').value.replace("_T", "(T)");
       const locCorrStr = this.document.getElementById('local_corr_toggle').checked ? "DLPNO-" : "";
-
       template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${locCorrStr}CC${excRank}` : `${locCorrStr}CC${excRank}`);
     } else if (calcMethod === "MP2") {
       template = this.templates.MP2;
+      const locCorrStr = this.document.getElementById('local_corr_toggle').checked ? "DLPNO-" : "";
+      template = template.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${locCorrStr}MP2` : "MP2");
       const natorb = this.document.getElementById('natorb_toggle').checked;
-      template = template.replaceAll("{{CALC_METHOD}}", doRI ? "RI-MP2" : "MP2");
       if (natorb) {
         template = template.replaceAll("{{NATORB_BLOCK}}", `
 
