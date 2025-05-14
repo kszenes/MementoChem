@@ -166,10 +166,7 @@ function resetFormToDefaults() {
   });
 
   // Reset selectors to their first option
-  const selectorsToReset = [
-    'calc_type', 'ci_excitation', 'cc_excitation',
-    'active_outorb', 'active_pt'
-  ];
+  const selectorsToReset = ['calc_type', 'active_outorb', 'active_pt'];
 
   selectorsToReset.forEach(id => {
     const element = document.getElementById(id);
@@ -462,7 +459,7 @@ function initializeForm() {
       calcModifiedAction();
     });
   }
-  
+
   // Add listeners for CI and CC excitation dropdowns
   const ciExcitationElement = document.getElementById('ci_excitation');
   if (ciExcitationElement) {
@@ -470,7 +467,7 @@ function initializeForm() {
       calcModifiedAction();
     });
   }
-  
+
   const ccExcitationElement = document.getElementById('cc_excitation');
   if (ccExcitationElement) {
     ccExcitationElement.addEventListener('change', function() {

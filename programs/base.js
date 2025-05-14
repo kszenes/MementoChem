@@ -42,7 +42,7 @@ export default class BaseProgram {
       return line;
     }).join('\n');
   }
-  _updateSelection(id, opts, def=null) {
+  _updateSelection(id, opts, def = null) {
     const elem = this.document.getElementById(id);
     elem.innerHTML = ""
     Object.keys(opts).forEach(key => {
