@@ -462,6 +462,21 @@ function initializeForm() {
       calcModifiedAction();
     });
   }
+  
+  // Add listeners for CI and CC excitation dropdowns
+  const ciExcitationElement = document.getElementById('ci_excitation');
+  if (ciExcitationElement) {
+    ciExcitationElement.addEventListener('change', function() {
+      calcModifiedAction();
+    });
+  }
+  
+  const ccExcitationElement = document.getElementById('cc_excitation');
+  if (ccExcitationElement) {
+    ccExcitationElement.addEventListener('change', function() {
+      calcModifiedAction();
+    });
+  }
 
   const fileToggle = document.getElementById("file_toggle");
   if (fileToggle) {
