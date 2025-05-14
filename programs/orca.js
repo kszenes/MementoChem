@@ -101,7 +101,7 @@ ${coords}
       const excRank = this.document.getElementById('ci_excitation').value.replace("_T", "(T)");
       const doFull = excRank === "Full";
       if (doFull) {
-        template = this.templates.FCI.replace("{{RI_BLOCK}}", doRI ? "\n  TrafStep RI" : "");
+        template = this.templates.FCI.replace("{{RI_BLOCK}}", doRI ? "\n  TrafoStep RI" : "");
       } else {
         const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "Q" : "";
         template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${quadraticCorrection}CI${excRank}` : `${quadraticCorrection}CI${excRank}`);

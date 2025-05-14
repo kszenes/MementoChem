@@ -6,7 +6,7 @@
       const n = e.regex,
         a = /[\p{XID_Start}_]\p{XID_Continue}*/u,  // Matches identifiers (e.g., Charge, RAS2)
         s = ["&scf", "end", "%mp2", "PTSettings", ],  // Block titles
-        literals = ["HFType", "SCFMode", "STABPerform", "STABRestartUHFifUnstable", "nel", "norb", "mult", "nroots", "TolE", "TolG", "Guess", "TrafoStep", "PTMethod", "CASPT2_ishift", "CASPT2_rshift", "CASPT2_IPEAshift", "ActOrbs"],
+        literals = ["HFType", "SCFMode", "STABPerform", "STABRestartUHFifUnstable", "nel", "norb", "mult", "nroots", "TolE", "TolG", "Guess", "TrafoStep", "PTMethod", "CASPT2_ishift", "CASPT2_rshift", "CASPT2_IPEAshift", "ActOrbs", "DoFCI"],
         args = ["RHF", "UHF", "ROHF", "RKS", "UKS", "ROKS", "true", "Direct", "HCore", "Hueckel", "RI", "FIC_NEVPT2", "SC_NEVPT2", "FIC_CASPT2", "CanonOrbs"];
       return {
         name: "orca",
