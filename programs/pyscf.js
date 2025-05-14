@@ -91,8 +91,9 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     const calcMethod = this.document.getElementById("calc_param").value;
     const initialGuess = this.document.getElementById("initial_guess").value;
     const doTightConv = this.document.getElementById("tight_conv").checked;
+    const dftFunctional = this.document.getElementById("dft_functional").value.toLowerCase();
 
-    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol){{DENSITY_FIT}}{{SOSCF}}\n{{GUESS}}{{TOL}}mf.kernel(){{STAB_RUN}}";
+    let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol{{DFT_FUNCTIONAL}}){{DENSITY_FIT}}{{SOSCF}}\n{{GUESS}}{{TOL}}mf.kernel(){{STAB_RUN}}";
 
     if (scfType === "Auto") {
       if (calcMethod === "HF") {
@@ -107,6 +108,8 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     if (calcMethod != "HF" || calcMethod != "DFT") {
       scfTemplate = scfTemplate.replaceAll("{{SCF_TYPE}}", "HF");
     }
+
+    scfTemplate = scfTemplate.replace("{{DFT_FUNCTIONAL}}", calcMethod === "DFT" ? `, "${dftFunctional}"` : "");
 
     // Initial guess
     scfTemplate = scfTemplate.replaceAll("{{GUESS}}", (initialGuess != "default") ? `mf.init_guess = "${initialGuess}"\n` : "");
@@ -190,8 +193,8 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
       const doOrbRot = !this.document.getElementById("casci_toggle").checked;
       template = template.replaceAll("{{ORB_ROT}}", doOrbRot ? "CASSCF" : "CASCI");
 
-      const naturalOrbs = this.document.getElementById("active_outorb").value === "Natural"; 
-      template = template.replaceAll("{{OUTORB}}", naturalOrbs ? "\nnoons, natorbs = mcscf.addons.make_natural_orbitals(mc)": "");
+      const naturalOrbs = this.document.getElementById("active_outorb").value === "Natural";
+      template = template.replaceAll("{{OUTORB}}", naturalOrbs ? "\nnoons, natorbs = mcscf.addons.make_natural_orbitals(mc)" : "");
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
