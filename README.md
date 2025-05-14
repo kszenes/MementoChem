@@ -34,6 +34,7 @@ Currently, it supports a subset of the features from the following programs (the
 - PySCF
 - OpenMolcas
 - Psi4
+- MRCC
 
 If you enconter any issue or have a feature request, please let me know.
 
