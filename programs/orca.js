@@ -108,7 +108,8 @@ ${coords}
       }
     } else if (calcMethod.includes("CC")) {
       const excRank = this.document.getElementById('cc_excitation').value.replace("_T", "(T)");
-      const locCorrStr = this.document.getElementById('cc_loc_corr_toggle').checked ? "DLPNO-" : "";
+      const locCorrStr = this.document.getElementById('local_corr_toggle').checked ? "DLPNO-" : "";
+
       template = this.templates.DEFAULT.replaceAll("{{CALC_METHOD}}", doRI ? `RI-${locCorrStr}CC${excRank}` : `${locCorrStr}CC${excRank}`);
     } else if (calcMethod === "MP2") {
       template = this.templates.MP2;
