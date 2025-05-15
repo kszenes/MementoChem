@@ -23,7 +23,7 @@ These can subsequently be adapted by the user to their liking.
 
 It supports most of the common electronic structure methods such as **single-** (e.g., MP2 and CC) and **multi-reference schemes** (e.g., CASSCF, CASPT2 and NEVPT2).
 
-It also provides buttons to toggle common options for configuring calculations such as enabling **density-fitting** and **integral-direct** schemes.
+It also provides buttons to toggle common options for configuring calculations such as enabling **density-fitting**. 
 
 In addition, SCF calculations come with **advanced configuration** options that allow the user to modify the solver (by using e.g., a second-order solvers) or tighten the convergence thresholds --- keywords that I always seem to forget.
 
