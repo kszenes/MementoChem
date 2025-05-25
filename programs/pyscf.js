@@ -91,6 +91,7 @@ mol = gto.M(atom=geom, basis="${basisSet}"${args_string})
     const initialGuess = this.document.getElementById("initial_guess").value;
     const doTightConv = this.document.getElementById("tight_conv").checked;
     const dftFunctional = this.document.getElementById("dft_functional").value.toLowerCase();
+    const doRI = this.document.getElementById('ri_toggle').checked;
 
     let scfTemplate = "{{STAB_FUNC}}mf = scf.{{SCF_TYPE}}(mol{{DFT_FUNCTIONAL}}){{DENSITY_FIT}}{{SOSCF}}\n{{GUESS}}{{TOL}}mf.kernel(){{STAB_RUN}}";
 
@@ -156,6 +157,10 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
 
     // TODO:
     const doDirect = this.document.getElementById("integral_direct_toggle").checked;
+
+    if (doRI) {
+      scfTemplate = "# use RI / density fitting approx\n" + scfTemplate;
+    }
 
     return scfTemplate;
   }
