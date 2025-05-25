@@ -364,6 +364,7 @@
                     <label
                       class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
                       for="natorb_toggle"
+                      title="Output MP2 natural orbitals"
                       >Natural Orbitals</label
                     >
                   </div>
@@ -373,7 +374,7 @@
                   <div class="row">
                     <div class="col-auto">
                       <div class="form-floating h-100">
-                        <select id="ci_excitation" class="form-select h-100">
+                        <select id="ci_excitation" title="Excitation rank (e.g., singles and doubles)" class="form-select h-100">
                           <option value="SD">SD</option>
                           <option value="FCI">FCI</option>
                         </select>
@@ -401,7 +402,11 @@
                   <div class="row">
                     <div class="col-auto">
                       <div class="form-floating h-100">
-                        <select id="cc_excitation" class="form-select h-100">
+                        <select
+                          id="cc_excitation"
+                          title="Excitation rank (e.g., singles and doubles)"
+                          class="form-select h-100"
+                        >
                           <option value="SD">SD</option>
                           <option value="SD_T">SD(T)</option>
                           <option value="SDT">SDT</option>
@@ -414,7 +419,11 @@
 
                 <div id="dft-options" class="col-auto mb-3 d-none">
                   <div class="form-floating">
-                    <select id="dft_functional" class="form-select"></select>
+                    <select
+                      id="dft_functional"
+                      title="Exchange-correlation functional"
+                      class="form-select"
+                    ></select>
                     <label for="dft_functional">XC Functional</label>
                   </div>
                 </div>
@@ -514,6 +523,7 @@
                   <label
                     class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
                     for="freeze_core_toggle"
+                    title="Freeze core orbitals"
                     >Freeze</label
                   >
                 </div>
@@ -545,14 +555,18 @@
                       <label
                         class="btn btn-outline-secondary h-100 d-flex align-items-center justify-content-center"
                         for="casci_toggle"
-                        title="Do not do orbital rotations"
+                        title="Do not perform orbital rotations"
                         >CASCI</label
                       >
                     </div>
 
                     <div class="col-4 pe-1">
                       <div class="form-floating">
-                        <select id="active_outorb" class="form-select">
+                        <select
+                          id="active_outorb"
+                          title="Output orbitals from CAS calculation"
+                          class="form-select"
+                        >
                           <option value="Canonical">Canonical</option>
                           <option value="Natural">Natural</option>
                         </select>
@@ -562,7 +576,11 @@
 
                     <div class="col-4">
                       <div class="form-floating">
-                        <select id="active_pt" class="form-select">
+                        <select
+                          id="active_pt"
+                          title="Multi-reference perturbation theory"
+                          class="form-select"
+                        >
                           <option value=""></option>
                           <option value="SC_NEVPT2">SC_NEVPT2</option>
                           <option value="FIC_NEVPT2">FIC_NEVPT2</option>
