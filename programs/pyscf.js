@@ -17,30 +17,35 @@ export default class PySCFProgram extends BaseProgram {
       MP2: `from pyscf import gto, scf, mp{{NATORB_IMPORT}}{{DF_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
+
 mymp = {{MP2_LINE}}{{FREEZE_CORE}}
 e = mymp.kernel(){{NATORB_BLOCK}}{{OPT_BLOCK}}
 `,
       CAS: `from pyscf import gto, scf, mcscf{{PT_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
+
 mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}{{FREEZE_CORE}}){{DENSITY_FIT}}{{EXCITED_STATES}}
 mc.kernel(){{OUTORB}}{{PT_STRING}}{{OPT_BLOCK}}
 `,
       CC: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
+
 mycc = cc.CCSD(mf){{FREEZE_CORE}}{{DIRECT_BLOCK}}
 mycc.kernel(){{TRIPLES_COMPUTE}}
 e_tot = mycc.e_tot{{TRIPLES_ENERGY}}{{OPT_BLOCK}}`,
       CI: `from pyscf import gto, scf, ci{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
+
 myci = ci.CISD(mf){{FREEZE_CORE}}{{DIRECT_BLOCK}}
 myci.kernel()
 e_tot = myci.e_tot{{OPT_BLOCK}}`,
       FCI: `from pyscf import gto, scf, fci{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
+
 myci = fci.FCI(mf){{DIRECT_BLOCK}}
 myci.kernel()
 e_tot = myci.e_tot{{OPT_BLOCK}}`,
@@ -219,7 +224,7 @@ mc.state_average_(weights)`);
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
-      let ptStr = ptMethod ? "\nmrpt.NEVPT(mc).kernel()" : "";
+      let ptStr = ptMethod ? "\n\nmrpt.NEVPT(mc).kernel()" : "";
       let ptImport = ptMethod ? ", mrpt" : "";
 
       template = template.replaceAll("{{PT_STRING}}", ptStr).replaceAll("{{PT_IMPORT}}", ptImport);
@@ -329,7 +334,7 @@ my${calcMethod.toLowerCase()}.direct = True` : "");
         optTemplate = "\nparams = {'transition': True}" + optTemplate;
         optTemplate = optTemplate.replace("kernel()", "kernel(params)");
       }
-      template = template.replaceAll("{{OPT_BLOCK}}", optTemplate);
+      template = template.replaceAll("{{OPT_BLOCK}}", "\n" + optTemplate);
     } else {
       template = template.replaceAll("{{OPT_IMPORTS}}", "");
       template = template.replaceAll("{{OPT_BLOCK}}", "");
