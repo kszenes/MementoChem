@@ -23,8 +23,7 @@ e = mymp.kernel(){{NATORB_BLOCK}}{{OPT_BLOCK}}
       CAS: `from pyscf import gto, scf, mcscf{{PT_IMPORT}}{{OPT_IMPORTS}}
 {{MOLECULE_STRUCTURE}}
 {{SCF_BLOCK}}
-mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}{{FREEZE_CORE}}){{DENSITY_FIT}}
-mc.fcisolver.nroots = {{ACTIVE_NROOTS}}
+mc = mcscf.{{ORB_ROT}}(mf, {{ACTIVE_ORBITALS}}, {{ACTIVE_ELECTRONS}}{{FREEZE_CORE}}){{DENSITY_FIT}}{{EXCITED_STATES}}
 mc.kernel(){{OUTORB}}{{PT_STRING}}{{OPT_BLOCK}}
 `,
       CC: `from pyscf import gto, scf, cc{{OPT_IMPORTS}}
@@ -192,6 +191,23 @@ mf.conv_tol_grad = ${gtol}   # gradient tolerance\n`, "");
 
       const doOrbRot = !this.document.getElementById("casci_toggle").checked;
       template = template.replaceAll("{{ORB_ROT}}", doOrbRot ? "CASSCF" : "CASCI");
+
+      const activeNroots = this.document.getElementById('active_nroots').value;
+      if (activeNroots > 1) {
+        // Excited state calculation
+        if (doOrbRot) {
+          // Do state-average for CASSCF by default
+          template = template.replace("{{EXCITED_STATES}}", `
+# state-averaged with equal weight for each state
+nroots = ${activeNroots}
+weights = [1.0/nroots for i in range(nroots)]
+mc.state_average_(weights)`);
+        } else {
+          template = template.replace("{{EXCITED_STATES}}", `\nmc.fcisolver.nroots = ${activeNroots}`);
+        }
+      } else {
+        template = template.replace("{{EXCITED_STATES}}", "");
+      }
 
       const naturalOrbs = this.document.getElementById("active_outorb").value === "Natural";
       template = template.replaceAll("{{OUTORB}}", naturalOrbs ? "\nnoons, natorbs = mcscf.addons.make_natural_orbitals(mc)" : "");
