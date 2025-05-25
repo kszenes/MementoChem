@@ -83,14 +83,11 @@ function updateUI() {
   const selectedProgram = document.getElementById('qc_program').value;
   const doRI = document.getElementById('ri_toggle').checked;
 
-  // Hide all options first
-  ['dft-options', 'active-options', 'casscf-options', 'mp2-options', 'unrestricted-options',
-    'scf-type-container', "ci-options", "cc-options",
-    "quadratic_corr_full", "local_corr_full"].forEach(hideElement);
+  // Hide options first
+  ["quadratic_corr_full", "local_corr_full"].forEach(hideElement);
 
   hideElement("accordion_advanced_opts", false);
 
-  const scfTypeContainer = document.getElementById('scf-type-container');
   if (selectedProgram != "OpenMolcas") {
     showElement("freeze_core_full");
   }
@@ -103,9 +100,23 @@ function updateUI() {
     toggleElementVisibility('unrestricted-options', showUnrestricted);
   }
 
+  // Hide element based on calc method type
+  if (calcMethod !== "DFT") {
+    hideElement("dft-options");
+  }
+  if (calcMethod !== "MP2") {
+    hideElement('mp2-options');
+  }
+  if (calcMethod !== "CI") {
+    hideElement("ci-options");
+  }
+  if (calcMethod !== "CC") {
+    hideElement("cc-options");
+  }
   if (!calcMethod.includes("CAS")) {
-    scfTypeContainer.classList.remove('d-none');
-    if (selectedProgram != "OpenMolcas") {
+    hideElement("casscf-options");
+    hideElement("active-options");
+    if (selectedProgram !== "OpenMolcas") {
       showElement("accordion_advanced_opts");
     }
   }
@@ -136,6 +147,9 @@ function updateUI() {
   } else if (calcMethod.startsWith("CAS")) {
     showElement("active-options");
     showElement("casscf-options");
+    // Hide SCF options
+    hideElement('scf-type-container')
+    hideElement('unrestricted-options')
   }
 
   // local correlation logic
