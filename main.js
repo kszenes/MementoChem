@@ -3,7 +3,8 @@ import PySCFProgram from "./programs/pyscf.js";
 import MolcasProgram from "./programs/openmolcas.js";
 import Psi4Program from "./programs/psi4.js";
 import MRCCProgram from "./programs/mrcc.js";
-import PeriodicTable from "./periodictable.js"
+import PeriodicTable from "./periodictable.js";
+import CommonMolecules from "./molecules.js";
 
 const programs = {
   Orca: new OrcaProgram(document),
@@ -413,12 +414,52 @@ function getCurrentProgram() {
   return programs[selectedProgram]; // Returns the active instance
 }
 
+// Function to populate the molecule selector
+function populateMoleculeSelector() {
+  const moleculeSelector = document.getElementById('molecule_selector');
+  if (!moleculeSelector) return;
+  
+  // Clear existing options (keeping the default "Select Molecule" option)
+  while (moleculeSelector.options.length > 1) {
+    moleculeSelector.remove(1);
+  }
+  
+  // Add molecules from the CommonMolecules object
+  for (const moleculeName in CommonMolecules) {
+    const option = document.createElement('option');
+    option.value = moleculeName;
+    option.textContent = moleculeName;
+    moleculeSelector.appendChild(option);
+  }
+  
+  // Add event listener to update XYZ geometry when a molecule is selected
+  moleculeSelector.addEventListener('change', function() {
+    const selectedMolecule = this.value;
+    if (selectedMolecule && CommonMolecules[selectedMolecule]) {
+      const xyzGeomTextarea = document.getElementById('xyz_geom');
+      if (xyzGeomTextarea) {
+        xyzGeomTextarea.value = CommonMolecules[selectedMolecule];
+        // Validate and update the input
+        if (validateXYZInput()) {
+          getCurrentProgram().updateNumElec();
+          getCurrentProgram().generateInputFile();
+        }
+      }
+      // Reset the selector to "Select Molecule" after selection
+      this.selectedIndex = 0;
+    }
+  });
+}
+
 // In the initializeForm() function, update the formElements array and event listeners:
 function initializeForm() {
   // Load data
   // NOTE: CASE SENSITIVE
   loadTextData('./basis_sets.txt', 'basis_param', 'cc-pVDZ');
   loadTextData('./dft_functionals.txt', 'dft_functional', 'B3LYP');
+  
+  // Populate the molecule selector
+  populateMoleculeSelector();
 
   // Set up event listeners
   const formElements = [
