@@ -10,10 +10,7 @@ export default class Psi4Program extends BaseProgram {
 {{SET_BLOCK}}
 
 {{COMP_BLOCK}}
-{{OUT_BLOCK}}`,
-      // TODO: Implement CASSCF by adding `symmetry c1` in molecule block
-      CAS: `{{MOLECULE_STRUCTURE}}
-  {{RI}}`
+{{OUT_BLOCK}}`
     }
   }
   buildCoordsStr() {
@@ -54,6 +51,7 @@ export default class Psi4Program extends BaseProgram {
 
   buildSetStr() {
     const simMethod = this.document.getElementById('calc_type').value;
+    const calcMethod = this.document.getElementById('calc_param').value;
     const scfType = this.document.getElementById("scf_type").value;
     const basisSet = this.document.getElementById("basis_param").value;
     const mixGuess = this.document.getElementById('guessmix_toggle').checked;
@@ -99,6 +97,19 @@ export default class Psi4Program extends BaseProgram {
     } else if (doRI) {
       inner += "\nscf_type df   # density fitted integrals"
     }
+
+    if (calcMethod.startsWith("CAS")) {
+      const activeNroots = this.document.getElementById('active_nroots').value;
+      const activeOrbitals = this.document.getElementById('active_orbitals').value;
+      const docc = this.getDoublyOccupied();
+      const useNatOrbs = this.document.getElementById("active_outorb").value === "Natural";
+      inner += "\n# Active Space"
+      inner += `\nrestricted_docc ${docc} # doubly occupied`;
+      inner += `\nactive ${activeOrbitals}`;
+      inner += `\nnum_roots ${activeNroots}`;
+      inner += useNatOrbs ? "\nnat_orbs true" : "";
+    }
+
     inner += simMethod == "OPTTS" ? "\nopt_type ts   # transition state opt" : "";
 
     inner = inner.split('\n')
@@ -128,6 +139,9 @@ ${inner}
       const rank = this.document.getElementById('ci_excitation').value;
       const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "q" : "";
       inner = rank === "Full" ? '"fci"' : `"${quadraticCorrection}ci${rank.toLowerCase()}"`;
+    } else if (calcMethod.startsWith("CAS")) {
+      const doOrbRot = !this.document.getElementById('casci_toggle').checked;
+      inner = doOrbRot ? `"casscf"` : `"detci"`;
     } else {
       inner = `"${calcMethod.toLowerCase()}"`;
     }
@@ -179,6 +193,9 @@ ${inner}
       const ciRank = this.document.getElementById("ci_excitation").value;
       const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "Q" : "";
       calcName = ciRank === "Full" ? "FCI" : `${quadraticCorrection}CI${ciRank}`;
+    } else if (calcMethod.startsWith("CAS")) {
+      const doOrbRot = !this.document.getElementById('casci_toggle').checked;
+      calcName = doOrbRot ? 'CASSCF' : 'CASCI';
     } else {
       calcName = calcMethod;
     }
@@ -211,13 +228,7 @@ print_geom(wfn.molecule())`
   }
 
   getTemplate(calcMethod) {
-    let template;
-
-    if (calcMethod.startsWith("CAS")) {
-      template = this.templates.CAS;
-    } else {
-      template = this.templates[calcMethod] || this.templates.DEFAULT;
-    }
+    const template = this.templates[calcMethod] || this.templates.DEFAULT;
 
     return template;
   }
@@ -225,9 +236,6 @@ print_geom(wfn.molecule())`
     const calcMethod = this.document.getElementById('calc_param').value;
 
     let template = this.getTemplate(calcMethod);
-
-    const doRI = this.document.getElementById("ri_toggle").checked;
-    template = template.replaceAll("{{RI}}", doRI ? "RICD * RI Enabled" : "NOCD * RI Disabled");
 
     const geomBlock = this.buildCoordsStr();
     template = template.replaceAll("{{MOLECULE_STRUCTURE}}", geomBlock);
@@ -259,7 +267,8 @@ print_geom(wfn.molecule())`
       "DFT": "DFT",
       "MP2": "MP2",
       "CC": "CC",
-      "CI": "CI"
+      "CI": "CI",
+      "CAS": "CAS"
     });
     // TODO: Add more guesses
     this._updateSelection("initial_guess", {
@@ -289,8 +298,12 @@ print_geom(wfn.molecule())`
     }, "SD");
     this._updateSelection("active_pt", {
       "": "",
-      "CASPT2": "CASPT2"
+      // "CASPT2": "CASPT2"
     })
+    this._updateSelection("active_outorb", {
+      "Canonical (Default)": "Default",
+      "Natural": "Natural",
+    });
 
     // TODO: elements also need to be disabled too!
     // The user won't be able to toggle them otherwise
