@@ -100,13 +100,13 @@ export default class Psi4Program extends BaseProgram {
 
     if (calcMethod.startsWith("CAS")) {
       const activeNroots = this.document.getElementById('active_nroots').value;
-      const activeOrbitals = this.document.getElementById('active_orbitals').value;
+      const activeOrbitals = parseInt(this.document.getElementById('active_orbitals').value);
       const docc = this.getDoublyOccupied();
       const useNatOrbs = this.document.getElementById("active_outorb").value === "Natural";
       inner += "\n# Active Space"
       inner += `\nrestricted_docc ${docc} # doubly occupied`;
       inner += `\nactive ${activeOrbitals}`;
-      inner += `\nnum_roots ${activeNroots}`;
+      inner += activeNroots > 1 ? `\nnum_roots ${activeNroots}` : "";
       inner += useNatOrbs ? "\nnat_orbs true" : "";
     }
 
@@ -180,6 +180,7 @@ ${inner}
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
     const includeFreq = this.document.getElementById('freq_toggle').checked;
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
+    const activeNroots = parseInt(this.document.getElementById('active_nroots').value);
 
     let calcName = "";
     if (calcMethod === "HF" && scfType != "Auto") {
@@ -207,7 +208,15 @@ ${inner}
       simSuffix = "_ts";
     }
 
-    let ret = "\n# --- Output ---\n" + `print("E${simSuffix}(${calcName}) =", E)`
+    let ret = "\n# --- Output ---\n"
+    if (calcMethod.startsWith("CAS") && activeNroots > 1) {
+      for (let i = 0; i < activeNroots; ++i) {
+        ret += `print("Root ${i}: E${simSuffix}(${calcName}) =", psi4.variable("CI ROOT ${i} TOTAL ENERGY"))\n`
+      }
+    } else {
+      ret += `print("E${simSuffix}(${calcName}) =", E)`
+    }
+
     if (calcType.startsWith("OPT")) {
       ret += "\n";
       ret += calcType === "OPT" ? 'print("-- Optimized Geometry --")' : 'print("-- Transition State --")';
