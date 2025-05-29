@@ -172,7 +172,7 @@ export default class MolcasProgram extends BaseProgram {
       "HF": "HF",
       "DFT": "DFT",
       "MP2": "MP2",
-      "CAS (+MRPT)": "CAS",
+      "CAS (+MR)": "CAS",
     });
     this._updateSelection("calc_type", {
       "Energy": "SP",
@@ -197,6 +197,6 @@ export default class MolcasProgram extends BaseProgram {
     this._enableElem("dist_unit_full");
     this._disableElem("freeze_core_full");
     this._enableElem("xyz_file_full");
-
+    this._enableElem("casci_full");
   }
 }

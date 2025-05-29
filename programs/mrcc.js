@@ -50,6 +50,7 @@ export default class MRCCrogram extends BaseProgram {
     const freezeCore = this.document.getElementById("freeze_core_toggle").checked;
     const calcMethod = this.document.getElementById('calc_param').value;
     const doLocCorr = this.document.getElementById('local_corr_toggle').checked;
+    const useNatOrbs = this.document.getElementById("active_outorb").value === "Natural";
 
     let inner = "";
 
@@ -79,12 +80,25 @@ export default class MRCCrogram extends BaseProgram {
       // inner += `\nd_convergence ${gtol}   # orbital gradient criteria`;
     }
 
+    if (calcMethod.startsWith("CAS")) {
+      const activeNroots = this.document.getElementById('active_nroots').value;
+      const activeOrbitals = parseInt(this.document.getElementById('active_orbitals').value);
+      const docc = this.getDoublyOccupied();
+      inner += `\nsymm=off  # point group symm disabled for CAS`;
+      inner += `\ndocc=${docc}    # doubly occupied`;
+      inner += `\nmact=${activeOrbitals}    # active orbitals`;
+      inner += parseInt(activeNroots) > 1 ? `\nnstate=${activeNroots}  # number of roots` : "";
+    }
+
+    inner += useNatOrbs ? "\nnto=on  # write natural orbitals" : "";
+
     return inner === "" ? "" : inner + "\n";
   }
 
   getFullMethodName() {
     const calcMethod = this.document.getElementById('calc_param').value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
+    const ptMethod = this.document.getElementById('active_pt').value;
     let methodName = "";
     if (calcMethod === "HF") {
       methodName = "SCF";
@@ -96,6 +110,8 @@ export default class MRCCrogram extends BaseProgram {
     } else if (calcMethod === "CI") {
       const rank = this.document.getElementById('ci_excitation').value;
       methodName = rank === "Full" ? "FCI" : calcMethod + rank.replace(/_(.)/g, "($1)").toUpperCase();
+    } else if (calcMethod.startsWith("CAS")) {
+      methodName = ptMethod ? ptMethod  : "MCSCF";
     } else {
       methodName = `${calcMethod.toUpperCase()}`;
     }
@@ -108,12 +124,17 @@ export default class MRCCrogram extends BaseProgram {
   buildCompStr() {
     const simMethod = this.document.getElementById('calc_type').value;
     const includeFreq = this.document.getElementById('freq_toggle').checked;
+    const calcMethod = this.document.getElementById('calc_param').value;
+    const ptMethod = this.document.getElementById('active_pt').value;
 
     const methodName = this.getFullMethodName();
 
     let str = simMethod === "OPT" ? "gopt=full   # geometry optimization\n" : "";
     str += includeFreq ? "freq=on\n" : "";
     str += `calc=${methodName}`;
+    if (calcMethod.startsWith("CAS") && ptMethod) {
+      str += `\nscftype=MCSCF`;
+    }
     return str;
   }
 
@@ -154,7 +175,8 @@ export default class MRCCrogram extends BaseProgram {
       "DFT": "DFT",
       "MP2": "MP2",
       "CC": "CC",
-      "CI": "CI"
+      "CI": "CI",
+      "CAS (+MR)": "CAS"
     });
     // TODO: Add more guesses
     this._updateSelection("initial_guess", {
@@ -190,8 +212,13 @@ export default class MRCCrogram extends BaseProgram {
     }, "SD");
     this._updateSelection("active_pt", {
       "": "",
-      "CASPT2": "CASPT2"
+      "MRCISD": "CISD",
+      "MRCCSD": "CCSD"
     })
+    this._updateSelection("active_outorb", {
+      "": "",
+      "Natural": "Natural",
+    });
 
     // TODO: elements also need to be disabled too!
     // The user won't be able to toggle them otherwise
@@ -203,5 +230,6 @@ export default class MRCCrogram extends BaseProgram {
     this._disableElem("mp2_natorb_full");
     this._disableElem("xyz_file_full");
     this._disableElem("freeze_core_full");
+    this._disableElem("casci_full");
   }
 }

@@ -286,14 +286,11 @@
                 <div class="col">
                   <div class="form-floating">
                     <select id="calc_param" class="form-select">
-                      <option value="HF">HF</option>
-                      <option value="DFT">DFT</option>
-                      <option value="CASSCF">CASSCF</option>
-                      <option value="CASCI">CASCI</option>
+                      <option value="SCF">HF</option>
                       <option value="MP2">MP2</option>
-                      <option value="CCSD">CCSD</option>
-                      <option value="CCSD_T">CCSD(T)</option>
-                      <!-- <option value="CCSDT">CCSDT</option> -->
+                      <option value="CC">CC</option>
+                      <option value="CI">CI</option>
+                      <option value="CAS">CASSCF</option>
                     </select>
                     <label for="calc_param">Method</label>
                   </div>
@@ -549,7 +546,7 @@
 
                 <div id="casscf-options" class="col d-none">
                   <div class="row mb-3">
-                    <div class="col-4 pe-1" id="casci_full">
+                    <div class="col pe-1" id="casci_full">
                       <input
                         type="checkbox"
                         class="btn-check"
@@ -564,7 +561,7 @@
                       >
                     </div>
 
-                    <div class="col-4 pe-1">
+                    <div class="col pe-1">
                       <div class="form-floating">
                         <select
                           id="active_outorb"
@@ -578,11 +575,11 @@
                       </div>
                     </div>
 
-                    <div class="col-4">
+                    <div class="col">
                       <div class="form-floating">
                         <select
                           id="active_pt"
-                          title="Multi-reference perturbation theory"
+                          title="Multi-reference"
                           class="form-select"
                         >
                           <option value=""></option>
@@ -590,7 +587,7 @@
                           <option value="FIC_NEVPT2">FIC_NEVPT2</option>
                           <option value="CASPT2">CASPT2</option>
                         </select>
-                        <label for="active_pt">MRPT</label>
+                        <label for="active_pt">Multireference</label>
                       </div>
                     </div>
                   </div>

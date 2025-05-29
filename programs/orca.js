@@ -266,7 +266,7 @@ end`);
       "MP2": "MP2",
       "CC": "CC",
       "CI": "CI",
-      "CAS (+MRPT)": "CAS",
+      "CAS (+MR)": "CAS",
     });
     this._updateSelection("initial_guess", {
       "SAD (default)": "Default",
@@ -310,6 +310,6 @@ end`);
     this._enableElem("xyz_file_full");
     this._enableElem("dist_unit_full");
     this._enableElem("freeze_core_full");
-
+    this._enableElem("casci_full");
   }
 }

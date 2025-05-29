@@ -40,7 +40,7 @@ export default class Psi4Program extends BaseProgram {
       // Also use `mcscf` or (`casscf`) for CASSCF and some `detci` for CASCI
       const requiresC1 = calcMethod.includes("CAS") || mixGuess;
       if (requiresC1) {
-        template += "  symmetry c1   # options do not support symmetry\n"
+        template += "  symmetry c1   # point group symm disabled for CAS\n"
       }
 
       template += `${coords}\n}`;
@@ -297,7 +297,7 @@ print_geom(wfn.molecule())`
       "MP2": "MP2",
       "CC": "CC",
       "CI": "CI",
-      "CAS": "CAS"
+      "CAS (+MR)": "CAS"
     });
     // TODO: Add more guesses
     this._updateSelection("initial_guess", {
@@ -332,7 +332,7 @@ print_geom(wfn.molecule())`
       "Mk-MRCCSD(T)": "Mk-MRCCSD_T",
     })
     this._updateSelection("active_outorb", {
-      "Canonical (Default)": "Default",
+      "": "",
       "Natural": "Natural",
     });
 
@@ -346,5 +346,6 @@ print_geom(wfn.molecule())`
     this._disableElem("mp2_natorb_full");
     this._disableElem("xyz_file_full");
     this._disableElem("freeze_core_full");
+    this._disableElem("casci_full");
   }
 }

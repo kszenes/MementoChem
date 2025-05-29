@@ -361,7 +361,7 @@ my${calcMethod.toLowerCase()}.direct = True` : "");
       "MP2": "MP2",
       "CC": "CC",
       "CI": "CI",
-      "CAS (+MRPT)": "CAS",
+      "CAS (+MR)": "CAS",
     });
     this._updateSelection("initial_guess", {
       "SAD (default)": "default",
