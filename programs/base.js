@@ -1,7 +1,10 @@
+import PeriodicTable from "../periodictable.js"
+
 export default class BaseProgram {
   constructor(document) {
     this.document = document;
     this.commentStr = "*";
+    this.numElec = this.getNumberElec();
   }
 
   getHeader() {
@@ -80,5 +83,48 @@ export default class BaseProgram {
     const energyTol = "1e-9";
     const gradTol = "2e-6";
     return [energyTol, gradTol];
+  }
+  getNumberElec() {
+    // First validate the XYZ input using the existing validateXYZInput function from main.js
+    if (typeof window.validateXYZInput === 'function') {
+      const isValid = window.validateXYZInput();
+      if (!isValid) return null;
+    }
+    
+    const xyzGeomTextarea = this.document.getElementById('xyz_geom');
+    
+    // Get the input text and split into lines, removing empty lines
+    const lines = xyzGeomTextarea.value.split('\n').filter(line => line.trim() !== '');
+    
+    let totalElectrons = 0;
+    
+    // Process each line of the geometry
+    for (const line of lines) {
+      const parts = line.trim().split(/\s+/);
+      
+      // Skip if not in the right format
+      if (parts.length < 4) continue;
+      
+      // First part should be a valid chemical element symbol
+      const elementSymbol = parts[0];
+      
+      // Normalize element symbol (capitalize first letter, lowercase rest)
+      const normalizedElement = elementSymbol.charAt(0).toUpperCase() + elementSymbol.slice(1).toLowerCase();
+      
+      // Add atomic number to total electrons
+      if (PeriodicTable[normalizedElement]) {
+        totalElectrons += PeriodicTable[normalizedElement];
+      }
+    }
+    
+    // Adjust for charge
+    const charge = parseInt(this.document.getElementById('charge').value) || 0;
+    totalElectrons -= charge; // Subtract charge (negative charge = add electrons)
+    
+    return totalElectrons;
+  }
+  updateNumElec() {
+    this.numElec = this.getNumberElec();
+    console.log(`numElec = ${this.numElec}`);
   }
 }

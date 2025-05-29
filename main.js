@@ -503,11 +503,15 @@ function initializeForm() {
   updateScfTypeOptions();
   document.getElementById('xyz_geom').value = "N 0 0 0\nN 0 0 1.098";
   document.getElementById('xyz_file_name').value = "geom.xyz";
-  
+
   // Add validation to XYZ geometry input
   const xyzGeomTextarea = document.getElementById('xyz_geom');
-  xyzGeomTextarea.addEventListener('blur', validateXYZInput);
-  
+  xyzGeomTextarea.addEventListener('blur', function() {
+    if (validateXYZInput()) {
+      getCurrentProgram().updateNumElec();
+    }
+  });
+
   getCurrentProgram().generateInputFile();
 
   // Set up copy and download buttons
@@ -530,52 +534,52 @@ document.addEventListener('DOMContentLoaded', initializeForm);
 function validateXYZInput() {
   const xyzGeomTextarea = document.getElementById('xyz_geom');
   const errorDiv = document.getElementById('xyz_error');
-  
+
   // Get the input text and split into lines, removing empty lines
   const lines = xyzGeomTextarea.value.split('\n').filter(line => line.trim() !== '');
-  
+
   let isValid = true;
-  
+
   // Default error message
   let errMsg = "";
   // Check each line for proper format: element x y z
   let lineNum = 1;
   for (const line of lines) {
     const parts = line.trim().split(/\s+/);
-    
+
     // Each line should have 4 parts: element and 3 coordinates
     if (parts.length !== 4) {
       isValid = false;
       errMsg = `Line ${lineNum}: Each line should have an element symbol followed by 3 coordinates.`
       break;
     }
-    
+
     // First part should be a valid chemical element symbol
     const elementSymbol = parts[0];
-    
+
     // Normalize element symbol (capitalize first letter, lowercase rest)
     const normalizedElement = elementSymbol.charAt(0).toUpperCase() + elementSymbol.slice(1).toLowerCase();
-    
+
     // Check if it's a valid element in the periodic table
     if (!PeriodicTable[normalizedElement]) {
-      errMsg = `Line ${lineNum}: Unkown element type '${normalizedElement}'.` 
+      errMsg = `Line ${lineNum}: Unkown element type '${normalizedElement}'.`
       isValid = false;
       break;
     }
-    
+
     // Last 3 parts should be numbers
     for (let i = 1; i < 4; i++) {
       if (isNaN(parseFloat(parts[i]))) {
-        errMsg = `Line ${lineNum}: Invalid coordinate '${parts[i]}'.` 
+        errMsg = `Line ${lineNum}: Invalid coordinate '${parts[i]}'.`
         isValid = false;
         break;
       }
     }
-    
+
     if (!isValid) break;
     lineNum += 1;
   }
-  
+
   // Apply appropriate styling based on validation result
   if (!isValid) {
     xyzGeomTextarea.classList.add('is-invalid');
@@ -585,7 +589,7 @@ function validateXYZInput() {
     xyzGeomTextarea.classList.remove('is-invalid');
     errorDiv.style.display = 'none';
   }
-  
+
   return isValid;
 }
 
