@@ -63,6 +63,7 @@ export default class Psi4Program extends BaseProgram {
     const initialGuess = this.document.getElementById("initial_guess").value;
     const doTightConv = this.document.getElementById("tight_conv").checked;
     const freezeCore = this.document.getElementById("freeze_core_toggle").checked;
+    const ptMethod = this.document.getElementById('active_pt').value;
 
     let inner = `basis ${basisSet.toLowerCase()}`;
     inner += scfType != "Auto" ? `\nreference ${scfType.toLowerCase()}` : "";
@@ -108,6 +109,15 @@ export default class Psi4Program extends BaseProgram {
       inner += `\nactive ${activeOrbitals}`;
       inner += activeNroots > 1 ? `\nnum_roots ${activeNroots}` : "";
       inner += useNatOrbs ? "\nnat_orbs true" : "";
+      if (ptMethod) {
+        if (ptMethod === "Mk-MRPT2") {
+          inner += "\n# Mk-MRPT2\ncorr_wfn pt2";
+        } else if (ptMethod === "Mk-MRCCSD") {
+          inner += "\n# Mk-MRCCSD\ncorr_wfn ccsd";
+        } else if (ptMethod === "Mk-MRCCSD_T") {
+          inner += "\n# Mk-MRCCSD(T)\ncorr_wfn ccsd_t";
+        }
+      }
     }
 
     inner += simMethod == "OPTTS" ? "\nopt_type ts   # transition state opt" : "";
@@ -126,6 +136,7 @@ ${inner}
     const simMethod = this.document.getElementById('calc_type').value;
     const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
     const includeFreq = this.document.getElementById('freq_toggle').checked;
+    const ptMethod = this.document.getElementById('active_pt').value;
 
     let inner = "";
     if (calcMethod === "HF") {
@@ -140,8 +151,12 @@ ${inner}
       const quadraticCorrection = this.document.getElementById("quadratic_corr_toggle").checked ? "q" : "";
       inner = rank === "Full" ? '"fci"' : `"${quadraticCorrection}ci${rank.toLowerCase()}"`;
     } else if (calcMethod.startsWith("CAS")) {
-      const doOrbRot = !this.document.getElementById('casci_toggle').checked;
-      inner = doOrbRot ? `"casscf"` : `"detci"`;
+      if (ptMethod) {
+        inner = `"psimrcc"`
+      } else {
+        const doOrbRot = !this.document.getElementById('casci_toggle').checked;
+        inner = doOrbRot ? `"casscf"` : `"detci"`;
+      }
     } else {
       inner = `"${calcMethod.toLowerCase()}"`;
     }
@@ -181,6 +196,7 @@ ${inner}
     const includeFreq = this.document.getElementById('freq_toggle').checked;
     const useBohr = this.document.getElementById("dist_unit").value === "Bohr";
     const activeNroots = parseInt(this.document.getElementById('active_nroots').value);
+    const ptMethod = this.document.getElementById('active_pt').value;
 
     let calcName = "";
     if (calcMethod === "HF" && scfType != "Auto") {
@@ -196,7 +212,11 @@ ${inner}
       calcName = ciRank === "Full" ? "FCI" : `${quadraticCorrection}CI${ciRank}`;
     } else if (calcMethod.startsWith("CAS")) {
       const doOrbRot = !this.document.getElementById('casci_toggle').checked;
-      calcName = doOrbRot ? 'CASSCF' : 'CASCI';
+      if (ptMethod) {
+        calcName = ptMethod.replaceAll("_T", "(T)");
+      } else {
+        calcName = doOrbRot ? 'CASSCF' : 'CASCI';
+      }
     } else {
       calcName = calcMethod;
     }
@@ -307,7 +327,9 @@ print_geom(wfn.molecule())`
     }, "SD");
     this._updateSelection("active_pt", {
       "": "",
-      // "CASPT2": "CASPT2"
+      "Mk-MRPT2": "Mk-MRPT2",
+      "Mk-MRCCSD": "Mk-MRCCSD",
+      "Mk-MRCCSD(T)": "Mk-MRCCSD_T",
     })
     this._updateSelection("active_outorb", {
       "Canonical (Default)": "Default",
