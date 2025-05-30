@@ -90,7 +90,7 @@ export default class MRCCrogram extends BaseProgram {
       inner += parseInt(activeNroots) > 1 ? `\nnstate=${activeNroots}  # number of roots` : "";
     }
 
-    inner += useNatOrbs ? "\nnto=on  # write natural orbitals" : "";
+    inner += useNatOrbs ? "\nnto=on    # write natural orbitals" : "";
 
     return inner === "" ? "" : inner + "\n";
   }

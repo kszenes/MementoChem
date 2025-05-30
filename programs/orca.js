@@ -31,12 +31,7 @@ end
 `,
       CAS: `! {{CALC_TYPE}} {{BASIS_SET}}{{FREEZE_CORE}}{{DIRECT_BLOCK}}
 {{ORB_ROT}}
-%casscf
-  nel     {{ACTIVE_ELECTRONS}}
-  norb    {{ACTIVE_ORBITALS}}
-  mult    {{MULTIPLICITY}}
-  nroots  {{ACTIVE_NROOTS}}{{OUTORB}}{{RI_BLOCK}}{{PT_STRING}}
-end
+{{CAS_BLOCK}}
 {{UNIT}}
 {{MOLECULE_STRUCTURE}}
 `
@@ -91,6 +86,50 @@ ${coords}
     return scfTemplate;
   }
 
+  buildCasStr() {
+    const activeElectrons = this.document.getElementById('active_electrons').value;
+    const activeOrbitals = this.document.getElementById('active_orbitals').value;
+    const activeNroots = this.document.getElementById('active_nroots').value;
+    const multiplicity = this.document.getElementById('multiplicity')?.value || '1';
+
+    let inner = "";
+    inner += parseInt(multiplicity) > 1 ? `\n  mult    ${multiplicity}` : "";
+    inner += `\n  nel     ${activeElectrons}`;
+    inner += `\n  norb    ${activeOrbitals}`;
+    inner += parseInt(activeNroots) > 1 ? `\n  nroots  ${activeNroots}` : "";
+
+    // Outorb
+    const canonicalOrbs = this.document.getElementById("active_outorb").value === "CanonOrbs";
+    inner += canonicalOrbs ? "\n  ActOrbs CanonOrbs" : "";
+
+    // RI approx
+    const doRI = this.document.getElementById('ri_toggle').checked;
+    inner += doRI ? "\n  TrafoStep RI   # density-fitted integrals" : "";
+
+    // Perturbation theory
+    const ptMethod = this.document.getElementById('active_pt').value;
+    let ptStr = "";
+
+    switch (ptMethod) {
+      case "SC_NEVPT2":
+        ptStr = "\n\n  # strongly contracted\n  PTMethod SC_NEVPT2";
+        break;
+      case "FIC_NEVPT2":
+        ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_NEVPT2";
+        break;
+      case "CASPT2":
+        ptStr = "\n\n  # fully internally contracted\n";
+        ptStr += "  PTMethod FIC_CASPT2\n"
+        ptStr += "  PTSettings\n";
+        ptStr += "    CASPT2_ishift    0.0     # imaginary shift\n";
+        ptStr += "    CASPT2_rshift    0.0     # real shift\n";
+        ptStr += "    CASPT2_IPEAshift 0.0";
+        break;
+    }
+    inner += ptStr;
+    return `%casscf${inner}\nend`;
+  }
+
   getTemplate(calcMethod) {
     let template;
     const doRI = this.document.getElementById('ri_toggle').checked;
@@ -136,35 +175,7 @@ end`);
 ! MORead   
 % MoInp "your-orbitals.gbw"`);
       }
-
-      // Outorb
-      const canonicalOrbs = this.document.getElementById("active_outorb").value === "CanonOrbs";
-      template = template.replaceAll("{{OUTORB}}", canonicalOrbs ? "\n  ActOrbs CanonOrbs" : "");
-
-      // RI approx
-      template = template.replaceAll("{{RI_BLOCK}}", doRI ? "\n\n  TrafoStep RI   # density-fitted integrals" : "");
-
-      // Perturbation theory
-      const ptMethod = this.document.getElementById('active_pt').value;
-      let ptStr = "";
-
-      switch (ptMethod) {
-        case "SC_NEVPT2":
-          ptStr = "\n\n  # strongly contracted\n  PTMethod SC_NEVPT2";
-          break;
-        case "FIC_NEVPT2":
-          ptStr = "\n\n  # fully internally contracted\n  PTMethod FIC_NEVPT2";
-          break;
-        case "CASPT2":
-          ptStr = "\n\n  # fully internally contracted\n";
-          ptStr += "  PTMethod FIC_CASPT2\n"
-          ptStr += "  PTSettings\n";
-          ptStr += "    CASPT2_ishift    0.0     # imaginary shift\n";
-          ptStr += "    CASPT2_rshift    0.0     # real shift\n";
-          ptStr += "    CASPT2_IPEAshift 0.0";
-          break;
-      }
-      template = template.replaceAll("{{PT_STRING}}", ptStr);
+      template = template.replace("{{CAS_BLOCK}}", this.buildCasStr());
     } else {
       template = this.templates[calcMethod] || this.templates.DEFAULT;
     }
@@ -235,14 +246,6 @@ end`);
     if (calcMethod === 'DFT') {
       const dftFunctional = this.document.getElementById('dft_functional').value.toUpperCase();
       template = template.replaceAll('{{DFT_FUNCTIONAL}}', dftFunctional);
-    } else if (calcMethod.startsWith("CAS")) {
-      const activeElectrons = this.document.getElementById('active_electrons')?.value || '6';
-      const activeOrbitals = this.document.getElementById('active_orbitals')?.value || '6';
-      const activeNroots = this.document.getElementById('active_nroots')?.value || '1';
-      template = template
-        .replaceAll('{{ACTIVE_ELECTRONS}}', activeElectrons)
-        .replaceAll('{{ACTIVE_ORBITALS}}', activeOrbitals)
-        .replaceAll('{{ACTIVE_NROOTS}}', activeNroots);
     }
 
     // Add header
