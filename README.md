@@ -19,13 +19,13 @@ These can subsequently be adapted by the user to their liking.
 
 ## Features
 
-`MementoChem` can generate inputs for **single point**, **structure** or **transition state optimization** and **harmonic frequency** calculations.
+`MementoChem` can generate inputs for **single point**, **equilibrium structure** or **transition state optimization** and **harmonic frequency** calculations.
 
-It supports most of the common electronic structure methods such as **single-** (e.g., MP2 and CC) and **multi-reference schemes** (e.g., CASSCF, CASPT2 and NEVPT2).
+It supports most of the common electronic structure methods such as **single-** (e.g., MP2 and CC) and **multi-reference schemes** (e.g., CASSCF, CASPT2, NEVPT2, MRCC).
 
 It also provides buttons to toggle common options for configuring calculations such as enabling **density-fitting**. 
 
-In addition, SCF calculations come with **advanced configuration** options that allow the user to modify the solver (by using e.g., a second-order solvers) or tighten the convergence thresholds --- keywords that I always seem to forget.
+In addition, SCF calculations come with **advanced configuration** options that allow the user to modify the solver (by using e.g., second-order solvers) or tighten the convergence thresholds --- keywords that I always seem to forget.
 
 Finally, `MementoChem` supports common **workflows** such as **generating MP2/CASSCF natural orbitals** or **checking the stability of an unrestricted solution**.
 
@@ -36,7 +36,7 @@ Currently, it supports a subset of the features from the following programs (the
 - Psi4
 - MRCC
 
-If you enconter any issue or have a feature request, please let me know.
+If you encounter any issues or have a feature request, please let me know.
 
 ## Alternative Utilities
 
