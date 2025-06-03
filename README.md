@@ -47,4 +47,4 @@ However, it lacks support for multi-configurational calculations, which is my ma
 
 - List of basis sets have been taken from [Basis Set Exchange](https://github.com/MolSSI-BSE/basis_set_exchange)
 - List of DFT functionals have been adapted from the [ORCA manual](https://www.faccts.de/docs/orca/6.0/manual/contents/detailed/model.html#choice-of-functional)
-- Logo was adapted from ChatGPT with a benzene molecular orbital that was generated using VMD with the help of Evangelista's [vmd_cube](https://github.com/fevangelista/vmd_cube) script.
+- Logo was adapted from ChatGPT with a benzene molecular orbital using VMD with the help of Evangelista's [vmd_cube](https://github.com/fevangelista/vmd_cube) script.
