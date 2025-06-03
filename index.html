@@ -41,6 +41,11 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
+    <!-- Use consistent web font -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     <!-- NOTE: Disabled for now, only use system theme (d-none) -->
     <!-- Add theme toggle button in header -->
@@ -181,7 +186,7 @@
       border: 1px solid #ccc; /* Add a subtle border */
       padding: 10px; /* Add some padding for better spacing */
       font-family:
-        Consolas, Monaco, monospace; /* Monospace font for code appearance */
+        'JetBrains Mono', Consolas, Monaco, monospace; /* Use Fira Code with fallbacks */
       border-radius: 5px; /* Rounded corners */
       white-space: pre-wrap; /* Wrap long lines instead of breaking them */
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for extra contrast */
