@@ -95,6 +95,7 @@ function updateUI() {
   }
   // Show/hide SCF type based on method
   if (calcMethod === 'HF' || calcMethod === 'DFT') {
+    showElement('scf-type-container')
     hideElement("freeze_core_full", false);
     // Show stability checkbox only for UHF/UKS
     const showUnrestricted = (calcMethod === 'HF' && scfType === 'UHF') ||
