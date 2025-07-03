@@ -70,7 +70,7 @@ ${coords}
 %scf
 {{SCF_TYPE}}{{GUESS}}{{DIRECT_BLOCK}}{{STAB_STRING}}{{TOL}}end`
 
-    scfTemplate = scfTemplate.replaceAll("{{SCF_TYPE}}", (scfType === "Auto") ? "" : `  HFType ${scfType}\n`);
+    scfTemplate = scfTemplate.replaceAll("{{SCF_TYPE}}", (scfType === "Auto") ? "" : `  HFTyp ${scfType}\n`);
     scfTemplate = scfTemplate.replaceAll("{{GUESS}}", (initialGuess === "Default") ? "" : `  Guess ${initialGuess}\n`);
     scfTemplate = scfTemplate.replaceAll("{{DIRECT_BLOCK}}", doDirect ? "  SCFMode Direct\n" : "");
     scfTemplate = scfTemplate.replaceAll("{{STAB_STRING}}", doStab ? "  STABPerform true\n  STABRestartUHFifUnstable true # restart if unstable\n" : "");
