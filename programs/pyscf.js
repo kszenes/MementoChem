@@ -224,8 +224,27 @@ mc.state_average_(weights)`);
 
       // Perturbation theory
       const ptMethod = this.document.getElementById('active_pt').value;
-      let ptStr = ptMethod ? "\n\nmrpt.NEVPT(mc).kernel()" : "";
       let ptImport = ptMethod ? ", mrpt" : "";
+      let ptStr = "";
+      if (ptMethod) {
+        if (activeNroots > 1) {
+          if (doOrbRot) {
+            const activeElectrons = this.document.getElementById('active_electrons').value;
+            const activeOrbitals = this.document.getElementById('active_orbitals').value;
+            ptStr = "\norbital = mc.mo_coeff   # save converged orbitals\n"
+            ptStr += "\n# Create a multi-root CASCI calcultion to get excited state wavefunctions\n"
+            ptStr += `mc = mcscf.CASCI(mf, ${activeOrbitals}, ${activeElectrons})\n`
+            ptStr += `mc.fcisolver.nroots = ${activeNroots}\nmc.kernel(orbital)`
+          }
+          ptStr += `\n\ne_tots = []\n`
+          ptStr += `for i in range(nroots):\n`
+          ptStr += `  e_corr = mrpt.NEVPT(mc, root=i).kernel()\n`
+          ptStr += `  e_tots.append(float(mc.e_tot[i] + e_corr))\n`
+          ptStr += `print(f"{e_tots = }")`
+        } else {
+          ptStr = ptMethod ? "\n\nmrpt.NEVPT(mc).kernel()" : "";
+        }
+      }
 
       template = template.replaceAll("{{PT_STRING}}", ptStr).replaceAll("{{PT_IMPORT}}", ptImport);
       template = template.replaceAll("{{FREEZE_CORE}}", freezeCore ? ", frozen=True" : "");
