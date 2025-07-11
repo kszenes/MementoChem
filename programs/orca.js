@@ -158,6 +158,7 @@ ${coords}
         template = template.replaceAll("{{NATORB_BLOCK}}", `
 
 %mp2
+  Density unrelaxed
   NatOrbs true
 end`);
       }

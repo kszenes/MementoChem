@@ -6,8 +6,8 @@
       const n = e.regex,
         a = /[\p{XID_Start}_]\p{XID_Continue}*/u,  // Matches identifiers (e.g., Charge, RAS2)
         s = ["&scf", "end", "%mp2", "PTSettings", ],  // Block titles
-        literals = ["HFType", "SCFMode", "STABPerform", "STABRestartUHFifUnstable", "nel", "norb", "mult", "nroots", "TolE", "TolG", "Guess", "TrafoStep", "PTMethod", "CASPT2_ishift", "CASPT2_rshift", "CASPT2_IPEAshift", "ActOrbs", "DoFCI", "NatOrbs"],
-        args = ["RHF", "UHF", "ROHF", "RKS", "UKS", "ROKS", "true", "Direct", "HCore", "Hueckel", "RI", "FIC_NEVPT2", "SC_NEVPT2", "FIC_CASPT2", "CanonOrbs"];
+        literals = ["HFType", "SCFMode", "STABPerform", "STABRestartUHFifUnstable", "nel", "norb", "mult", "nroots", "TolE", "TolG", "Guess", "TrafoStep", "PTMethod", "CASPT2_ishift", "CASPT2_rshift", "CASPT2_IPEAshift", "ActOrbs", "DoFCI", "NatOrbs", "Density"],
+        args = ["RHF", "UHF", "ROHF", "RKS", "UKS", "ROKS", "true", "Direct", "HCore", "Hueckel", "RI", "FIC_NEVPT2", "SC_NEVPT2", "FIC_CASPT2", "CanonOrbs", "unrelaxed"];
       return {
         name: "orca",
         case_insensitive: true, // language is case-insensitive
