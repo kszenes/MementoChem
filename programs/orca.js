@@ -123,7 +123,8 @@ ${coords}
         ptStr += "  PTSettings\n";
         ptStr += "    CASPT2_ishift    0.0     # imaginary shift\n";
         ptStr += "    CASPT2_rshift    0.0     # real shift\n";
-        ptStr += "    CASPT2_IPEAshift 0.0";
+        ptStr += "    CASPT2_IPEAshift 0.0\n";
+        ptStr += "  end";
         break;
     }
     inner += ptStr;
